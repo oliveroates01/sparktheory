@@ -308,6 +308,7 @@ export default function QuizPage() {
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
   const [showProblemsList, setShowProblemsList] = useState(problemsOnly);
+  const [revealed, setRevealed] = useState(false);
 
   // prevent saving twice
   const [hasSaved, setHasSaved] = useState(false);
@@ -331,6 +332,7 @@ export default function QuizPage() {
       setScore(0);
       setFinished(false);
       setHasSaved(false);
+      setRevealed(false);
     }
   }, [showProblemsList]);
 
@@ -348,6 +350,7 @@ export default function QuizPage() {
     setScore(0);
     setFinished(false);
     setHasSaved(false);
+    setRevealed(false);
   };
 
   const restartSameQuiz = () => {
@@ -360,19 +363,21 @@ export default function QuizPage() {
     setScore(0);
     setFinished(false);
     setHasSaved(false);
+    setRevealed(false);
   };
 
   useEffect(() => {
     if (bank.length === 0) {
-    setQuestions([]);
-    setCurrentIndex(0);
-    setSelected(null);
-    setAnswers([]);
-    setScore(0);
-    setFinished(false);
-    setHasSaved(false);
-    setTopicResults([]);
-    return;
+      setQuestions([]);
+      setCurrentIndex(0);
+      setSelected(null);
+      setAnswers([]);
+      setScore(0);
+      setFinished(false);
+      setHasSaved(false);
+      setTopicResults([]);
+      setRevealed(false);
+      return;
     }
     if (!showProblemsList) buildNewQuiz();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -389,29 +394,34 @@ export default function QuizPage() {
   const current = questions[currentIndex] ?? null;
 
   const onPick = (idx: number) => {
-    if (!current || selected !== null) return;
+    if (!current || revealed) return;
     setSelected(idx);
     setAnswers((prev) => {
       const next = [...prev];
       next[currentIndex] = idx;
       return next;
     });
-    if (typeof window !== "undefined" && topic) {
-      const pKey = problemKeyForTopic(level, topic);
-      const stats = loadProblemStats(pKey);
-      const existing = stats[current.id] || { wrong: 0, total: 0 };
-      const wrong = idx === current.correctIndex ? 0 : 1;
-      stats[current.id] = {
-        wrong: existing.wrong + wrong,
-        total: existing.total + 1,
-      };
-      saveProblemStats(pKey, stats);
-    }
-    if (idx === current.correctIndex) setScore((s) => s + 1);
   };
 
   const onNext = () => {
     if (selected === null) return;
+
+    if (!revealed && current) {
+      if (typeof window !== "undefined" && topic) {
+        const pKey = problemKeyForTopic(level, topic);
+        const stats = loadProblemStats(pKey);
+        const existing = stats[current.id] || { wrong: 0, total: 0 };
+        const wrong = selected === current.correctIndex ? 0 : 1;
+        stats[current.id] = {
+          wrong: existing.wrong + wrong,
+          total: existing.total + 1,
+        };
+        saveProblemStats(pKey, stats);
+      }
+      if (selected === current.correctIndex) setScore((s) => s + 1);
+      setRevealed(true);
+      return;
+    }
 
     const next = currentIndex + 1;
     if (next >= questions.length) {
@@ -421,6 +431,7 @@ export default function QuizPage() {
 
     setCurrentIndex(next);
     setSelected(null);
+    setRevealed(false);
   };
 
   // ✅ SAVE RESULT WHEN FINISHED (now includes answers + time taken)
@@ -474,7 +485,10 @@ export default function QuizPage() {
       "w-full rounded-xl px-4 py-3 text-left transition-all duration-200 " +
       "bg-white/5 border border-white/10";
 
-    if (selected === null) return `${base} hover:bg-white/10`;
+    if (!revealed) {
+      if (selected === idx) return `${base} !bg-white/10 !border-white/30`;
+      return `${base} hover:bg-white/10`;
+    }
 
     const isCorrect = current && idx === current.correctIndex;
     const isPicked = idx === selected;
@@ -565,7 +579,7 @@ export default function QuizPage() {
               ))}
             </div>
 
-            {selected !== null && (
+            {selected !== null && revealed && (
               <div className="mt-4 rounded-xl border border-amber-300/50 bg-amber-300/15 px-4 py-3 text-sm text-amber-100 ">
                 <div className="text-xs font-semibold uppercase tracking-wide text-amber-200/80">Explanation</div>
                 <div className="mt-1 text-amber-50">{current.explanation}</div>
@@ -579,7 +593,11 @@ export default function QuizPage() {
                 disabled={selected === null}
                 className="bg-white/10 px-4 py-2 rounded-lg disabled:opacity-50"
               >
-                {currentIndex + 1 === questions.length ? "Finish" : "Next"}
+                {!revealed
+                  ? "Check answer"
+                  : currentIndex + 1 === questions.length
+                    ? "Finish"
+                    : "Next"}
               </button>
             </div>
           </div>

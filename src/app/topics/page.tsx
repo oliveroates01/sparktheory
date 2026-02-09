@@ -342,7 +342,7 @@ export default function TopicsPage() {
             </div>
             <div className="h-fit self-start mt-16">
               <div className="rounded-3xl bg-gradient-to-br from-[#2A2A2A]/80 via-[#1F1F1F]/70 to-[#2A2A2A]/80 p-6 text-sm text-white/70 ring-1 ring-white/10">
-                <div className="text-sm font-semibold text-white/80">Revision support (Level 1 & 2)</div>
+                <div className="text-sm font-semibold text-white/80">Revision support (Level 2 & 3)</div>
                 <p className="mt-2">This page is built to support your Electrical Level 1 and Level 2 revision. Use it to review key topics, spot weaker areas, and plan what to study next. The progress chart shows a sample learning path so you can see how results shift over time as you revisit topics and improve your scores.</p>
               </div>
 
