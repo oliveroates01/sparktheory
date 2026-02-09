@@ -258,6 +258,18 @@ export default function TopicsPage() {
         <header className="flex items-center justify-end">
           <div className="flex items-center gap-2">
             <Link
+              href="/login"
+              className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-sm text-white/80 hover:bg-white/10"
+            >
+              Log in
+            </Link>
+            <Link
+              href="/signup"
+              className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-sm text-white/80 hover:bg-white/10"
+            >
+              Sign up
+            </Link>
+            <Link
               href="/account"
               className="rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/15 hover:bg-white/15"
             >

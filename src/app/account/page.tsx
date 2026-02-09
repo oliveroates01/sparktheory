@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { onAuthStateChanged, signOut, type User } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 type AccountData = {
   brandName: string;
@@ -40,19 +42,37 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 export default function AccountPage() {
-  const data: AccountData = useMemo(
-    () => ({
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => {
+      setUser(u);
+      setLoading(false);
+    });
+    return () => unsub();
+  }, []);
+
+  const data: AccountData = useMemo(() => {
+    const email = user?.email || "";
+    const displayName = user?.displayName || "";
+    const created = user?.metadata?.creationTime || "";
+
+    return {
       brandName: "Spark Theory",
-      email: "oliveroates@gmail.com",
-      displayName: "Oliver",
-      planLabel: "PRO",
-      planText: "Premium Access",
-      subscriptionStatus: "Pro Subscription Active",
+      email,
+      displayName,
+      planLabel: "FREE",
+      planText: "Standard Access",
+      subscriptionStatus: user ? "Active" : "Signed out",
       helpEmail: "contact@plumbtheory.co.uk",
-      memberSince: "21 Jul 2025",
-    }),
-    []
-  );
+      memberSince: created ? new Date(created).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }) : "",
+    };
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-[#1F1F1F] text-white">
@@ -92,6 +112,11 @@ export default function AccountPage() {
       </header>
 
       <main className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-14">
+        {loading ? (
+          <div className="rounded-2xl border border-white/10 bg-white/[0.05] p-6 text-sm text-white/70">
+            Loading account...
+          </div>
+        ) : null}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.05fr_1fr]">
           {/* LEFT: account summary */}
           <section className="rounded-3xl border border-white/10 bg-white/[0.06] p-6 shadow-[0_12px_40px_rgba(0,0,0,0.25)]">
@@ -107,9 +132,9 @@ export default function AccountPage() {
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-lg font-semibold">
-                    {data.displayName || "Account"}
+                    {data.displayName || (data.email ? "Account" : "Guest")}
                   </div>
-                  <div className="mt-1 text-sm text-white/60">{data.email}</div>
+                  <div className="mt-1 text-sm text-white/60">{data.email || "Not signed in"}</div>
                 </div>
                 <Pill>{data.subscriptionStatus}</Pill>
               </div>
@@ -122,7 +147,7 @@ export default function AccountPage() {
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
                   <div className="text-xs text-white/60">Member since</div>
-                  <div className="mt-1 text-sm font-semibold">{data.memberSince}</div>
+                  <div className="mt-1 text-sm font-semibold">{data.memberSince || "—"}</div>
                 </div>
               </div>
 
@@ -143,7 +168,7 @@ export default function AccountPage() {
               <div className="space-y-3 text-sm">
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-white/60">Email</span>
-                  <span className="truncate font-medium">{data.email}</span>
+                  <span className="truncate font-medium">{data.email || "Not signed in"}</span>
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-white/60">Plan</span>
@@ -155,7 +180,7 @@ export default function AccountPage() {
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-white/60">Member since</span>
-                  <span className="font-medium">{data.memberSince}</span>
+                  <span className="font-medium">{data.memberSince || "—"}</span>
                 </div>
               </div>
             </Section>
@@ -198,8 +223,8 @@ export default function AccountPage() {
               <button
                 type="button"
                 className="w-full rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm font-semibold text-white/85 hover:bg-white/10"
-                onClick={() => {
-                  alert("Hook this up to Firebase signOut()");
+                onClick={async () => {
+                  await signOut(auth);
                 }}
               >
                 Log out
