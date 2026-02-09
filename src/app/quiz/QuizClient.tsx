@@ -43,6 +43,7 @@ const LOCKED_LEVEL2_TOPICS = new Set([
 ]);
 
 const LOCKED_LEVEL3_TOPICS = new Set([
+  "all-level-3",
   "electrical-technology",
   "inspection-testing-commissioning",
 ]);
