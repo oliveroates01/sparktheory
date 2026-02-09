@@ -131,22 +131,25 @@ export default function TopicsPage() {
   const visibleCount = 3;
   const totalCards = cards.length;
 
-  const shuffledCards = useMemo(() => {
+  const [shuffledCards, setShuffledCards] = useState<Card[]>(cards);
+  const [shuffledLevel3, setShuffledLevel3] = useState<Card[]>(level3Cards);
+
+  useEffect(() => {
     const copy = [...cards];
     for (let i = copy.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
       [copy[i], copy[j]] = [copy[j], copy[i]];
     }
-    return copy;
+    setShuffledCards(copy);
   }, [cards]);
 
-  const shuffledLevel3 = useMemo(() => {
+  useEffect(() => {
     const copy = [...level3Cards];
     for (let i = copy.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
       [copy[i], copy[j]] = [copy[j], copy[i]];
     }
-    return copy;
+    setShuffledLevel3(copy);
   }, [level3Cards]);
 
   const activeSet = showLevel3 ? shuffledLevel3 : shuffledCards;
