@@ -475,10 +475,16 @@ export default function ElectricalPage() {
               isSwitchingLevel ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
             }`}
           >
-            {visibleCategories.map((c) => (
+            {visibleCategories.map((c, index) => {
+              const shouldSpanFull =
+                visibleCategories.length % 3 === 1 &&
+                index === visibleCategories.length - 1;
+              return (
               <div
                 key={c.id}
-                className="flex h-full flex-col rounded-2xl bg-white/5 p-6 ring-1 ring-white/10 transition hover:bg-white/10 hover:ring-white/15"
+                className={`flex h-full flex-col rounded-2xl bg-white/5 p-6 ring-1 ring-white/10 transition hover:bg-white/10 hover:ring-white/15 ${
+                  shouldSpanFull ? "xl:col-span-3" : ""
+                }`}
               >
                 <div className="flex items-start justify-between gap-4">
                   <h3 className="text-lg font-bold leading-snug">{c.title}</h3>
@@ -556,7 +562,8 @@ export default function ElectricalPage() {
                     : "Start Quiz"}
                 </button>
               </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
