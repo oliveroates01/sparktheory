@@ -177,6 +177,14 @@ const CATEGORIES: Category[] = [
 
 const LEVEL3_CATEGORIES: Category[] = [
   {
+    id: "all-level-3",
+    title: "Level 3 Mixed (All Topics)",
+    description:
+      "All Level 3 topics combined for a full mixed practice quiz.",
+    tag: "Electrical",
+    href: "/quiz?trade=electrical&topic=all-level-3&level=3",
+  },
+  {
     id: "principles-electrical-science",
     title: "Principles of Electrical Science",
     description:

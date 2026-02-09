@@ -186,6 +186,8 @@ function shuffleQuestionOptions(q: Question): Question {
 function topicTitle(topic: string) {
   return topic === "all-level-2"
     ? "Level 2 Mixed Quiz"
+    : topic === "all-level-3"
+    ? "Level 3 Mixed Quiz"
     : topic === "principles-electrical-science"
     ? "Principles of Electrical Science Quiz"
     : topic === "electrical-technology"
