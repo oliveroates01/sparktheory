@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ProgressReport, { type StoredResult } from "@/components/ProgressReport";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 import { healthSafetyQuestions } from "@/data/healthSafety";
 import { principlesElectricalScienceQuestions } from "@/data/principlesElectricalScience";
 import { electricalInstallationTechnologyQuestions } from "@/data/ElectricalInstallationTechnology";
@@ -21,6 +23,17 @@ type Category = {
   href?: string;
   topicHref?: string;
 };
+
+const LOCKED_LEVEL2_TOPICS = new Set([
+  "electrical-installation-technology",
+  "installation-wiring-systems-enclosures",
+  "communication-within-building-services-engineering",
+]);
+const LOCKED_LEVEL3_TOPICS = new Set([
+  "electrical-technology",
+  "inspection-testing-commissioning",
+]);
+
 
 const STORAGE_KEY_LEVEL2 = "qm_results_v1";
 const STORAGE_KEY_LEVEL3 = "qm_results_v1_level3";
@@ -199,6 +212,7 @@ export default function ElectricalPage() {
   const pathname = usePathname();
   const storageKey = storageKeyForLevel(level);
   const [results, setResults] = useState<StoredResult[]>([]);
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickedHref, setPickedHref] = useState<string | null>(null);
   const [unseenOnly, setUnseenOnly] = useState(false);
@@ -208,6 +222,13 @@ export default function ElectricalPage() {
   const [totalCount, setTotalCount] = useState<number | null>(null);
 
   const sizes = [5, 15, 30, 50];
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setUserLoggedIn(Boolean(user));
+    });
+    return () => unsub();
+  }, []);
 
   useEffect(() => {
     const initialLevel = (searchParams.get("level") || "").trim();
@@ -457,8 +478,19 @@ export default function ElectricalPage() {
                       <Link
                         href={c.topicHref}
                         aria-label={`Open ${c.title} topic`}
-                        className="inline-flex h-6 w-6 items-center justify-center rounded-md text-white/70 ring-1 ring-white/10 hover:text-white hover:ring-white/20"
-                        onClick={() => {
+                        className={`inline-flex h-6 w-6 items-center justify-center rounded-md ring-1 transition ${
+                          ( (level === "2" && LOCKED_LEVEL2_TOPICS.has(getTopicFromHref(c.href))) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(getTopicFromHref(c.href))) ) && !userLoggedIn
+                            ? "text-white/30 ring-white/5 cursor-not-allowed"
+                            : "text-white/70 ring-white/10 hover:text-white hover:ring-white/20"
+                        }`}
+                        onClick={(e) => {
+                          const topic = getTopicFromHref(c.href);
+                          const isLocked = ((level === "2" && LOCKED_LEVEL2_TOPICS.has(topic)) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(topic))) && !userLoggedIn;
+                          if (isLocked) {
+                            e.preventDefault();
+                            window.location.href = "/login";
+                            return;
+                          }
                           if (typeof window !== "undefined") {
                             sessionStorage.setItem(
                               SCROLL_RESTORE_KEY,
@@ -494,10 +526,24 @@ export default function ElectricalPage() {
 
                 <button
                   type="button"
-                  onClick={() => openPicker(c.href)}
-                  className="mt-auto block w-full rounded-xl bg-[#FFC400] px-4 py-3 text-center text-sm font-semibold text-black shadow-sm shadow-[#FF9100]/20 hover:bg-[#FF9100]"
+                  onClick={() => {
+                    const topic = getTopicFromHref(c.href);
+                    const isLocked = ((level === "2" && LOCKED_LEVEL2_TOPICS.has(topic)) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(topic))) && !userLoggedIn;
+                    if (isLocked) {
+                      window.location.href = "/login";
+                      return;
+                    }
+                    openPicker(c.href);
+                  }}
+                  className={`mt-auto block w-full rounded-xl px-4 py-3 text-center text-sm font-semibold shadow-sm transition ${
+                    ( (level === "2" && LOCKED_LEVEL2_TOPICS.has(getTopicFromHref(c.href))) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(getTopicFromHref(c.href))) ) && !userLoggedIn
+                      ? "bg-white/10 text-white/70 ring-1 ring-white/10 hover:bg-white/15"
+                      : "bg-[#FFC400] text-black shadow-[#FF9100]/20 hover:bg-[#FF9100]"
+                  }`}
                 >
-                  Start Quiz
+                  {( (level === "2" && LOCKED_LEVEL2_TOPICS.has(getTopicFromHref(c.href))) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(getTopicFromHref(c.href))) ) && !userLoggedIn
+                    ? "Log in to start"
+                    : "Start Quiz"}
                 </button>
               </div>
             ))}

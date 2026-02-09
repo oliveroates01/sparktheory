@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 import ProgressReport, { type StoredResult } from "@/components/ProgressReport";
 
@@ -33,6 +35,17 @@ type ProblemStats = Record<string, ProblemStat>;
 const STORAGE_KEY_LEVEL2 = "qm_results_v1";
 const STORAGE_KEY_LEVEL3 = "qm_results_v1_level3";
 const DEFAULT_QUIZ_SIZE = 4;
+
+const LOCKED_LEVEL2_TOPICS = new Set([
+  "electrical-installation-technology",
+  "installation-wiring-systems-enclosures",
+  "communication-within-building-services-engineering",
+]);
+
+const LOCKED_LEVEL3_TOPICS = new Set([
+  "electrical-technology",
+  "inspection-testing-commissioning",
+]);
 
 function storageKeyForLevel(level: string) {
   return level === "3" ? STORAGE_KEY_LEVEL3 : STORAGE_KEY_LEVEL2;
@@ -189,9 +202,18 @@ function topicTitle(topic: string) {
 }
 
 export default function QuizPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
 
   const topic = (searchParams.get("topic") ?? "").trim().toLowerCase();
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setUserLoggedIn(Boolean(user));
+    });
+    return () => unsub();
+  }, []);
   const level = (searchParams.get("level") ?? "").trim();
   const problemsOnly = (searchParams.get("problems") ?? "").trim() === "1";
   const storageKey = storageKeyForLevel(level);
@@ -205,6 +227,11 @@ export default function QuizPage() {
   const topicsHref =
     level === "3" ? "/trade/electrical?level=3" : "/trade/electrical";
   const unseenOnly = (searchParams.get("unseen") ?? "").trim() === "1";
+  const isLocked = ((level === "3" && LOCKED_LEVEL3_TOPICS.has(topic)) || (level !== "3" && LOCKED_LEVEL2_TOPICS.has(topic))) && !userLoggedIn;
+
+  useEffect(() => {
+    if (isLocked) router.replace("/login");
+  }, [isLocked, router]);
 
   const bank = useMemo<Question[]>(() => {
     let rawBank: unknown[] = [];
