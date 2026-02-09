@@ -25,6 +25,7 @@ type Category = {
 };
 
 const LOCKED_LEVEL2_TOPICS = new Set([
+  "all-level-2",
   "electrical-installation-technology",
   "installation-wiring-systems-enclosures",
   "communication-within-building-services-engineering",
