@@ -486,7 +486,9 @@ export default function QuizPage() {
       "bg-white/5 border border-white/10";
 
     if (!revealed) {
-      if (selected === idx) return `${base} !bg-white/10 !border-white/30`;
+      if (selected === idx) {
+        return `${base} !bg-amber-500/25 !border-amber-400 !text-amber-50`;
+      }
       return `${base} hover:bg-white/10`;
     }
 
