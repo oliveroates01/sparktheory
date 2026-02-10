@@ -289,11 +289,16 @@ export default function TopicsPage() {
                   onClick={() => handleTradeClick(key)}
                   className={[
                     "w-72 rounded-full px-6 py-3 text-sm font-semibold ring-1 transition-transform duration-200",
-                    "bg-white/5 ring-white/10 text-white/80",
+                    "bg-white/5 ring-white/10 text-white/90",
                     "hover:scale-[1.04] hover:bg-[#FF9100]/10 hover:ring-[#FF9100]/70 hover:shadow-[0_0_0_2px_rgba(255,145,0,0.45),0_18px_40px_rgba(255,145,0,0.35)]",
                   ].join(" ")}
                 >
-                  {trade.label}
+                  <span className="flex items-center justify-center gap-2">
+                    <span>{trade.label}</span>
+                    <span className="text-xs font-semibold text-[#FFC400]">
+                      Start lessons →
+                    </span>
+                  </span>
                 </button>
               );
             })}
