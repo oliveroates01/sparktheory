@@ -65,7 +65,7 @@ export default function AccountPage() {
       planLabel: "FREE",
       planText: "Standard Access",
       subscriptionStatus: user ? "Active" : "Signed out",
-      helpEmail: "contact@plumbtheory.co.uk",
+      helpEmail: "sparktheory2026@gmail.com",
       memberSince: created ? new Date(created).toLocaleDateString("en-GB", {
         day: "2-digit",
         month: "short",
