@@ -318,9 +318,9 @@ export default function TopicsPage() {
               {visibleCards.map((c) => (
                 <div
                   key={c.id}
-                  className={["group relative h-[190px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#2A2A2A]/80 via-[#1F1F1F]/70 to-[#2A2A2A]/80 p-6 ring-1 ring-white/10 transition-all duration-700", isTransitioning ? "opacity-0 -translate-y-1" : "opacity-100 translate-y-0", "hover:-translate-y-1 hover:ring-[#FFC400]/40"].join(" ")}
+                  className={["relative h-[190px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#2A2A2A]/80 via-[#1F1F1F]/70 to-[#2A2A2A]/80 p-6 ring-1 ring-white/10 transition-all duration-700", isTransitioning ? "opacity-0 -translate-y-1" : "opacity-100 translate-y-0"].join(" ")}
                 >
-                  <div className="absolute inset-0 bg-[radial-gradient(220px_140px_at_10%_0%,rgba(255,196,0,0.18),transparent_60%)] opacity-0 transition group-hover:opacity-100" />
+                  <div className="absolute inset-0 bg-[radial-gradient(220px_140px_at_10%_0%,rgba(255,196,0,0.18),transparent_60%)] opacity-0" />
                   <div className="relative flex h-full flex-col gap-4">
                     <div className="flex items-start justify-between gap-4">
                       <div className="grid h-11 w-11 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/15">
