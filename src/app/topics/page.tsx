@@ -159,17 +159,16 @@ export default function TopicsPage() {
     .map((_, i) => activeSet[(carouselIndex + i) % activeTotal]);
 
   useEffect(() => {
-    if (totalCards <= visibleCount && level3Cards.length <= visibleCount) return;
+    if (activeTotal <= visibleCount) return;
     const id = setInterval(() => {
       setIsTransitioning(true);
       setTimeout(() => {
-        setShowLevel3((prev) => !prev);
         setCarouselIndex((prev) => (prev + 1) % Math.max(activeTotal, 1));
         setIsTransitioning(false);
       }, 500);
     }, 5500);
     return () => clearInterval(id);
-  }, [totalCards, level3Cards.length, activeTotal]);
+  }, [activeTotal]);
 
   const demoPoints = [0, 6, 22, 14, 35, 28, 48];
   const chartLeft = 40;
@@ -314,7 +313,38 @@ export default function TopicsPage() {
         <section className="mt-10">
           <div className="grid gap-5 md:grid-cols-[minmax(0,520px)_1fr]">
             <div className="grid gap-5">
-              <h2 className="text-lg font-semibold text-[#FFC400]">{showLevel3 ? "Level 3" : "Level 2"}</h2>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowLevel3(false);
+                    setCarouselIndex(0);
+                  }}
+                  className={[
+                    "rounded-full px-4 py-1.5 text-sm font-semibold ring-1 transition",
+                    showLevel3
+                      ? "bg-white/5 text-white/70 ring-white/10 hover:bg-white/10"
+                      : "bg-[#FF9100]/15 text-white ring-[#FF9100]/50",
+                  ].join(" ")}
+                >
+                  Level 2
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowLevel3(true);
+                    setCarouselIndex(0);
+                  }}
+                  className={[
+                    "rounded-full px-4 py-1.5 text-sm font-semibold ring-1 transition",
+                    showLevel3
+                      ? "bg-[#FF9100]/15 text-white ring-[#FF9100]/50"
+                      : "bg-white/5 text-white/70 ring-white/10 hover:bg-white/10",
+                  ].join(" ")}
+                >
+                  Level 3
+                </button>
+              </div>
               {visibleCards.map((c) => (
                 <div
                   key={c.id}
