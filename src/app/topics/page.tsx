@@ -126,7 +126,6 @@ export default function TopicsPage() {
   }, [activeTrade]);
 
   const [carouselIndex, setCarouselIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [showLevel3, setShowLevel3] = useState(false);
   const visibleCount = 3;
   const totalCards = cards.length;
@@ -159,15 +158,7 @@ export default function TopicsPage() {
     .map((_, i) => activeSet[(carouselIndex + i) % activeTotal]);
 
   useEffect(() => {
-    if (activeTotal <= visibleCount) return;
-    const id = setInterval(() => {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setCarouselIndex((prev) => (prev + 1) % Math.max(activeTotal, 1));
-        setIsTransitioning(false);
-      }, 500);
-    }, 5500);
-    return () => clearInterval(id);
+    setCarouselIndex(0);
   }, [activeTotal]);
 
   const demoPoints = [0, 6, 22, 14, 35, 28, 48];
@@ -348,7 +339,7 @@ export default function TopicsPage() {
               {visibleCards.map((c) => (
                 <div
                   key={c.id}
-                  className={["relative h-[190px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#2A2A2A]/80 via-[#1F1F1F]/70 to-[#2A2A2A]/80 p-6 ring-1 ring-white/10 transition-all duration-700", isTransitioning ? "opacity-0 -translate-y-1" : "opacity-100 translate-y-0"].join(" ")}
+                  className="relative h-[190px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#2A2A2A]/80 via-[#1F1F1F]/70 to-[#2A2A2A]/80 p-6 ring-1 ring-white/10"
                 >
                   <div className="absolute inset-0 bg-[radial-gradient(220px_140px_at_10%_0%,rgba(255,196,0,0.18),transparent_60%)] opacity-0" />
                   <div className="relative flex h-full flex-col gap-4">
