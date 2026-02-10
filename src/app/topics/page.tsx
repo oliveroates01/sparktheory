@@ -280,8 +280,9 @@ export default function TopicsPage() {
 
         {/* Hero */}
         <section className="mt-10 text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
-            <span className="text-[#FFC400]">Spark</span> <span className="text-white">Theory</span>
+          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl leading-none">
+            <span className="block text-[#FFC400] leading-none">Spark</span>
+            <span className="block -mt-1 text-white leading-none">Theory</span>
           </h1>
         </section>
 
@@ -343,7 +344,7 @@ export default function TopicsPage() {
             <div className="h-fit self-start mt-16">
               <div className="rounded-3xl bg-gradient-to-br from-[#2A2A2A]/80 via-[#1F1F1F]/70 to-[#2A2A2A]/80 p-6 text-sm text-white/70 ring-1 ring-white/10">
                 <div className="text-sm font-semibold text-white/80">Revision support (Level 2 & 3)</div>
-                <p className="mt-2">This page is built to support your Electrical Level 1 and Level 2 revision. Use it to review key topics, spot weaker areas, and plan what to study next. The progress chart shows a sample learning path so you can see how results shift over time as you revisit topics and improve your scores.</p>
+                <p className="mt-2">This page is built to support your Electrical Level 2 and Level 3 revision. Use it to review key topics, spot weaker areas, and plan what to study next. The progress chart shows a sample learning path so you can see how results shift over time as you revisit topics and improve your scores.</p>
               </div>
 
               <div className="mt-6 rounded-3xl bg-gradient-to-br from-[#2A2A2A]/80 via-[#1F1F1F]/70 to-[#2A2A2A]/80 p-6 ring-1 ring-white/10">

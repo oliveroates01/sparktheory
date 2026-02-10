@@ -393,11 +393,14 @@ export default function ElectricalPage() {
               </div>
 
               <div>
-                <p className="text-5xl font-extrabold tracking-tight sm:text-6xl"><span className="text-[#FFC400]">Spark</span> Theory</p>
+                <p className="text-5xl font-extrabold tracking-tight sm:text-6xl leading-none">
+                  <span className="block text-[#FFC400] leading-none">Spark</span>
+                  <span className="block -mt-1 pl-[6px] leading-none">Theory</span>
+                </p>
               </div>
             </Link>
 
-            <div className="mt-4">
+            <div className="mt-4 sm:pl-[60px]">
               <Link
                 href="/topics"
                 className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white"
