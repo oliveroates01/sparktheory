@@ -127,7 +127,7 @@ const CATEGORIES: Category[] = [
     title: "Level 2 Mixed (All Topics)",
     description:
       "All Level 2 topics combined for a full mixed practice quiz.",
-    tag: "Electrical",
+    tag: "Electrical Lessons",
     href: "/quiz?trade=electrical&topic=all-level-2",
   },
   {
@@ -135,7 +135,7 @@ const CATEGORIES: Category[] = [
     title: "Health & Safety",
     description:
       "Key laws, risk assessments, PPE, safe isolation, and site safety basics.",
-    tag: "Electrical",
+    tag: "Electrical Lessons",
     href: "/quiz?trade=electrical&topic=health-safety",
     topicHref: "/trade/electrical/health-safety",
   },
@@ -144,7 +144,7 @@ const CATEGORIES: Category[] = [
     title: "Principles of Electrical Science",
     description:
       "Ohm’s law, voltage, current, resistance, power, and AC/DC fundamentals.",
-    tag: "Electrical",
+    tag: "Electrical Lessons",
     href: "/quiz?trade=electrical&topic=principles-electrical-science",
     topicHref: "/trade/electrical/principles-electrical-science",
   },
@@ -153,7 +153,7 @@ const CATEGORIES: Category[] = [
     title: "Electrical Installation Technology",
     description:
       "Wiring systems, containment, terminations, circuit design basics, and installation methods.",
-    tag: "Electrical",
+    tag: "Electrical Lessons",
     href: "/quiz?trade=electrical&topic=electrical-installation-technology",
     topicHref: "/trade/electrical/electrical-installation-technology",
   },
@@ -162,7 +162,7 @@ const CATEGORIES: Category[] = [
     title: "Installation of Wiring Systems & Enclosures",
     description:
       "Cable routes, safe zones, containment (trunking/conduit), fixings, entries, and enclosures.",
-    tag: "Electrical",
+    tag: "Electrical Lessons",
     href: "/quiz?trade=electrical&topic=installation-wiring-systems-enclosures",
     topicHref: "/trade/electrical/installation-wiring-systems-enclosures",
   },
@@ -171,7 +171,7 @@ const CATEGORIES: Category[] = [
     title: "Communication within Building Services Engineering",
     description:
       "Communication methods, documentation, teamwork, and coordinating safely on site.",
-    tag: "Electrical",
+    tag: "Electrical Lessons",
     href: "/quiz?trade=electrical&topic=communication-within-building-services-engineering",
     topicHref: "/trade/electrical/communication-within-building-services-engineering",
   },
@@ -183,7 +183,7 @@ const LEVEL3_CATEGORIES: Category[] = [
     title: "Level 3 Mixed (All Topics)",
     description:
       "All Level 3 topics combined for a full mixed practice quiz.",
-    tag: "Electrical",
+    tag: "Electrical Lessons",
     href: "/quiz?trade=electrical&topic=all-level-3&level=3",
   },
   {
@@ -191,7 +191,7 @@ const LEVEL3_CATEGORIES: Category[] = [
     title: "Principles of Electrical Science",
     description:
       "Advanced theory, calculations, magnetism, induction, and electronic components.",
-    tag: "Electrical",
+    tag: "Electrical Lessons",
     href: "/quiz?trade=electrical&topic=principles-electrical-science&level=3",
     topicHref: "/trade/electrical/principles-electrical-science?level=3",
   },
@@ -200,7 +200,7 @@ const LEVEL3_CATEGORIES: Category[] = [
     title: "Electrical Technology",
     description:
       "Regulations, technical information, supply systems, intake and earthing, and consumer installations.",
-    tag: "Electrical",
+    tag: "Electrical Lessons",
     href: "/quiz?trade=electrical&topic=electrical-technology&level=3",
     topicHref: "/trade/electrical/electrical-technology?level=3",
   },
@@ -484,16 +484,13 @@ export default function ElectricalPage() {
                 <div className="flex items-start justify-between gap-4">
                   <h3 className="text-lg font-bold leading-snug">{c.title}</h3>
 
-                  <div className="shrink-0 inline-flex items-center gap-2">
-                    {c.topicHref ? (
+                  <div className="shrink-0">
+                    {c.id !== "all-level-2" && c.id !== "all-level-3" ? (
+                      c.topicHref ? (
                       <Link
                         href={c.topicHref}
                         aria-label={`Open ${c.title} topic`}
-                        className={`inline-flex h-6 w-6 items-center justify-center rounded-md ring-1 transition ${
-                          ( (level === "2" && LOCKED_LEVEL2_TOPICS.has(getTopicFromHref(c.href))) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(getTopicFromHref(c.href))) ) && !userLoggedIn
-                            ? "text-white/30 ring-white/5 cursor-not-allowed"
-                            : "text-white/70 ring-white/10 hover:text-white hover:ring-white/20"
-                        }`}
+                        className="inline-flex items-center gap-2 rounded-full bg-[#FFC400]/20 px-3 py-1 text-xs font-semibold text-[#FFC400] ring-1 ring-[#FF9100]/30 transition hover:bg-[#FFC400]/25"
                         onClick={(e) => {
                           const topic = getTopicFromHref(c.href);
                           const isLocked = ((level === "2" && LOCKED_LEVEL2_TOPICS.has(topic)) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(topic))) && !userLoggedIn;
@@ -513,7 +510,7 @@ export default function ElectricalPage() {
                         <svg
                           aria-hidden="true"
                           viewBox="0 0 24 24"
-                          className="h-4 w-4"
+                          className="h-3.5 w-3.5"
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="1.8"
@@ -525,11 +522,29 @@ export default function ElectricalPage() {
                           <path d="M9.5 11h5" />
                           <path d="M9.5 14h5" />
                         </svg>
+                        {c.tag}
                       </Link>
+                      ) : (
+                      <span className="inline-flex items-center gap-2 rounded-full bg-[#FFC400]/20 px-3 py-1 text-xs font-semibold text-[#FFC400] ring-1 ring-[#FF9100]/30">
+                        <svg
+                          aria-hidden="true"
+                          viewBox="0 0 24 24"
+                          className="h-3.5 w-3.5"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.8"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect x="6" y="4.5" width="12" height="16" rx="2" />
+                          <path d="M9 4.5v3h6v-3" />
+                          <path d="M9.5 11h5" />
+                          <path d="M9.5 14h5" />
+                        </svg>
+                        {c.tag}
+                      </span>
+                      )
                     ) : null}
-                    <span className="rounded-full bg-[#FFC400]/20 px-3 py-1 text-xs font-semibold text-[#FFC400] ring-1 ring-[#FF9100]/30">
-                      {c.tag}
-                    </span>
                   </div>
                 </div>
 
