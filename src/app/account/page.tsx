@@ -103,7 +103,7 @@ export default function AccountPage() {
             Home
           </Link>
           <Link
-            href="/topics"
+            href="/trade/electrical"
             className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-sm text-white/80 hover:bg-white/10"
           >
             Topics
