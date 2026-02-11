@@ -207,7 +207,7 @@ export const electricalTopicGuides: TopicGuide[] = [
     ],
   },
   {
-    slug: "communication",
+    slug: "communication-within-building-services-engineering",
     title: "Communication within Building Services Engineering",
     description: "Working with others, documentation, and handover information.",
     sections: [

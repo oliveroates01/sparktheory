@@ -187,8 +187,8 @@ export default function ElectricalLevel3Page() {
         {/* Header */}
         <header className="flex items-start justify-between">
           <div>
-            <div className="flex items-center gap-3">
-              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-400/20 ring-1 ring-amber-300/30">
+            <Link href="/topics" className="flex items-center gap-3 group">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-400/20 ring-1 ring-amber-300/30 transition group-hover:bg-amber-400/25">
                 <span className="text-xl">⚡</span>
               </div>
 
@@ -196,25 +196,10 @@ export default function ElectricalLevel3Page() {
                 <p className="text-sm font-semibold tracking-wide">Spark Theory</p>
                 <p className="text-xs text-white/60">Electrical Guide · Level 3</p>
               </div>
-            </div>
-
-            <div className="mt-4">
-              <Link
-                href="/topics"
-                className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white"
-              >
-                ← All trades
-              </Link>
-            </div>
+            </Link>
           </div>
 
           <div className="flex items-center gap-2">
-            <Link
-              href="/topics"
-              className="rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/15 hover:bg-white/15"
-            >
-              All trades
-            </Link>
             <Link
               href="/account"
               className="rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/15 hover:bg-white/15"

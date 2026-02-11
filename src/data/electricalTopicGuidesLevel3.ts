@@ -228,7 +228,7 @@ export const electricalTopicGuidesLevel3: TopicGuide[] = [
     ],
   },
   {
-    slug: "communication",
+    slug: "communication-within-building-services-engineering",
     title: "Communication",
     description: "Site roles, information flow, drawings, and handover.",
     sections: [

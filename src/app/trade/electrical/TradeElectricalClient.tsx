@@ -387,7 +387,7 @@ export default function ElectricalPage() {
         {/* Header */}
         <header className="flex items-start justify-between">
           <div>
-            <Link href="/" className="flex items-center gap-3 group">
+            <Link href="/topics" className="flex items-center gap-3 group">
               <div className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-400/20 ring-1 ring-amber-300/30 transition group-hover:bg-amber-400/25">
                 <span className="text-xl">⚡</span>
               </div>
@@ -400,14 +400,6 @@ export default function ElectricalPage() {
               </div>
             </Link>
 
-            <div className="mt-4 sm:pl-[60px]">
-              <Link
-                href="/topics"
-                className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white"
-              >
-                ← All trades
-              </Link>
-            </div>
           </div>
 
           <div className="flex items-center gap-2">

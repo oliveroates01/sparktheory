@@ -85,7 +85,7 @@ export default function ElectricalLessonPage() {
   const overview = buildRecap();
 
   const focusAreas = currentLesson.items.map((item, index) => {
-    const label = item.title.toLowerCase();
+    const label = item.title;
     const advantageSeeds = [
       `Gives a clear baseline for ${label} decisions.`,
       `Improves safety and reliability when ${label} is applied consistently.`,
