@@ -225,6 +225,7 @@ export default function AccountPage() {
                 className="w-full rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm font-semibold text-white/85 hover:bg-white/10"
                 onClick={async () => {
                   await signOut(auth);
+                  router.replace("/");
                 }}
               >
                 Log out
