@@ -208,12 +208,14 @@ export default function QuizPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [authReady, setAuthReady] = useState(false);
 
   const topic = (searchParams.get("topic") ?? "").trim().toLowerCase();
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       setUserLoggedIn(Boolean(user));
+      setAuthReady(true);
     });
     return () => unsub();
   }, []);
@@ -230,7 +232,7 @@ export default function QuizPage() {
   const topicsHref =
     level === "3" ? "/trade/electrical?level=3" : "/trade/electrical";
   const unseenOnly = (searchParams.get("unseen") ?? "").trim() === "1";
-  const isLocked = ((level === "3" && LOCKED_LEVEL3_TOPICS.has(topic)) || (level !== "3" && LOCKED_LEVEL2_TOPICS.has(topic))) && !userLoggedIn;
+  const isLocked = ((level === "3" && LOCKED_LEVEL3_TOPICS.has(topic)) || (level !== "3" && LOCKED_LEVEL2_TOPICS.has(topic))) && authReady && !userLoggedIn;
 
   useEffect(() => {
     if (isLocked) router.replace("/login");

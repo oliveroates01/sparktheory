@@ -223,6 +223,7 @@ export default function ElectricalPage() {
   const storageKey = storageKeyForLevel(level);
   const [results, setResults] = useState<StoredResult[]>([]);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [authReady, setAuthReady] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickedHref, setPickedHref] = useState<string | null>(null);
   const [unseenOnly, setUnseenOnly] = useState(false);
@@ -236,6 +237,7 @@ export default function ElectricalPage() {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       setUserLoggedIn(Boolean(user));
+      setAuthReady(true);
     });
     return () => unsub();
   }, []);
@@ -493,7 +495,7 @@ export default function ElectricalPage() {
                         className="inline-flex items-center gap-2 rounded-full bg-[#FFC400]/20 px-3 py-1 text-xs font-semibold text-[#FFC400] ring-1 ring-[#FF9100]/30 transition hover:bg-[#FFC400]/25"
                         onClick={(e) => {
                           const topic = getTopicFromHref(c.href);
-                          const isLocked = ((level === "2" && LOCKED_LEVEL2_TOPICS.has(topic)) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(topic))) && !userLoggedIn;
+                          const isLocked = ((level === "2" && LOCKED_LEVEL2_TOPICS.has(topic)) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(topic))) && authReady && !userLoggedIn;
                           if (isLocked) {
                             e.preventDefault();
                             window.location.href = "/login";
@@ -554,7 +556,7 @@ export default function ElectricalPage() {
                   type="button"
                   onClick={() => {
                     const topic = getTopicFromHref(c.href);
-                    const isLocked = ((level === "2" && LOCKED_LEVEL2_TOPICS.has(topic)) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(topic))) && !userLoggedIn;
+                    const isLocked = ((level === "2" && LOCKED_LEVEL2_TOPICS.has(topic)) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(topic))) && authReady && !userLoggedIn;
                     if (isLocked) {
                       window.location.href = "/login";
                       return;
@@ -562,12 +564,12 @@ export default function ElectricalPage() {
                     openPicker(c.href);
                   }}
                   className={`mt-auto block w-full rounded-xl px-4 py-3 text-center text-sm font-semibold shadow-sm transition ${
-                    ( (level === "2" && LOCKED_LEVEL2_TOPICS.has(getTopicFromHref(c.href))) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(getTopicFromHref(c.href))) ) && !userLoggedIn
+                    ( (level === "2" && LOCKED_LEVEL2_TOPICS.has(getTopicFromHref(c.href))) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(getTopicFromHref(c.href))) ) && authReady && !userLoggedIn
                       ? "bg-white/10 text-white/70 ring-1 ring-white/10 hover:bg-white/15"
                       : "bg-[#FFC400] text-black shadow-[#FF9100]/20 hover:bg-[#FF9100]"
                   }`}
                 >
-                  {( (level === "2" && LOCKED_LEVEL2_TOPICS.has(getTopicFromHref(c.href))) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(getTopicFromHref(c.href))) ) && !userLoggedIn
+                  {( (level === "2" && LOCKED_LEVEL2_TOPICS.has(getTopicFromHref(c.href))) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(getTopicFromHref(c.href))) ) && authReady && !userLoggedIn
                     ? "Log in to start"
                     : "Start Quiz"}
                 </button>
