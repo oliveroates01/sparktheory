@@ -321,6 +321,14 @@ export default function ElectricalPage() {
     () => (level === "3" ? LEVEL3_CATEGORIES : CATEGORIES),
     [level]
   );
+  const displayCategories = useMemo<(Category | null)[]>(() => {
+    const targetCount = Math.max(CATEGORIES.length, LEVEL3_CATEGORIES.length);
+    const fillers = Array.from(
+      { length: Math.max(0, targetCount - visibleCategories.length) },
+      () => null
+    );
+    return [...visibleCategories, ...fillers];
+  }, [visibleCategories]);
 
   const topics = useMemo(
     () => visibleCategories.map((c) => getTopicFromHref(c.href)).filter(Boolean),
@@ -464,10 +472,19 @@ export default function ElectricalPage() {
               isSwitchingLevel ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
             }`}
           >
-            {visibleCategories.map((c, index) => {
+            {displayCategories.map((c, index) => {
+              if (!c) {
+                return (
+                  <div
+                    key={`filler-${index}`}
+                    aria-hidden="true"
+                    className="invisible flex min-h-[260px] rounded-2xl p-6"
+                  />
+                );
+              }
               const shouldSpanFull =
-                visibleCategories.length % 3 === 1 &&
-                index === visibleCategories.length - 1;
+                displayCategories.length % 3 === 1 &&
+                index === displayCategories.length - 1;
               return (
               <div
                 key={c.id}
