@@ -15,7 +15,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
-      if (user) router.replace("/account");
+      if (user) router.replace("/trade/electrical");
     });
     return () => unsub();
   }, [router]);
@@ -26,7 +26,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.replace("/account");
+      router.replace("/trade/electrical");
     } catch (err) {
       setError("Invalid email or password.");
     } finally {
