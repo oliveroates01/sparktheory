@@ -79,7 +79,7 @@ export const healthSafetyQuestions = [
   },
   {
     id: "hs-007",
-    question: "Name two powers given to HSE inspectors when enforcing safety law.",
+    question: "Name two powers given to HSE inspectors when enforcing safety law?",
     options: [
       "Enter sites unannounced and issue notices",
       "Approve salaries and overtime",

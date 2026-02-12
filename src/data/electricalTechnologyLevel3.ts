@@ -14,7 +14,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-002",
-    question: "The Health and Safety at Work etc. Act 1974 is:",
+    question: "The Health and Safety at Work etc. Act 1974 is?",
     options: [
       "Primary legislation for occupational health and safety in Great Britain",
       "A non‑statutory guidance note",
@@ -40,7 +40,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-004",
-    question: "Under the HSW Act, employees must:",
+    question: "Under the HSW Act, employees must?",
     options: [
       "Take reasonable care and cooperate on safety matters",
       "Write company safety policy",
@@ -53,7 +53,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-005",
-    question: "The Electricity at Work Regulations 1989 (EAWR) are made under:",
+    question: "The Electricity at Work Regulations 1989 (EAWR) are made under?",
     options: [
       "The Health and Safety at Work Act",
       "The Building Regulations",
@@ -66,7 +66,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-006",
-    question: "EAWR applies to:",
+    question: "EAWR applies to?",
     options: [
       "Workplaces, including systems beyond BS 7671 voltage scope",
       "Private homes only",
@@ -92,7 +92,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-008",
-    question: "ESQCR 2002 mainly applies to:",
+    question: "ESQCR 2002 mainly applies to?",
     options: [
       "Electricity suppliers’ lines and apparatus",
       "Portable appliance testing only",
@@ -105,7 +105,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-009",
-    question: "PUWER 1998 requires work equipment to be:",
+    question: "PUWER 1998 requires work equipment to be?",
     options: [
       "Suitable and safe for the task and environment",
       "New and branded",
@@ -118,7 +118,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-010",
-    question: "COSHH regulations focus on:",
+    question: "COSHH regulations focus on?",
     options: [
       "Controlling hazardous substances and exposure",
       "Wiring colour codes",
@@ -183,7 +183,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-015",
-    question: "GN3 is primarily about:",
+    question: "GN3 is primarily about?",
     options: [
       "Inspection and testing",
       "Isolation and switching",
@@ -196,7 +196,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-016",
-    question: "A key purpose of the IET On‑Site Guide is to:",
+    question: "A key purpose of the IET On‑Site Guide is to?",
     options: [
       "Provide design/installation/testing guidance for standard installations",
       "Replace BS 7671 completely",
@@ -222,7 +222,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-018",
-    question: "CPD seminars are often used to:",
+    question: "CPD seminars are often used to?",
     options: [
       "Provide updates and develop professional knowledge",
       "Replace statutory law",
@@ -235,7 +235,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-019",
-    question: "ACoPs are:",
+    question: "ACoPs are?",
     options: [
       "Approved Codes of Practice with special legal status",
       "Manufacturer brochures",
@@ -261,7 +261,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-021",
-    question: "A prohibition notice is used when:",
+    question: "A prohibition notice is used when?",
     options: [
       "There is a risk of serious personal injury",
       "Minor issues need correction",
@@ -274,7 +274,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-022",
-    question: "A breach of non‑statutory guidance often results in:",
+    question: "A breach of non‑statutory guidance often results in?",
     options: [
       "Contractual or quality issues and possible legal consequences",
       "No consequences ever",
@@ -313,7 +313,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-025",
-    question: "A drawing scale of 1:50 means:",
+    question: "A drawing scale of 1:50 means?",
     options: [
       "1 unit on the drawing equals 50 units in reality",
       "50 units on the drawing equals 1 unit in reality",
@@ -339,7 +339,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-027",
-    question: "National Grid’s role includes:",
+    question: "National Grid’s role includes?",
     options: [
       "Balancing electricity supply with demand",
       "Installing domestic consumer units",
@@ -352,7 +352,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-028",
-    question: "Electricity cannot be stored in significant amounts, so the system must:",
+    question: "Electricity cannot be stored in significant amounts, so the system must?",
     options: [
       "Balance supply and demand continuously",
       "Store energy at substations",
@@ -391,7 +391,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-031",
-    question: "High‑voltage overhead transmission in the UK mainly uses:",
+    question: "High‑voltage overhead transmission in the UK mainly uses?",
     options: [
       "Pylons with overhead lines",
       "Underground only",
@@ -404,7 +404,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-032",
-    question: "At high voltage, electricity can:",
+    question: "At high voltage, electricity can?",
     options: [
       "Arc through air across short distances",
       "Not pass through air at all",
@@ -443,7 +443,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-035",
-    question: "Pumped‑storage hydro works by:",
+    question: "Pumped‑storage hydro works by?",
     options: [
       "Pumping water up off‑peak, releasing it at peak demand",
       "Storing steam in tanks",
@@ -456,7 +456,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-036",
-    question: "Technical drawings should use symbols that are:",
+    question: "Technical drawings should use symbols that are?",
     options: [
       "British Standard where possible, with a legend",
       "Invented without explanation",
@@ -469,7 +469,7 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-037",
-    question: "On a 1:50 drawing, a 40 mm line represents a real length of:",
+    question: "On a 1:50 drawing, a 40 mm line represents a real length of?",
     options: [
       "2 m",
       "0.4 m",

@@ -1,7 +1,7 @@
 export const installationWiringQuestions = [
     {
       id: "iwse-001",
-      question: "Name one advantage of using electronic technical information (e.g., USB, CD, DVD).",
+      question: "Name one advantage of using electronic technical information (e.g., USB, CD, DVD)?",
       options: [
         "Portable and easy to update",
         "Always works without power",
@@ -13,7 +13,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-002",
-      question: "A disadvantage of electronic technical information is that it:",
+      question: "A disadvantage of electronic technical information is that it?",
       options: [
         "Requires power or a device to access",
         "Is always out of date",
@@ -25,7 +25,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-003",
-      question: "An advantage of hard‑copy technical information is that it:",
+      question: "An advantage of hard‑copy technical information is that it?",
       options: [
         "Can be used without power",
         "Is always up to date",
@@ -37,7 +37,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-004",
-      question: "A disadvantage of hard‑copy information is that it:",
+      question: "A disadvantage of hard‑copy information is that it?",
       options: [
         "Can be bulky and harder to update",
         "Cannot be taken to site",
@@ -169,7 +169,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-015",
-      question: "A key step in safe manual handling is to:",
+      question: "A key step in safe manual handling is to?",
       options: [
         "Bend knees and keep back straight",
         "Keep legs straight",
@@ -181,7 +181,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-016",
-      question: "One advantage of conduit/trunking/tray systems in commercial buildings is:",
+      question: "One advantage of conduit/trunking/tray systems in commercial buildings is?",
       options: [
         "Easy access for future modifications",
         "They require no fixings",
@@ -193,7 +193,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-017",
-      question: "Compared with MI cable, PVC/SWA cable is generally:",
+      question: "Compared with MI cable, PVC/SWA cable is generally?",
       options: [
         "Less fire‑resistant",
         "More fire‑resistant",
@@ -205,7 +205,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-018",
-      question: "A key advantage of MI cable is that it:",
+      question: "A key advantage of MI cable is that it?",
       options: [
         "Withstands very high temperatures and fire",
         "Requires no termination",
@@ -217,7 +217,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-019",
-      question: "‘Segregation’ of circuits means:",
+      question: "‘Segregation’ of circuits means?",
       options: [
         "Keeping different circuit types separated",
         "Bunching cables together",
@@ -229,7 +229,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-020",
-      question: "Trunking and tray may be suspended from girders using:",
+      question: "Trunking and tray may be suspended from girders using?",
       options: [
         "Appropriate brackets and supports",
         "Adhesive only",
@@ -241,7 +241,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-021",
-      question: "A safe manual handling technique includes:",
+      question: "A safe manual handling technique includes?",
       options: [
         "Keeping the load close to the body",
         "Holding the load at arm’s length",
@@ -253,7 +253,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-022",
-      question: "Mini‑trunking in a classroom is useful because it:",
+      question: "Mini‑trunking in a classroom is useful because it?",
       options: [
         "Allows neat containment of power and data",
         "Cannot carry data cables",
@@ -265,7 +265,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-023",
-      question: "Skirting trunking is useful because it:",
+      question: "Skirting trunking is useful because it?",
       options: [
         "Provides low‑level containment around a room",
         "Is only for ceiling runs",
@@ -277,7 +277,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-024",
-      question: "A potential disadvantage of MI cable compared with PVC/SWA is:",
+      question: "A potential disadvantage of MI cable compared with PVC/SWA is?",
       options: [
         "Higher material and installation cost",
         "Lower fire resistance",
@@ -289,7 +289,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-025",
-      question: "One advantage of PVC/SWA cable is:",
+      question: "One advantage of PVC/SWA cable is?",
       options: [
         "Good mechanical protection for underground use",
         "Highest fire resistance",
@@ -301,7 +301,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-026",
-      question: "Segregation is important to:",
+      question: "Segregation is important to?",
       options: [
         "Prevent interference and maintain safety",
         "Increase cable heating",
@@ -313,7 +313,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-027",
-      question: "A disadvantage of hard‑copy technical info on site is that it:",
+      question: "A disadvantage of hard‑copy technical info on site is that it?",
       options: [
         "Can become outdated and damaged",
         "Requires software updates",
@@ -325,7 +325,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-028",
-      question: "An advantage of electronic technical info on site is that it:",
+      question: "An advantage of electronic technical info on site is that it?",
       options: [
         "Can store large amounts of data in one place",
         "Never needs charging",
@@ -361,7 +361,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-031",
-      question: "IET Regulations apply to installations operating at voltages up to:",
+      question: "IET Regulations apply to installations operating at voltages up to?",
       options: [
         "1000 V a.c.",
         "5000 V a.c.",
@@ -373,7 +373,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-032",
-      question: "IET Regulations do not apply to:",
+      question: "IET Regulations do not apply to?",
       options: [
         "Mines and quarries",
         "Domestic houses",
@@ -385,7 +385,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-033",
-      question: "A key benefit of using trunking in a school classroom is:",
+      question: "A key benefit of using trunking in a school classroom is?",
       options: [
         "Easy access for adding or changing circuits",
         "No need for segregation",
@@ -397,7 +397,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-034",
-      question: "MI cable is suitable for emergency circuits because it:",
+      question: "MI cable is suitable for emergency circuits because it?",
       options: [
         "Maintains integrity in fire conditions",
         "Is cheap and flexible",
@@ -409,7 +409,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-035",
-      question: "An advantage of electronic technical info in the office is:",
+      question: "An advantage of electronic technical info in the office is?",
       options: [
         "Easy search and fast updates",
         "No need for backups",
@@ -421,7 +421,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-036",
-      question: "An advantage of hard‑copy info in the office is:",
+      question: "An advantage of hard‑copy info in the office is?",
       options: [
         "Quick reference without devices",
         "Never gets out of date",
@@ -433,7 +433,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-037",
-      question: "A key reason for segregation of circuits is to:",
+      question: "A key reason for segregation of circuits is to?",
       options: [
         "Avoid interference between power and data circuits",
         "Increase voltage",
@@ -445,7 +445,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-038",
-      question: "The IET Regulations are sometimes called:",
+      question: "The IET Regulations are sometimes called?",
       options: [
         "The electrician’s bible",
         "Optional guidance only",
@@ -457,7 +457,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-039",
-      question: "One reason to prefer trunking/tray in large commercial installs is:",
+      question: "One reason to prefer trunking/tray in large commercial installs is?",
       options: [
         "Easy expansion and reconfiguration",
         "It requires no design",
@@ -469,7 +469,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-040",
-      question: "A downside of MI cable compared with PVC/SWA is that it:",
+      question: "A downside of MI cable compared with PVC/SWA is that it?",
       options: [
         "Requires specialist termination",
         "Has poor mechanical protection",

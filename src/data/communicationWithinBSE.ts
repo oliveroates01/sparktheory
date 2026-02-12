@@ -44,7 +44,7 @@ export type Question = {
     },
     {
       id: "comm-6",
-      question: "Active listening mainly means you…",
+      question: "Active listening mainly means you?",
       options: ["Listen but interrupt", "Confirm understanding", "Listen only to managers", "Stay silent always"],
       correctIndex: 1,
       explanation: "You listen, process, and check you understood correctly."
@@ -65,7 +65,7 @@ export type Question = {
     },
     {
       id: "comm-9",
-      question: "Toolbox talks are mainly used to…",
+      question: "Toolbox talks are mainly used to?",
       options: ["Sell tools", "Brief hazards/controls/tasks", "Check payroll", "Test maths"],
       correctIndex: 1,
       explanation: "They communicate risks, controls, and planned work."
@@ -94,7 +94,7 @@ export type Question = {
     },
     {
       id: "comm-13",
-      question: "If the job spec changes, you should…",
+      question: "If the job spec changes, you should?",
       options: ["Ignore it", "Inform relevant people promptly", "Only tell the client", "Change it after completion"],
       correctIndex: 1,
       explanation: "Changes must be communicated to avoid wrong installation."
@@ -122,7 +122,7 @@ export type Question = {
     },
     {
       id: "comm-17",
-      question: "Before passing info on, you should…",
+      question: "Before passing info on, you should?",
       options: ["Guess missing details", "Check it’s correct and relevant", "Add opinions", "Tell only friends"],
       correctIndex: 1,
       explanation: "Bad info causes bad decisions and unsafe work."
@@ -136,7 +136,7 @@ export type Question = {
     },
     {
       id: "comm-19",
-      question: "A major outcome of poor communication is…",
+      question: "A major outcome of poor communication is?",
       options: ["Fewer defects", "Mistakes/rework/accidents", "Instant compliance", "Lower risk"],
       correctIndex: 1,
       explanation: "Poor comms increases errors and safety hazards."
@@ -172,7 +172,7 @@ export type Question = {
     },
     {
       id: "comm-24",
-      question: "If work sequence changes, you should…",
+      question: "If work sequence changes, you should?",
       options: ["Tell nobody", "Tell affected people quickly", "Only update after finishing", "Only tell the client"],
       correctIndex: 1,
       explanation: "Fast updates prevent clashes and wasted work."
@@ -200,7 +200,7 @@ export type Question = {
     },
     {
       id: "comm-28",
-      question: "A proper shift handover should include…",
+      question: "A proper shift handover should include?",
       options: ["Only opinions", "Work done + issues + next steps", "Only jokes", "No detail"],
       correctIndex: 1,
       explanation: "Handover must transfer facts and risks to the next team."
@@ -236,7 +236,7 @@ export type Question = {
     },
     {
       id: "comm-33",
-      question: "A method statement mainly describes…",
+      question: "A method statement mainly describes?",
       options: ["Company history", "How to do the task safely", "Tool prices", "Testing exemptions"],
       correctIndex: 1,
       explanation: "It sets out steps, hazards, and controls."
@@ -250,21 +250,21 @@ export type Question = {
     },
     {
       id: "comm-35",
-      question: "Site notice boards are used to…",
+      question: "Site notice boards are used to?",
       options: ["Display jokes", "Share key information/updates", "Hide changes", "Replace inductions"],
       correctIndex: 1,
       explanation: "They communicate rules, contacts, and site updates."
     },
     {
       id: "comm-36",
-      question: "If you get conflicting instructions, you should…",
+      question: "If you get conflicting instructions, you should?",
       options: ["Pick the easiest", "Stop and clarify with supervisor", "Ignore both", "Ask client only"],
       correctIndex: 1,
       explanation: "Conflicts must be resolved before continuing."
     },
     {
       id: "comm-37",
-      question: "Most important emergency message includes…",
+      question: "Most important emergency message includes?",
       options: ["Tool brand", "Hazard + exact location", "Timesheet info", "Who’s to blame"],
       correctIndex: 1,
       explanation: "Emergency comms must be clear, fast, and specific."
@@ -300,21 +300,21 @@ export type Question = {
     },
     {
       id: "comm-42",
-      question: "When reporting an issue, keep it…",
+      question: "When reporting an issue, keep it?",
       options: ["Emotional", "Factual and specific", "Vague", "Anonymous"],
       correctIndex: 1,
       explanation: "Facts help the right decision be made quickly."
     },
     {
       id: "comm-43",
-      question: "Before sending an email about changes, you should…",
+      question: "Before sending an email about changes, you should?",
       options: ["Send instantly", "Check details + recipients", "Use slang", "Leave out dates"],
       correctIndex: 1,
       explanation: "Correct content to correct people prevents confusion."
     },
     {
       id: "comm-44",
-      question: "A site “communication chain” is…",
+      question: "A site “communication chain” is?",
       options: ["A lifting chain", "The agreed route for info escalation", "A tool brand", "A type of bonding"],
       correctIndex: 1,
       explanation: "It defines who you report to and in what order."
@@ -378,14 +378,14 @@ export type Question = {
     },
     {
       id: "comm-53",
-      question: "Communication supports quality because it…",
+      question: "Communication supports quality because it?",
       options: ["Replaces inspection", "Aligns work to requirements", "Avoids standards", "Increases waste"],
       correctIndex: 1,
       explanation: "Quality needs clear requirements and feedback."
     },
     {
       id: "comm-54",
-      question: "Customer asks for extra work (out of scope). You…",
+      question: "Customer asks for extra work (out of scope). You?",
       options: ["Do it instantly", "Refer via supervisor/variation process", "Ignore request", "Change drawings yourself"],
       correctIndex: 1,
       explanation: "Scope changes need approval, costing, and record."
@@ -406,7 +406,7 @@ export type Question = {
     },
     {
       id: "comm-57",
-      question: "Knowing who to speak to matters because…",
+      question: "Knowing who to speak to matters because?",
       options: ["You can avoid people", "Messages reach the right person fast", "Nothing gets reported", "Procedure is optional"],
       correctIndex: 1,
       explanation: "Correct routing prevents delays and confusion."
@@ -427,7 +427,7 @@ export type Question = {
     },
     {
       id: "comm-60",
-      question: "Good radio practice is to…",
+      question: "Good radio practice is to?",
       options: ["Talk continuously", "Be clear and confirm receipt", "Use slang only", "Avoid locations"],
       correctIndex: 1,
       explanation: "Confirming receipt prevents misunderstandings."
@@ -435,14 +435,14 @@ export type Question = {
   
     {
       id: "comm-61",
-      question: "Body language matters because it…",
+      question: "Body language matters because it?",
       options: ["Never affects meaning", "Can support or contradict words", "Replaces records", "Replaces drawings"],
       correctIndex: 1,
       explanation: "Non-verbal cues can change how a message is understood."
     },
     {
       id: "comm-62",
-      question: "If you see unsafe behaviour, you should…",
+      question: "If you see unsafe behaviour, you should?",
       options: ["Ignore it", "Act/report using site rules", "Record only", "Wait for an accident"],
       correctIndex: 1,
       explanation: "Unsafe behaviour must be addressed to prevent injury."
@@ -470,21 +470,21 @@ export type Question = {
     },
     {
       id: "comm-66",
-      question: "A good progress update includes…",
+      question: "A good progress update includes?",
       options: ["Only jokes", "Done + issues + next actions", "Only blame", "Nothing specific"],
       correctIndex: 1,
       explanation: "Status, risks, and next steps keep work aligned."
     },
     {
       id: "comm-67",
-      question: "Communication must be timely because…",
+      question: "Communication must be timely because?",
       options: ["Problems should grow", "Decisions/fixes happen faster", "No one should plan", "Work must stop"],
       correctIndex: 1,
       explanation: "Late info causes delays and increased risk."
     },
     {
       id: "comm-68",
-      question: "During lifting ops, safest communication uses…",
+      question: "During lifting ops, safest communication uses?",
       options: ["Random shouting", "Agreed signals/appointed banksman", "Walking under load", "Ignoring the lift team"],
       correctIndex: 1,
       explanation: "Controlled signals prevent dangerous misunderstandings."
@@ -498,7 +498,7 @@ export type Question = {
     },
     {
       id: "comm-70",
-      question: "Best safety instruction wording is…",
+      question: "Best safety instruction wording is?",
       options: ["“Be careful”", "Specific hazard + control", "Only mention once", "Say it later"],
       correctIndex: 1,
       explanation: "Specific controls are actionable and measurable."
@@ -506,7 +506,7 @@ export type Question = {
   
     {
       id: "comm-71",
-      question: "Before working in another trade’s area, you should…",
+      question: "Before working in another trade’s area, you should?",
       options: ["Start without telling", "Coordinate access and sequence", "Remove their kit", "Ignore rules"],
       correctIndex: 1,
       explanation: "Coordination prevents clashes, damage, and delays."
@@ -527,21 +527,21 @@ export type Question = {
     },
     {
       id: "comm-74",
-      question: "If you make an error in a record, you should…",
+      question: "If you make an error in a record, you should?",
       options: ["Hide it", "Correct it properly (traceably)", "Delete everything", "Ignore it"],
       correctIndex: 1,
       explanation: "Records must remain honest and auditable."
     },
     {
       id: "comm-75",
-      question: "Respect matters in diverse teams because it…",
+      question: "Respect matters in diverse teams because it?",
       options: ["Creates conflict", "Improves cooperation/understanding", "Avoids learning", "Reduces standards"],
       correctIndex: 1,
       explanation: "Respect improves teamwork and reduces misunderstanding."
     },
     {
       id: "comm-76",
-      question: "If a safety instruction seems wrong, you should…",
+      question: "If a safety instruction seems wrong, you should?",
       options: ["Ignore it", "Raise it with supervisor for clarification", "Follow it silently", "Tell the client"],
       correctIndex: 1,
       explanation: "Escalate concerns through the correct route."
@@ -562,14 +562,14 @@ export type Question = {
     },
     {
       id: "comm-79",
-      question: "Confidentiality in communication protects…",
+      question: "Confidentiality in communication protects?",
       options: ["Rumours", "Client/company information", "Mistakes", "Unsafe practice"],
       correctIndex: 1,
       explanation: "Share sensitive info only with those who need it."
     },
     {
       id: "comm-80",
-      question: "Communicating quality requirements means…",
+      question: "Communicating quality requirements means?",
       options: ["Ignoring specs", "Following standards/spec tolerances", "Using any materials", "Avoiding inspections"],
       correctIndex: 1,
       explanation: "Quality is defined by drawings, specs, and standards."
@@ -598,7 +598,7 @@ export type Question = {
     },
     {
       id: "comm-84",
-      question: "Asked to do a task outside your competence. You…",
+      question: "Asked to do a task outside your competence. You?",
       options: ["Do it anyway", "Tell supervisor and get guidance", "Hide it", "Blame others"],
       correctIndex: 1,
       explanation: "Work must stay within competence for safety and compliance."
@@ -612,7 +612,7 @@ export type Question = {
     },
     {
       id: "comm-86",
-      question: "A permit-to-work briefing communicates…",
+      question: "A permit-to-work briefing communicates?",
       options: ["How to skip PPE", "Restrictions and safety controls", "Tool brands", "Testing exemptions"],
       correctIndex: 1,
       explanation: "Permits set conditions and controls for high-risk work."
@@ -648,7 +648,7 @@ export type Question = {
   
     {
       id: "comm-91",
-      question: "Before formal client handover you should…",
+      question: "Before formal client handover you should?",
       options: ["Skip checks", "Confirm completion + accurate info", "Hide docs", "Remove labels"],
       correctIndex: 1,
       explanation: "Handover must be complete, accurate, and usable."
@@ -669,7 +669,7 @@ export type Question = {
     },
     {
       id: "comm-94",
-      question: "If test results affect others, you should…",
+      question: "If test results affect others, you should?",
       options: ["Keep private always", "Share/record to relevant people", "Destroy records", "Tell client verbally only"],
       correctIndex: 1,
       explanation: "Relevant results must be communicated for safe decisions."
@@ -683,14 +683,14 @@ export type Question = {
     },
     {
       id: "comm-96",
-      question: "Professional communication mainly supports…",
+      question: "Professional communication mainly supports?",
       options: ["Arguments", "Good relationships and standards", "Skipping rules", "Avoiding records"],
       correctIndex: 1,
       explanation: "Professional comms supports teamwork and compliance."
     },
     {
       id: "comm-97",
-      question: "After receiving new site info, you should…",
+      question: "After receiving new site info, you should?",
       options: ["Ignore it", "Confirm understanding if needed", "Wait for inspection", "Tell client immediately"],
       correctIndex: 1,
       explanation: "Confirmation prevents acting on wrong assumptions."

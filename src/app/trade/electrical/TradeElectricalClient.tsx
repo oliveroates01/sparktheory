@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ProgressReport, { type StoredResult } from "@/components/ProgressReport";
+import SparkTheoryLogo from "@/components/Brand/SparkTheoryLogo";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { healthSafetyQuestions } from "@/data/healthSafety";
@@ -389,17 +390,8 @@ export default function ElectricalPage() {
         {/* Header */}
         <header className="flex items-start justify-between">
           <div>
-            <Link href="/topics" className="flex items-center gap-3 group">
-              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-400/20 ring-1 ring-amber-300/30 transition group-hover:bg-amber-400/25">
-                <span className="text-xl">⚡</span>
-              </div>
-
-              <div>
-                <p className="text-5xl font-extrabold tracking-tight sm:text-6xl leading-none">
-                  <span className="block text-[#FFC400] leading-none">Spark</span>
-                  <span className="block -mt-1 pl-[6px] leading-none">Theory</span>
-                </p>
-              </div>
+            <Link href="/topics" className="group inline-block">
+              <SparkTheoryLogo className="transition group-hover:opacity-95" />
             </Link>
 
           </div>

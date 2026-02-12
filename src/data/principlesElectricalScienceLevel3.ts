@@ -53,7 +53,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-005",
-    question: "If conductor length doubles and all else is constant, resistance will:",
+    question: "If conductor length doubles and all else is constant, resistance will?",
     options: [
       "Double",
       "Halve",
@@ -66,7 +66,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-006",
-    question: "If the cross‑sectional area doubles, resistance will:",
+    question: "If the cross‑sectional area doubles, resistance will?",
     options: [
       "Halve",
       "Double",
@@ -79,7 +79,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-007",
-    question: "Insulation resistance is typically measured in:",
+    question: "Insulation resistance is typically measured in?",
     options: [
       "Megohms (MΩ)",
       "Milliohms (mΩ)",
@@ -92,7 +92,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-008",
-    question: "A high insulation resistance reading (typically > 1 MΩ) indicates:",
+    question: "A high insulation resistance reading (typically > 1 MΩ) indicates?",
     options: [
       "Good insulation and negligible leakage",
       "A short circuit between conductors",
@@ -105,7 +105,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-009",
-    question: "A low insulation resistance reading (e.g., < 0.5 MΩ) suggests:",
+    question: "A low insulation resistance reading (e.g., < 0.5 MΩ) suggests?",
     options: [
       "Insulation deterioration and possible fault",
       "A healthy circuit with no leakage",
@@ -118,7 +118,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-010",
-    question: "If an insulation tester scale is exceeded, the reading should be recorded as:",
+    question: "If an insulation tester scale is exceeded, the reading should be recorded as?",
     options: [
       "Greater than the maximum scale value",
       "Zero because the meter has over‑ranged",
@@ -170,7 +170,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-014",
-    question: "The text states copper resistance changes by about:",
+    question: "The text states copper resistance changes by about?",
     options: [
       "2% for every 5 °C change",
       "5% for every 2 °C change",
@@ -183,7 +183,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-015",
-    question: "In a series circuit, the total resistance is:",
+    question: "In a series circuit, the total resistance is?",
     options: [
       "The sum of all individual resistances",
       "The reciprocal of the sum of reciprocals",
@@ -222,7 +222,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-018",
-    question: "The total resistance of a parallel circuit is found by:",
+    question: "The total resistance of a parallel circuit is found by?",
     options: [
       "Adding the reciprocals of each resistance",
       "Adding all resistances directly",
@@ -235,7 +235,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-019",
-    question: "In a parallel circuit, the total resistance is:",
+    question: "In a parallel circuit, the total resistance is?",
     options: [
       "Lower than the lowest branch resistance",
       "Equal to the highest branch resistance",
@@ -248,7 +248,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-020",
-    question: "Conductance is the reciprocal of resistance and is measured in:",
+    question: "Conductance is the reciprocal of resistance and is measured in?",
     options: [
       "Siemens (S)",
       "Ohms (Ω)",
@@ -274,7 +274,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-022",
-    question: "Electrical power in a DC circuit can be calculated by:",
+    question: "Electrical power in a DC circuit can be calculated by?",
     options: [
       "P = VI",
       "P = V/R",
@@ -313,7 +313,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-025",
-    question: "If current doubles in a circuit with constant resistance, power loss will:",
+    question: "If current doubles in a circuit with constant resistance, power loss will?",
     options: [
       "Increase four‑fold",
       "Double",
@@ -339,7 +339,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-027",
-    question: "Voltage drop along a conductor is calculated by:",
+    question: "Voltage drop along a conductor is calculated by?",
     options: [
       "Vdrop = I × R",
       "Vdrop = I / R",
@@ -352,7 +352,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-028",
-    question: "A practical way to reduce voltage drop in a circuit is to:",
+    question: "A practical way to reduce voltage drop in a circuit is to?",
     options: [
       "Increase conductor cross‑sectional area",
       "Increase conductor length",
@@ -365,7 +365,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-029",
-    question: "The three main effects of electric current are:",
+    question: "The three main effects of electric current are?",
     options: [
       "Thermal, chemical and magnetic",
       "Thermal, optical and acoustic",
@@ -378,7 +378,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-030",
-    question: "Magnetic flux lines around a bar magnet run:",
+    question: "Magnetic flux lines around a bar magnet run?",
     options: [
       "Inside from south to north, outside from north to south",
       "Inside from north to south, outside from south to north",
@@ -391,7 +391,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-031",
-    question: "When like magnetic poles face each other they:",
+    question: "When like magnetic poles face each other they?",
     options: [
       "Repel",
       "Attract",
@@ -404,7 +404,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-032",
-    question: "A magnetic field around a current‑carrying conductor appears as:",
+    question: "A magnetic field around a current‑carrying conductor appears as?",
     options: [
       "Concentric rings around the conductor",
       "Straight lines along the conductor",
@@ -417,7 +417,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-033",
-    question: "In the cross/dot convention, a cross (×) represents current:",
+    question: "In the cross/dot convention, a cross (×) represents current?",
     options: [
       "Flowing away from the viewer",
       "Flowing towards the viewer",
@@ -430,7 +430,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-034",
-    question: "If current flows away from the viewer, the magnetic field rotates:",
+    question: "If current flows away from the viewer, the magnetic field rotates?",
     options: [
       "Clockwise",
       "Anticlockwise",
@@ -443,7 +443,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-035",
-    question: "Magnetic field strength around a conductor is proportional to:",
+    question: "Magnetic field strength around a conductor is proportional to?",
     options: [
       "The current flowing through it",
       "The conductor colour",
@@ -456,7 +456,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-036",
-    question: "Two conductors with equal currents in opposite directions will:",
+    question: "Two conductors with equal currents in opposite directions will?",
     options: [
       "Cancel each other’s magnetic fields",
       "Double the magnetic field strength",
@@ -469,7 +469,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-037",
-    question: "A solenoid is best described as:",
+    question: "A solenoid is best described as?",
     options: [
       "A coil of wire that produces a stronger magnetic field",
       "A permanent magnet with fixed polarity",
@@ -482,7 +482,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-038",
-    question: "Winding a solenoid around an iron core will:",
+    question: "Winding a solenoid around an iron core will?",
     options: [
       "Increase magnetic field strength",
       "Eliminate magnetic flux",
@@ -495,7 +495,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-039",
-    question: "Using the right‑hand grip rule on a solenoid, the thumb points to:",
+    question: "Using the right‑hand grip rule on a solenoid, the thumb points to?",
     options: [
       "The north pole",
       "The south pole",
@@ -508,7 +508,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-040",
-    question: "The unit of magnetic flux is:",
+    question: "The unit of magnetic flux is?",
     options: [
       "Weber (Wb)",
       "Tesla (T)",
@@ -521,7 +521,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-041",
-    question: "Magnetic flux density is measured in:",
+    question: "Magnetic flux density is measured in?",
     options: [
       "Teslas (T)",
       "Webers (Wb)",
@@ -547,7 +547,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-043",
-    question: "The force on a current‑carrying conductor in a magnetic field is:",
+    question: "The force on a current‑carrying conductor in a magnetic field is?",
     options: [
       "F = βLI",
       "F = V/I",
@@ -560,7 +560,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-044",
-    question: "An alternator produces electricity by:",
+    question: "An alternator produces electricity by?",
     options: [
       "Cutting magnetic fields across conductors",
       "Heating a conductor to emit electrons",
@@ -573,7 +573,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-045",
-    question: "The induced e.m.f. in a straight conductor moving in a field is:",
+    question: "The induced e.m.f. in a straight conductor moving in a field is?",
     options: [
       "E = βlv",
       "E = IR",
@@ -586,7 +586,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-046",
-    question: "Self‑induction refers to:",
+    question: "Self‑induction refers to?",
     options: [
       "A changing magnetic field in a coil inducing e.m.f. in the same coil",
       "A magnetic field inducing e.m.f. in a separate coil",
@@ -599,7 +599,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-047",
-    question: "Mutual induction refers to:",
+    question: "Mutual induction refers to?",
     options: [
       "A changing field in one coil inducing e.m.f. in another coil",
       "A coil inducing e.m.f. in itself",
@@ -625,7 +625,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-049",
-    question: "A capacitor is best described as:",
+    question: "A capacitor is best described as?",
     options: [
       "Two conductors separated by a dielectric storing energy in an electric field",
       "A device that stores energy chemically",
@@ -638,7 +638,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-050",
-    question: "Compared with half‑wave rectification, full‑wave rectification:",
+    question: "Compared with half‑wave rectification, full‑wave rectification?",
     options: [
       "Uses both halves of the AC waveform and gives a higher mean output",
       "Blocks both halves of the AC waveform",

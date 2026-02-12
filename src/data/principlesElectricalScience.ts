@@ -37,7 +37,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-004",
-    question: "Ohm’s Law is written as:",
+    question: "Ohm’s Law is written as?",
     options: [
       "V = I × R",
       "I = V × R",
@@ -85,7 +85,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-008",
-    question: "Electrical power can be calculated by:",
+    question: "Electrical power can be calculated by?",
     options: [
       "P = V × I",
       "P = V ÷ I",
@@ -97,7 +97,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-009",
-    question: "The SI unit of power is named after:",
+    question: "The SI unit of power is named after?",
     options: [
       "James Watt",
       "Michael Faraday",
@@ -109,7 +109,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-010",
-    question: "In a series circuit, the total resistance is:",
+    question: "In a series circuit, the total resistance is?",
     options: [
       "The sum of all resistances",
       "Less than the smallest resistor",
@@ -121,7 +121,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-011",
-    question: "In a series circuit, the current is:",
+    question: "In a series circuit, the current is?",
     options: [
       "The same through all components",
       "Different across each component",
@@ -133,7 +133,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-012",
-    question: "In a parallel circuit, the voltage across each branch is:",
+    question: "In a parallel circuit, the voltage across each branch is?",
     options: [
       "The same across each branch",
       "Divided between branches",
@@ -145,7 +145,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-013",
-    question: "For a sinusoidal waveform, the r.m.s. value is:",
+    question: "For a sinusoidal waveform, the r.m.s. value is?",
     options: [
       "0.707 of the maximum value",
       "0.5 of the maximum value",
@@ -157,7 +157,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-014",
-    question: "If a sinusoidal waveform has a maximum value of 100 V, its r.m.s. value is about:",
+    question: "If a sinusoidal waveform has a maximum value of 100 V, its r.m.s. value is about?",
     options: [
       "70.7 V",
       "50 V",
@@ -169,7 +169,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-015",
-    question: "Direct current (d.c.) is:",
+    question: "Direct current (d.c.) is?",
     options: [
       "Unidirectional current flow",
       "Current that changes direction",
@@ -181,7 +181,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-016",
-    question: "Alternating current (a.c.) is:",
+    question: "Alternating current (a.c.) is?",
     options: [
       "Current that changes direction periodically",
       "Current that flows in one direction only",
@@ -193,7 +193,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-017",
-    question: "The turning moment (torque) of a force depends on:",
+    question: "The turning moment (torque) of a force depends on?",
     options: [
       "Force and distance from the fulcrum",
       "Force only",
@@ -205,7 +205,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-018",
-    question: "Efficiency is defined as:",
+    question: "Efficiency is defined as?",
     options: [
       "Output power ÷ input power",
       "Input power ÷ output power",
@@ -217,7 +217,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-019",
-    question: "The symbol for efficiency is:",
+    question: "The symbol for efficiency is?",
     options: [
       "η (eta)",
       "μ (mu)",
@@ -229,7 +229,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-020",
-    question: "Like magnetic poles:",
+    question: "Like magnetic poles?",
     options: [
       "Repel each other",
       "Attract each other",
@@ -241,7 +241,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-021",
-    question: "Unlike magnetic poles:",
+    question: "Unlike magnetic poles?",
     options: [
       "Attract each other",
       "Repel each other",
@@ -253,7 +253,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-022",
-    question: "A transformer is used to:",
+    question: "A transformer is used to?",
     options: [
       "Change the value of an a.c. voltage",
       "Convert d.c. to a.c.",
@@ -265,7 +265,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-023",
-    question: "A transformer has:",
+    question: "A transformer has?",
     options: [
       "No moving parts",
       "A commutator",
@@ -277,7 +277,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-024",
-    question: "Transformer turns ratio is given by:",
+    question: "Transformer turns ratio is given by?",
     options: [
       "Vp/Vs = Np/Ns",
       "Vp/Vs = Ns/Np",
@@ -289,7 +289,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-025",
-    question: "In a transformer, the primary and secondary are linked by:",
+    question: "In a transformer, the primary and secondary are linked by?",
     options: [
       "Magnetic flux in the core",
       "Direct electrical contact",
@@ -301,7 +301,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-026",
-    question: "In an inductive a.c. circuit, current:",
+    question: "In an inductive a.c. circuit, current?",
     options: [
       "Lags behind the voltage",
       "Leads the voltage",
@@ -313,7 +313,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-027",
-    question: "Inductive reactance is calculated by:",
+    question: "Inductive reactance is calculated by?",
     options: [
       "Xl = 2πfL",
       "Xl = 1 / (2πfL)",
@@ -325,7 +325,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-028",
-    question: "Impedance in an a.c. circuit is:",
+    question: "Impedance in an a.c. circuit is?",
     options: [
       "The combined opposition of resistance and reactance",
       "Only resistance",
@@ -337,7 +337,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-029",
-    question: "Impedance can be calculated using:",
+    question: "Impedance can be calculated using?",
     options: [
       "Z = √(R² + X²)",
       "Z = R + X",
@@ -349,7 +349,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-030",
-    question: "Power factor is defined as:",
+    question: "Power factor is defined as?",
     options: [
       "cos φ",
       "sin φ",
@@ -361,7 +361,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-031",
-    question: "If voltage and current are in phase, the power factor is:",
+    question: "If voltage and current are in phase, the power factor is?",
     options: [
       "1",
       "0.5",
@@ -373,7 +373,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-032",
-    question: "Most industrial loads have a power factor that is:",
+    question: "Most industrial loads have a power factor that is?",
     options: [
       "Lagging",
       "Leading",
@@ -385,7 +385,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-033",
-    question: "A simple d.c. generator uses a:",
+    question: "A simple d.c. generator uses a?",
     options: [
       "Commutator",
       "Slip rings",
@@ -397,7 +397,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-034",
-    question: "A simple a.c. generator uses:",
+    question: "A simple a.c. generator uses?",
     options: [
       "Slip rings",
       "A commutator",
@@ -409,7 +409,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-035",
-    question: "A relay is made up of a:",
+    question: "A relay is made up of a?",
     options: [
       "Solenoid coil and switching contacts",
       "Transformer and rectifier",
@@ -421,7 +421,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-036",
-    question: "A ‘normally open’ relay contact is:",
+    question: "A ‘normally open’ relay contact is?",
     options: [
       "Open when the coil is de‑energized",
       "Closed when the coil is de‑energized",
@@ -433,7 +433,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-037",
-    question: "A star (Y) connection is also called:",
+    question: "A star (Y) connection is also called?",
     options: [
       "Three‑phase four‑wire system",
       "Three‑phase three‑wire system",
@@ -445,7 +445,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-038",
-    question: "A delta connection is also called:",
+    question: "A delta connection is also called?",
     options: [
       "Three‑phase three‑wire system",
       "Three‑phase four‑wire system",
@@ -457,7 +457,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-039",
-    question: "In a star connection, the line voltage is:",
+    question: "In a star connection, the line voltage is?",
     options: [
       "√3 times the phase voltage",
       "Equal to the phase voltage",
@@ -469,7 +469,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-040",
-    question: "In a star connection, the line current is:",
+    question: "In a star connection, the line current is?",
     options: [
       "Equal to the phase current",
       "√3 times the phase current",
@@ -481,7 +481,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-041",
-    question: "In a delta connection, the line voltage is:",
+    question: "In a delta connection, the line voltage is?",
     options: [
       "Equal to the phase voltage",
       "√3 times the phase voltage",
@@ -493,7 +493,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-042",
-    question: "In a delta connection, the line current is:",
+    question: "In a delta connection, the line current is?",
     options: [
       "√3 times the phase current",
       "Equal to the phase current",
@@ -505,7 +505,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-043",
-    question: "Good conductor materials include:",
+    question: "Good conductor materials include?",
     options: [
       "Copper and brass",
       "PVC and wood",
@@ -517,7 +517,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-044",
-    question: "Good insulator materials include:",
+    question: "Good insulator materials include?",
     options: [
       "PVC and wood",
       "Copper and brass",
@@ -529,7 +529,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-045",
-    question: "Brass is an alloy of:",
+    question: "Brass is an alloy of?",
     options: [
       "Copper and zinc",
       "Copper and tin",
@@ -541,7 +541,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-046",
-    question: "The opposition to current flow in a pure a.c. resistive circuit is called:",
+    question: "The opposition to current flow in a pure a.c. resistive circuit is called?",
     options: [
       "Resistance",
       "Reactance",
@@ -553,7 +553,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-047",
-    question: "The opposition to current flow due to inductance is called:",
+    question: "The opposition to current flow due to inductance is called?",
     options: [
       "Reactance",
       "Resistance",
@@ -565,7 +565,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-048",
-    question: "The total opposition to a.c. current in R‑L or R‑C circuits is:",
+    question: "The total opposition to a.c. current in R‑L or R‑C circuits is?",
     options: [
       "Impedance",
       "Resistance",
@@ -589,7 +589,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-050",
-    question: "The motor principle states that a force is produced on:",
+    question: "The motor principle states that a force is produced on?",
     options: [
       "A current‑carrying conductor in a magnetic field",
       "A stationary magnet only",
@@ -601,7 +601,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-051",
-    question: "A squirrel‑cage rotor is characteristic of:",
+    question: "A squirrel‑cage rotor is characteristic of?",
     options: [
       "Induction motors",
       "D.C. motors with commutators",
@@ -625,7 +625,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-053",
-    question: "A split‑phase motor has:",
+    question: "A split‑phase motor has?",
     options: [
       "A start winding and a run winding",
       "Only a run winding",
@@ -637,7 +637,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-054",
-    question: "A centrifugal switch is used in single‑phase motors to:",
+    question: "A centrifugal switch is used in single‑phase motors to?",
     options: [
       "Disconnect the start winding after starting",
       "Increase voltage",
@@ -649,7 +649,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-055",
-    question: "In a three‑phase star system, the neutral point is at:",
+    question: "In a three‑phase star system, the neutral point is at?",
     options: [
       "Zero volts when the load is balanced",
       "Line voltage",
@@ -661,7 +661,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-056",
-    question: "In a three‑phase star system, the neutral is earthed because:",
+    question: "In a three‑phase star system, the neutral is earthed because?",
     options: [
       "Earth is also at zero potential",
       "It increases line voltage",
@@ -673,7 +673,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-057",
-    question: "The mains waveform peak value of a 230 V supply is approximately:",
+    question: "The mains waveform peak value of a 230 V supply is approximately?",
     options: [
       "325 V",
       "230 V",
@@ -697,7 +697,7 @@ export const principlesElectricalScienceQuestions = [
   },
   {
     id: "pes-059",
-    question: "For any parallel connection, the total resistance formula is:",
+    question: "For any parallel connection, the total resistance formula is?",
     options: [
       "1/Rt = 1/R1 + 1/R2 + 1/R3",
       "Rt = R1 + R2 + R3",

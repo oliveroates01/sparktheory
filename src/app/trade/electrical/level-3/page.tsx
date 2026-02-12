@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import ProgressReport, { type StoredResult } from "@/components/ProgressReport";
+import SparkTheoryLogo from "@/components/Brand/SparkTheoryLogo";
 import { principlesElectricalScienceLevel3Questions } from "@/data/principlesElectricalScienceLevel3";
 import { electricalTechnologyLevel3Questions } from "@/data/electricalTechnologyLevel3";
 import { inspectionTestingCommissioningLevel3Questions } from "@/data/inspectionTestingCommissioningLevel3";
@@ -187,16 +188,10 @@ export default function ElectricalLevel3Page() {
         {/* Header */}
         <header className="flex items-start justify-between">
           <div>
-            <Link href="/topics" className="flex items-center gap-3 group">
-              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-400/20 ring-1 ring-amber-300/30 transition group-hover:bg-amber-400/25">
-                <span className="text-xl">⚡</span>
-              </div>
-
-              <div>
-                <p className="text-sm font-semibold tracking-wide">Spark Theory</p>
-                <p className="text-xs text-white/60">Electrical Guide · Level 3</p>
-              </div>
+            <Link href="/topics" className="group inline-block">
+              <SparkTheoryLogo className="transition group-hover:opacity-95" />
             </Link>
+            <p className="mt-2 text-xs text-white/60">Electrical Guide · Level 3</p>
           </div>
 
           <div className="flex items-center gap-2">

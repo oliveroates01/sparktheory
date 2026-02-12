@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged, signOut, type User } from "firebase/auth";
 import { auth } from "@/lib/firebase";
+import SparkTheoryLogo from "@/components/Brand/SparkTheoryLogo";
 
 type AccountData = {
   brandName: string;
@@ -87,14 +88,9 @@ export default function AccountPage() {
 
       {/* Top bar */}
       <header className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-6">
-        <div className="flex items-center gap-3">
-          <div className="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-white/[0.06] shadow-[0_12px_40px_rgba(0,0,0,0.25)]">
-            <span className="text-sm font-bold">P</span>
-          </div>
-          <div className="leading-tight">
-            <div className="text-sm font-semibold">{data.brandName}</div>
-            <div className="text-xs text-white/60">Account</div>
-          </div>
+        <div className="flex items-center gap-4">
+          <SparkTheoryLogo compact />
+          <div className="text-xs text-white/60">Account</div>
         </div>
 
         <nav className="flex items-center gap-2">

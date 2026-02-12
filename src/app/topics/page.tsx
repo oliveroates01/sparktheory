@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import SparkTheoryLogo from "@/components/Brand/SparkTheoryLogo";
 
 type Card = {
   id: string;
@@ -270,10 +271,7 @@ export default function TopicsPage() {
 
         {/* Hero */}
         <section className="mt-10 text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl leading-none">
-            <span className="block text-[#FFC400] leading-none">Spark</span>
-            <span className="block -mt-1 text-white leading-none">Theory</span>
-          </h1>
+          <SparkTheoryLogo />
         </section>
 
         {/* Trade buttons */}
@@ -349,9 +347,14 @@ export default function TopicsPage() {
                   <div className="absolute inset-0 bg-[radial-gradient(220px_140px_at_10%_0%,rgba(255,196,0,0.18),transparent_60%)] opacity-0" />
                   <div className="relative flex h-full flex-col gap-4">
                     <div className="flex items-start justify-between gap-4">
-                      <div className="grid h-11 w-11 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/15">
-                        <span className="text-lg">⚡</span>
-                      </div>
+                      <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        className="h-5 w-5"
+                        fill="#FFE35B"
+                      >
+                        <path d="M13.1 2 4.8 13.1h5l-1.7 8.9L19.2 9.8h-5.3L13.1 2Z" />
+                      </svg>
                       <div className="flex flex-col items-end gap-2" />
                     </div>
 

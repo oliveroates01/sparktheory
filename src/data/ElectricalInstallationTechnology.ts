@@ -9,7 +9,7 @@ export type Question = {
   export const electricalInstallationTechnologyQuestions: Question[] = [
     {
       id: "eit-001",
-      question: "Statutory regulations are best described as:",
+      question: "Statutory regulations are best described as?",
       options: [
         "Laws passed by Parliament that must be obeyed",
         "Optional industry guidance",
@@ -21,7 +21,7 @@ export type Question = {
     },
     {
       id: "eit-002",
-      question: "Failure to comply with statutory law may result in:",
+      question: "Failure to comply with statutory law may result in?",
       options: [
         "Prosecution and possible imprisonment",
         "Only internal warnings",
@@ -33,7 +33,7 @@ export type Question = {
     },
     {
       id: "eit-003",
-      question: "The Health and Safety Executive (HSE) primarily:",
+      question: "The Health and Safety Executive (HSE) primarily?",
       options: [
         "Enforces health and safety law",
         "Writes company procedures",
@@ -57,7 +57,7 @@ export type Question = {
     },
     {
       id: "eit-005",
-      question: "The Electricity Safety, Quality and Continuity Regulations 2002 are designed to:",
+      question: "The Electricity Safety, Quality and Continuity Regulations 2002 are designed to?",
       options: [
         "Ensure a safe electrical supply to consumers",
         "Set construction wages",
@@ -69,7 +69,7 @@ export type Question = {
     },
     {
       id: "eit-006",
-      question: "In the UK, nominal low‑voltage supplies were harmonized to:",
+      question: "In the UK, nominal low‑voltage supplies were harmonized to?",
       options: [
         "400 V three‑phase and 230 V single‑phase",
         "415 V and 240 V",
@@ -81,7 +81,7 @@ export type Question = {
     },
     {
       id: "eit-007",
-      question: "The permitted tolerance on 230 V since 1995 is:",
+      question: "The permitted tolerance on 230 V since 1995 is?",
       options: [
         "+10% / −6%",
         "+6% / −6%",
@@ -93,7 +93,7 @@ export type Question = {
     },
     {
       id: "eit-008",
-      question: "The Electricity at Work Regulations state that conductors should preferably be:",
+      question: "The Electricity at Work Regulations state that conductors should preferably be?",
       options: [
         "Made dead before work begins",
         "Worked live for testing",
@@ -105,7 +105,7 @@ export type Question = {
     },
     {
       id: "eit-009",
-      question: "If prosecuted for breaking the EWR, the only acceptable defence is to show:",
+      question: "If prosecuted for breaking the EWR, the only acceptable defence is to show?",
       options: [
         "All reasonable steps and diligence were taken",
         "The job was urgent",
@@ -117,7 +117,7 @@ export type Question = {
     },
     {
       id: "eit-010",
-      question: "The Management of Health and Safety at Work Regulations require employers to:",
+      question: "The Management of Health and Safety at Work Regulations require employers to?",
       options: [
         "Carry out and record risk assessments",
         "Provide PPE only",
@@ -129,7 +129,7 @@ export type Question = {
     },
     {
       id: "eit-011",
-      question: "COSHH regulations mainly control:",
+      question: "COSHH regulations mainly control?",
       options: [
         "Exposure to hazardous substances",
         "Noise levels only",
@@ -141,7 +141,7 @@ export type Question = {
     },
     {
       id: "eit-012",
-      question: "Construction (Health, Safety and Welfare) Regulations apply because electrical contractors are:",
+      question: "Construction (Health, Safety and Welfare) Regulations apply because electrical contractors are?",
       options: [
         "Part of the construction team",
         "Always separate from construction",
@@ -153,7 +153,7 @@ export type Question = {
     },
     {
       id: "eit-013",
-      question: "On construction sites there is a duty for workers to wear:",
+      question: "On construction sites there is a duty for workers to wear?",
       options: [
         "Head protection",
         "Hearing protection only",
@@ -165,7 +165,7 @@ export type Question = {
     },
     {
       id: "eit-014",
-      question: "A key objective of the Construction (Design and Management) Regulations is to:",
+      question: "A key objective of the Construction (Design and Management) Regulations is to?",
       options: [
         "Improve health and safety management throughout the project",
         "Set electrical tariffs",
@@ -177,7 +177,7 @@ export type Question = {
     },
     {
       id: "eit-015",
-      question: "An overload is defined as:",
+      question: "An overload is defined as?",
       options: [
         "Current exceeding the rated value in a healthy circuit",
         "Current flowing in the wrong direction",
@@ -189,7 +189,7 @@ export type Question = {
     },
     {
       id: "eit-016",
-      question: "A short‑circuit is an overcurrent caused by:",
+      question: "A short‑circuit is an overcurrent caused by?",
       options: [
         "A fault of negligible impedance",
         "A high‑resistance joint",
@@ -201,7 +201,7 @@ export type Question = {
     },
     {
       id: "eit-017",
-      question: "A device providing overcurrent protection should:",
+      question: "A device providing overcurrent protection should?",
       options: [
         "Disconnect the supply automatically under fault",
         "Require manual reset to trip",
@@ -225,7 +225,7 @@ export type Question = {
     },
     {
       id: "eit-019",
-      question: "A fuse protects a circuit because it:",
+      question: "A fuse protects a circuit because it?",
       options: [
         "Melts when overcurrent flows",
         "Increases resistance",
@@ -237,7 +237,7 @@ export type Question = {
     },
     {
       id: "eit-020",
-      question: "A disadvantage of semi‑enclosed fuses is that:",
+      question: "A disadvantage of semi‑enclosed fuses is that?",
       options: [
         "They can be rewired with the wrong size element",
         "They are too fast to operate",
@@ -249,7 +249,7 @@ export type Question = {
     },
     {
       id: "eit-021",
-      question: "A disadvantage of cartridge fuses is that:",
+      question: "A disadvantage of cartridge fuses is that?",
       options: [
         "The element is not visible to confirm it has blown",
         "They cannot interrupt fault current",
@@ -261,7 +261,7 @@ export type Question = {
     },
     {
       id: "eit-022",
-      question: "Bonding is the:",
+      question: "Bonding is the?",
       options: [
         "Linking together exposed or extraneous metal parts",
         "Insulation of live parts",
@@ -273,7 +273,7 @@ export type Question = {
     },
     {
       id: "eit-023",
-      question: "Exposed conductive parts are:",
+      question: "Exposed conductive parts are?",
       options: [
         "Metal parts of the installation that could become live",
         "Only gas pipes",
@@ -285,7 +285,7 @@ export type Question = {
     },
     {
       id: "eit-024",
-      question: "Extraneous conductive parts include:",
+      question: "Extraneous conductive parts include?",
       options: [
         "Structural steelwork and service pipes",
         "Switch contacts",
@@ -297,7 +297,7 @@ export type Question = {
     },
     {
       id: "eit-025",
-      question: "Basic protection against direct contact is mainly provided by:",
+      question: "Basic protection against direct contact is mainly provided by?",
       options: [
         "Insulation of live parts",
         "Bonding only",
@@ -309,7 +309,7 @@ export type Question = {
     },
     {
       id: "eit-026",
-      question: "Fault protection against indirect contact is mainly provided by:",
+      question: "Fault protection against indirect contact is mainly provided by?",
       options: [
         "Protective bonding and automatic disconnection",
         "Insulation only",
@@ -321,7 +321,7 @@ export type Question = {
     },
     {
       id: "eit-027",
-      question: "For final circuits not exceeding 32 A, maximum disconnection time should be:",
+      question: "For final circuits not exceeding 32 A, maximum disconnection time should be?",
       options: [
         "0.4 s",
         "5 s",
@@ -333,7 +333,7 @@ export type Question = {
     },
     {
       id: "eit-028",
-      question: "An RCD works by:",
+      question: "An RCD works by?",
       options: [
         "Detecting imbalance between line and neutral currents",
         "Measuring voltage drop",
@@ -345,7 +345,7 @@ export type Question = {
     },
     {
       id: "eit-029",
-      question: "RCDs are recognized as:",
+      question: "RCDs are recognized as?",
       options: [
         "Additional protection",
         "Overcurrent devices only",
@@ -357,7 +357,7 @@ export type Question = {
     },
     {
       id: "eit-030",
-      question: "An RCBO provides:",
+      question: "An RCBO provides?",
       options: [
         "Combined MCB and RCD protection",
         "Isolation only",
@@ -369,7 +369,7 @@ export type Question = {
     },
     {
       id: "eit-031",
-      question: "Isolation means:",
+      question: "Isolation means?",
       options: [
         "Cutting off the supply to make equipment safe to work on",
         "Reducing voltage",
@@ -381,7 +381,7 @@ export type Question = {
     },
     {
       id: "eit-032",
-      question: "Emergency switching is:",
+      question: "Emergency switching is?",
       options: [
         "Rapid disconnection to remove danger",
         "Routine on/off control",
@@ -393,7 +393,7 @@ export type Question = {
     },
     {
       id: "eit-033",
-      question: "Emergency stop push‑buttons should be:",
+      question: "Emergency stop push‑buttons should be?",
       options: [
         "Red and latch in the stop position",
         "Blue and momentary",
@@ -405,7 +405,7 @@ export type Question = {
     },
     {
       id: "eit-034",
-      question: "Plugs and socket outlets are:",
+      question: "Plugs and socket outlets are?",
       options: [
         "Not appropriate for emergency switching",
         "Preferred for emergency switching",
@@ -417,7 +417,7 @@ export type Question = {
     },
     {
       id: "eit-035",
-      question: "Functional switching is the:",
+      question: "Functional switching is the?",
       options: [
         "Normal on/off control of equipment",
         "Emergency disconnection",
@@ -429,7 +429,7 @@ export type Question = {
     },
     {
       id: "eit-036",
-      question: "The National Grid network was established in:",
+      question: "The National Grid network was established in?",
       options: [
         "1934",
         "1954",
@@ -441,7 +441,7 @@ export type Question = {
     },
     {
       id: "eit-037",
-      question: "Electricity is taken from the National Grid and transformed to:",
+      question: "Electricity is taken from the National Grid and transformed to?",
       options: [
         "11 kV at local substations",
         "33 kV at consumer intakes",
@@ -453,7 +453,7 @@ export type Question = {
     },
     {
       id: "eit-038",
-      question: "Distribution to consumers is typically:",
+      question: "Distribution to consumers is typically?",
       options: [
         "400/230 V",
         "11 kV",
@@ -465,7 +465,7 @@ export type Question = {
     },
     {
       id: "eit-039",
-      question: "At the consumer’s intake position, the supplier provides a:",
+      question: "At the consumer’s intake position, the supplier provides a?",
       options: [
         "Sealed HBC fuse and energy meter",
         "MCB only",
@@ -477,7 +477,7 @@ export type Question = {
     },
     {
       id: "eit-040",
-      question: "A single‑phase 230 V supply is obtained by connecting:",
+      question: "A single‑phase 230 V supply is obtained by connecting?",
       options: [
         "One phase and neutral of a 400 V system",
         "Two phases only",
@@ -489,7 +489,7 @@ export type Question = {
     },
     {
       id: "eit-041",
-      question: "The Energy Hierarchy starts by:",
+      question: "The Energy Hierarchy starts by?",
       options: [
         "Reducing energy demand",
         "Installing renewable generation first",
@@ -501,7 +501,7 @@ export type Question = {
     },
     {
       id: "eit-042",
-      question: "Microgeneration is defined as electricity generation up to:",
+      question: "Microgeneration is defined as electricity generation up to?",
       options: [
         "50 kW",
         "5 kW",
@@ -513,7 +513,7 @@ export type Question = {
     },
     {
       id: "eit-043",
-      question: "Earth is defined as:",
+      question: "Earth is defined as?",
       options: [
         "The conductive mass whose potential is taken as zero",
         "The neutral conductor",
@@ -525,7 +525,7 @@ export type Question = {
     },
     {
       id: "eit-044",
-      question: "A circuit protective conductor (CPC) is:",
+      question: "A circuit protective conductor (CPC) is?",
       options: [
         "A protective conductor connecting exposed parts to the earthing terminal",
         "A live conductor",
@@ -537,7 +537,7 @@ export type Question = {
     },
     {
       id: "eit-045",
-      question: "Direct contact involves:",
+      question: "Direct contact involves?",
       options: [
         "Touching parts that are normally live",
         "Touching bonded metalwork",
@@ -549,7 +549,7 @@ export type Question = {
     },
     {
       id: "eit-046",
-      question: "Indirect contact involves:",
+      question: "Indirect contact involves?",
       options: [
         "Touching exposed parts made live by a fault",
         "Touching a live terminal",
@@ -561,7 +561,7 @@ export type Question = {
     },
     {
       id: "eit-047",
-      question: "Protection by barriers or enclosures is a form of:",
+      question: "Protection by barriers or enclosures is a form of?",
       options: [
         "Basic protection",
         "Fault protection",
@@ -573,7 +573,7 @@ export type Question = {
     },
     {
       id: "eit-048",
-      question: "For final circuits ≤32 A, disconnection time must not exceed:",
+      question: "For final circuits ≤32 A, disconnection time must not exceed?",
       options: [
         "0.4 s",
         "5 s",
@@ -585,7 +585,7 @@ export type Question = {
     },
     {
       id: "eit-049",
-      question: "Voltage drop limits are:",
+      question: "Voltage drop limits are?",
       options: [
         "3% for lighting and 5% for other circuits",
         "5% for lighting and 10% for others",
@@ -597,7 +597,7 @@ export type Question = {
     },
     {
       id: "eit-050",
-      question: "Voltage drop for a cable run is calculated by:",
+      question: "Voltage drop for a cable run is calculated by?",
       options: [
         "Factor × design current × length",
         "Voltage × current × resistance",
@@ -609,7 +609,7 @@ export type Question = {
     },
     {
       id: "eit-051",
-      question: "Most cables consist of:",
+      question: "Most cables consist of?",
       options: [
         "Conductor, insulation and sheath",
         "Conductor only",
@@ -621,7 +621,7 @@ export type Question = {
     },
     {
       id: "eit-052",
-      question: "Solid conductors are generally used in:",
+      question: "Solid conductors are generally used in?",
       options: [
         "Fixed wiring installations",
         "Flexible cords",
@@ -633,7 +633,7 @@ export type Question = {
     },
     {
       id: "eit-053",
-      question: "Stranded conductors are preferred because they are:",
+      question: "Stranded conductors are preferred because they are?",
       options: [
         "More flexible",
         "Cheaper only",
@@ -645,7 +645,7 @@ export type Question = {
     },
     {
       id: "eit-054",
-      question: "MI cable is suitable because it is:",
+      question: "MI cable is suitable because it is?",
       options: [
         "Fire‑resistant and durable",
         "Only for low voltage indoors",
@@ -657,7 +657,7 @@ export type Question = {
     },
     {
       id: "eit-055",
-      question: "MI cable conductors are identified by:",
+      question: "MI cable conductors are identified by?",
       options: [
         "Testing and then sleeving/marking",
         "Color during manufacture",
@@ -669,7 +669,7 @@ export type Question = {
     },
     {
       id: "eit-056",
-      question: "To absorb vibration when connecting MI cable to motors, you should:",
+      question: "To absorb vibration when connecting MI cable to motors, you should?",
       options: [
         "Form a 360° loop before termination",
         "Clamp it tightly to the motor",
@@ -681,7 +681,7 @@ export type Question = {
     },
     {
       id: "eit-057",
-      question: "If an MI cable is in a corrosive environment, you should use:",
+      question: "If an MI cable is in a corrosive environment, you should use?",
       options: [
         "MI cable with PVC sheath",
         "Bare MI cable only",
@@ -693,7 +693,7 @@ export type Question = {
     },
     {
       id: "eit-058",
-      question: "A small over‑sink water heater may be supplied from:",
+      question: "A small over‑sink water heater may be supplied from?",
       options: [
         "A ring circuit via a fused connection unit",
         "A lighting circuit",
@@ -705,7 +705,7 @@ export type Question = {
     },
     {
       id: "eit-059",
-      question: "Immersion heaters are typically rated at:",
+      question: "Immersion heaters are typically rated at?",
       options: [
         "Up to about 3 kW",
         "Up to 10 kW",
@@ -717,7 +717,7 @@ export type Question = {
     },
     {
       id: "eit-060",
-      question: "Supplementary bonding in a bathroom with an immersion heater is required if:",
+      question: "Supplementary bonding in a bathroom with an immersion heater is required if?",
       options: [
         "No 30 mA RCD protection and no protective bonding",
         "A 30 mA RCD is fitted",
@@ -729,7 +729,7 @@ export type Question = {
     },
     {
       id: "eit-061",
-      question: "Fixed electric heaters with touchable elements must have:",
+      question: "Fixed electric heaters with touchable elements must have?",
       options: [
         "A double‑pole switch disconnecting all conductors",
         "A single‑pole switch only",
@@ -741,7 +741,7 @@ export type Question = {
     },
     {
       id: "eit-062",
-      question: "Off‑peak heating circuits must be fed from:",
+      question: "Off‑peak heating circuits must be fed from?",
       options: [
         "A separate supply controlled by a time clock",
         "A lighting circuit",
@@ -753,7 +753,7 @@ export type Question = {
     },
     {
       id: "eit-063",
-      question: "Underfloor heating in bathrooms must include:",
+      question: "Underfloor heating in bathrooms must include?",
       options: [
         "An earthed metallic sheath or grid",
         "Only plastic conduit",
@@ -765,7 +765,7 @@ export type Question = {
     },
     {
       id: "eit-064",
-      question: "A cooker rated above 3 kW should be:",
+      question: "A cooker rated above 3 kW should be?",
       options: [
         "On its own circuit",
         "On a lighting circuit",
@@ -777,7 +777,7 @@ export type Question = {
     },
     {
       id: "eit-065",
-      question: "A diversity factor may be applied to cooker circuits because:",
+      question: "A diversity factor may be applied to cooker circuits because?",
       options: [
         "Not all elements are used at the same time",
         "Cookers are low power",
@@ -789,7 +789,7 @@ export type Question = {
     },
     {
       id: "eit-066",
-      question: "Installation designers should ask whether the wiring system is:",
+      question: "Installation designers should ask whether the wiring system is?",
       options: [
         "Compatible with the installation and regulations",
         "Cheapest regardless",
@@ -801,7 +801,7 @@ export type Question = {
     },
     {
       id: "eit-067",
-      question: "Electricians should ensure all terminations and joints are:",
+      question: "Electricians should ensure all terminations and joints are?",
       options: [
         "Accessible on completion",
         "Hidden inside walls",
@@ -813,7 +813,7 @@ export type Question = {
     },
     {
       id: "eit-068",
-      question: "A nut and bolt joint is generally:",
+      question: "A nut and bolt joint is generally?",
       options: [
         "A temporary fastening",
         "A permanent fastening",
@@ -825,7 +825,7 @@ export type Question = {
     },
     {
       id: "eit-069",
-      question: "A rivet joint is generally:",
+      question: "A rivet joint is generally?",
       options: [
         "A permanent fastening",
         "A temporary fastening",
@@ -837,7 +837,7 @@ export type Question = {
     },
     {
       id: "eit-070",
-      question: "When joining trunking, a round‑head machine screw should be used with the head:",
+      question: "When joining trunking, a round‑head machine screw should be used with the head?",
       options: [
         "Inside the trunking",
         "Outside the trunking",
@@ -849,7 +849,7 @@ export type Question = {
     },
     {
       id: "eit-071",
-      question: "PVC insulated and sheathed cable is usually fixed with:",
+      question: "PVC insulated and sheathed cable is usually fixed with?",
       options: [
         "PVC clips",
         "Metal saddles only",
@@ -861,7 +861,7 @@ export type Question = {
     },
     {
       id: "eit-072",
-      question: "For heavy cables or trunking, fixings commonly use:",
+      question: "For heavy cables or trunking, fixings commonly use?",
       options: [
         "Screws with suitable wall plugs/anchors",
         "PVC clips only",
@@ -873,7 +873,7 @@ export type Question = {
     },
     {
       id: "eit-073",
-      question: "An expansion bolt fixing works by:",
+      question: "An expansion bolt fixing works by?",
       options: [
         "Expanding a sleeve in a drilled hole",
         "Gluing to the surface",
@@ -885,7 +885,7 @@ export type Question = {
     },
     {
       id: "eit-074",
-      question: "Spring toggle bolts are used for:",
+      question: "Spring toggle bolts are used for?",
       options: [
         "Hollow partition walls",
         "Solid concrete only",
@@ -897,7 +897,7 @@ export type Question = {
     },
     {
       id: "eit-075",
-      question: "A spring toggle bolt cannot usually be removed without:",
+      question: "A spring toggle bolt cannot usually be removed without?",
       options: [
         "Losing the toggle wings",
         "Removing the plasterboard",
@@ -909,7 +909,7 @@ export type Question = {
     },
     {
       id: "eit-076",
-      question: "Static charge builds up between:",
+      question: "Static charge builds up between?",
       options: [
         "Two insulating surfaces or an insulating and conducting surface",
         "Two conducting surfaces only",
@@ -921,7 +921,7 @@ export type Question = {
     },
     {
       id: "eit-077",
-      question: "Lightning discharge currents are of the order of:",
+      question: "Lightning discharge currents are of the order of?",
       options: [
         "20 kA",
         "2 A",
@@ -933,7 +933,7 @@ export type Question = {
     },
     {
       id: "eit-078",
-      question: "A bonding clamp should:",
+      question: "A bonding clamp should?",
       options: [
         "Be approved and fitted to clean pipework",
         "Be fitted to painted pipework",
@@ -945,7 +945,7 @@ export type Question = {
     },
     {
       id: "eit-079",
-      question: "An isolator is a device that:",
+      question: "An isolator is a device that?",
       options: [
         "Cuts off a circuit or equipment from the live supply",
         "Only limits current",
@@ -957,7 +957,7 @@ export type Question = {
     },
     {
       id: "eit-080",
-      question: "Functional switching refers to:",
+      question: "Functional switching refers to?",
       options: [
         "Normal switching of equipment in service",
         "Emergency stop",
