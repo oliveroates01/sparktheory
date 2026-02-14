@@ -227,6 +227,7 @@ export default function ElectricalPage() {
   const [authReady, setAuthReady] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickedHref, setPickedHref] = useState<string | null>(null);
+  const [progressOpen, setProgressOpen] = useState(false);
   const [unseenOnly, setUnseenOnly] = useState(false);
   const [problemOnly, setProblemOnly] = useState(false);
   const [isSwitchingLevel, setIsSwitchingLevel] = useState(false);
@@ -374,6 +375,9 @@ export default function ElectricalPage() {
     setPickedHref(null);
   };
 
+  const openProgress = () => setProgressOpen(true);
+  const closeProgress = () => setProgressOpen(false);
+
   // ✅ THIS is what the reset icon will do (clears progress graph data)
   const resetProgress = () => {
     try {
@@ -414,18 +418,8 @@ export default function ElectricalPage() {
           </div>
         </header>
 
-        {/* Main Progress Chart (top) */}
-        <section className="mt-10 mx-auto max-w-4xl">
-          <ProgressReport
-            key={level}
-            results={resultsOldestToNewest ?? []}
-            topics={topics ?? []}
-            onResetProgress={resetProgress}
-          />
-        </section>
-
         {/* Levels */}
-        <section className="mt-6">
+        <section className="mt-10">
           <div className="mx-auto grid w-full max-w-2xl grid-cols-1 gap-2 sm:grid-cols-2">
             <button
               type="button"
@@ -461,6 +455,15 @@ export default function ElectricalPage() {
               <div className="mt-0.5 text-[9px] text-white/60">
                 Advanced concepts and exam readiness.
               </div>
+            </button>
+          </div>
+          <div className="mx-auto mt-3 w-full max-w-2xl">
+            <button
+              type="button"
+              onClick={openProgress}
+              className="block w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-center text-xs font-semibold text-white/80 transition hover:bg-white/10"
+            >
+              Show progress
             </button>
           </div>
         </section>
@@ -671,6 +674,36 @@ export default function ElectricalPage() {
             >
               Cancel
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Progress modal */}
+      {progressOpen && (
+        <div
+          className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-4"
+          onClick={closeProgress}
+        >
+          <div
+            className="w-full max-w-5xl rounded-2xl bg-[#1F1F1F] p-4 ring-1 ring-[#FF9100]/20 sm:p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-lg font-bold">Progress tracker</h3>
+              <button
+                type="button"
+                onClick={closeProgress}
+                className="rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/75 hover:bg-white/10"
+              >
+                Close
+              </button>
+            </div>
+            <ProgressReport
+              key={`${level}-modal`}
+              results={resultsOldestToNewest ?? []}
+              topics={topics ?? []}
+              onResetProgress={resetProgress}
+            />
           </div>
         </div>
       )}
