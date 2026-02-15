@@ -65,6 +65,7 @@ function topicLabel(topic?: string) {
   if (t === "electrical-technology") return "Electrical Tech";
   if (t === "inspection-testing-commissioning") return "Inspection & Testing";
   if (t === "all-level-2") return "All Level 2";
+  if (t === "all-level-3") return "All Level 3";
   return t.replace(/-/g, " ");
 }
 
@@ -73,6 +74,15 @@ function toLabel(r: StoredResult, idx: number) {
   if (byTopic) return byTopic;
   const raw = (r.label || "").trim();
   return raw ? raw : `T${idx + 1}`;
+}
+
+function attemptLabel(r: StoredResult, idx: number) {
+  if (!r.date) return `Test ${idx + 1}`;
+  const d = new Date(r.date);
+  if (Number.isNaN(d.getTime())) return `Test ${idx + 1}`;
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  return `${dd}/${mm}`;
 }
 
 function easeInOutCubic(t: number) {
@@ -276,6 +286,7 @@ export default function ProgressReport({
 
       return {
         label: toLabel(r, idx),
+        attempt: attemptLabel(r, idx),
         avg: Math.round(runningAvg),
         score,
         topic: (r.topic || "").toLowerCase(),
@@ -305,6 +316,8 @@ export default function ProgressReport({
 
   const attemptsShown = filteredOldestToNewest.length;
   const noData = chartData.length === 0;
+  const modeDisplayLabel =
+    effectiveMode === "all" ? "All topics" : topicLabel(effectiveMode);
 
   const pxPerPoint = Math.max(60, Math.floor(plotViewportW / VISIBLE_POINTS));
   const svgWidth = Math.max(chartData.length * pxPerPoint, plotViewportW);
@@ -419,7 +432,7 @@ export default function ProgressReport({
               {attemptsShown === 0
                 ? "No results yet"
                 : `Showing ${attemptsShown} • ${
-                    effectiveMode === "all" ? "All topics" : effectiveMode
+                    modeDisplayLabel
                   }`}
             </span>
             {lastChange !== null && (
@@ -551,7 +564,7 @@ export default function ProgressReport({
                   />
 
                   <XAxis
-                    dataKey="label"
+                    dataKey="attempt"
                     axisLine={false}
                     tickLine={false}
                     tickMargin={10}
