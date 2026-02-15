@@ -519,4 +519,30 @@ export const electricalTechnologyLevel3Questions = [
     explanation:
       "Manufacturers provide specifications based on engineering testing and development.",
   },
+  {
+    id: "et3-041",
+    question: "Which is a situation where IET Regulations alone apply?",
+    options: [
+      "Agricultural buildings",
+      "Mines",
+      "Quarries",
+      "Railway traction systems",
+    ],
+    correctIndex: 0,
+    explanation:
+      "IET Regulations apply to agricultural premises but not mines, quarries, or railway traction systems.",
+  },
+  {
+    id: "et3-042",
+    question: "Which is a situation where IET Regulations do NOT apply alone?",
+    options: [
+      "Mines or quarries",
+      "Domestic dwellings",
+      "Agricultural premises",
+      "Caravans",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Mines and quarries are governed by additional specialist regulations, not BS 7671 alone.",
+  },
 ];

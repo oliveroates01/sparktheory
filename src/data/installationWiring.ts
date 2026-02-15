@@ -144,30 +144,6 @@ export const installationWiringQuestions = [
       explanation: "Section 70 covers special installations or locations.",
     },
     {
-      id: "iwse-013",
-      question: "Which is a situation where IET Regulations alone apply?",
-      options: [
-        "Agricultural buildings",
-        "Mines",
-        "Quarries",
-        "Railway traction systems",
-      ],
-      correctIndex: 0,
-      explanation: "IET Regulations apply to agricultural premises but not mines/quarries.",
-    },
-    {
-      id: "iwse-014",
-      question: "Which is a situation where IET Regulations do NOT apply alone?",
-      options: [
-        "Mines or quarries",
-        "Domestic dwellings",
-        "Agricultural premises",
-        "Caravans",
-      ],
-      correctIndex: 0,
-      explanation: "Mines and quarries have special regulations.",
-    },
-    {
       id: "iwse-015",
       question: "A key step in safe manual handling is to?",
       options: [
