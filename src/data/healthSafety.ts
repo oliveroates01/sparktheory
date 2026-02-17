@@ -42,7 +42,7 @@ export const healthSafetyQuestions = [
     id: "hs-004",
     question: "Under Section 7 of the Act, what duties do employees have?",
     options: [
-      "Take reasonable care and in normal practice",
+      "Take reasonable care and cooperate with safety procedures",
       "Set company safety policy",
       "Approve safety budgets",
       "Ignore PPE if uncomfortable",
@@ -94,7 +94,7 @@ export const healthSafetyQuestions = [
     id: "hs-008",
     question: "What is an improvement notice?",
     options: [
-      "A notice requiring an employer to fix a in normal practice",
+      "A notice requiring an employer to remedy a legal breach within a set time",
       "A notice that stops all work immediately",
       "A certificate for excellent safety",
       "A reminder to attend training",
@@ -159,7 +159,7 @@ export const healthSafetyQuestions = [
     id: "hs-013",
     question: "What is the purpose of the Electricity Safety, Quality and Continuity Regulations 2002?",
     options: [
-      "Ensure a safe supply of in normal practice",
+      "Ensure the safe and reliable supply of electricity",
       "Set tool hire prices",
       "Regulate building design",
       "License electricians",
@@ -185,10 +185,10 @@ export const healthSafetyQuestions = [
     id: "hs-015",
     question: "What is the nominal frequency for UK electricity supply?",
     options: [
-      "50 Hz in normal practice",
-      "60 Hz in normal practice",
-      "45 Hz in normal practice",
-      "55 Hz in normal practice",
+      "50 Hz",
+      "60 Hz",
+      "45 Hz",
+      "55 Hz",
   ],
     correctIndex: 0,
     explanation:
@@ -237,10 +237,10 @@ export const healthSafetyQuestions = [
     id: "hs-019",
     question: "Who is a ‘duty holder’ in electrical safety?",
     options: [
-      "The person who",
-      "The site visitor in normal practice",
+      "The person who controls the electrical system and its safety",
+      "A site visitor with no control of the system",
       "The tool supplier",
-      "The client in normal practice",
+      "The client regardless of control",
 ],
     correctIndex: 0,
     explanation:
@@ -253,7 +253,7 @@ export const healthSafetyQuestions = [
       "Absolute must always be met; reasonably practicable considers risk",
       "Absolute is optional; reasonably practicable is law",
       "Absolute applies only to high‑risk work; reasonably practicable to low‑risk work",
-      "There is no difference in typical site conditions",
+      "There is no difference",
 ],
     correctIndex: 0,
     explanation:
@@ -276,7 +276,7 @@ export const healthSafetyQuestions = [
     id: "hs-022",
     question: "What is COSHH mainly concerned with?",
     options: [
-      "Controlling exposure to in normal practice",
+      "Controlling exposure to substances hazardous to health",
       "Controlling working hours",
       "Managing site security",
       "Setting voltage tolerances",
@@ -304,7 +304,7 @@ export const healthSafetyQuestions = [
     options: [
       "Minimum safety standards for plant",
       "Only inspection of hand tools after purchase",
-      "No maintenance in normal practice",
+      "No maintenance duties",
       "Only requirements for hired equipment",
 ],
     correctIndex: 0,
@@ -369,8 +369,8 @@ export const healthSafetyQuestions = [
     options: [
       "A red circular sign indicating an activity must not be done",
       "A blue circular sign indicating an action must be done",
-      "A green rectangular sign showing exits in normal practice",
-      "A yellow triangle warning of danger in typical site conditions",
+      "A green rectangular sign showing safe condition information",
+      "A yellow triangle warning of danger",
   ],
     correctIndex: 0,
     explanation:
@@ -406,7 +406,7 @@ export const healthSafetyQuestions = [
     id: "hs-032",
     question: "What is a safe condition sign?",
     options: [
-      "A green in normal practice",
+      "A green square or rectangle safety sign",
       "A red circle with a bar",
       "A yellow triangle",
       "A blue circle",
@@ -524,7 +524,7 @@ export const healthSafetyQuestions = [
     question: "What does the ‘running man’ symbol indicate?",
     options: [
       "Escape route or emergency exit",
-      "No entry in normal practice",
+      "No entry",
       "Wear eye protection",
       "High voltage",
   ],
@@ -536,7 +536,7 @@ export const healthSafetyQuestions = [
     id: "hs-042",
     question: "What is the purpose of an assembly point?",
     options: [
-      "A safe place to in normal practice",
+      "A safe place to gather for roll call after evacuation",
       "A tool storage area",
       "A smoking area",
       "A delivery bay",
@@ -627,10 +627,10 @@ export const healthSafetyQuestions = [
     id: "hs-049",
     question: "How many steps are recommended for risk assessment?",
     options: [
-      "Five in normal practice",
-      "Two in normal practice",
-      "Eight in normal practice",
-      "Ten in normal practice",
+      "Five",
+      "Two",
+      "Eight",
+      "Ten",
   ],
     correctIndex: 0,
     explanation:
@@ -640,7 +640,7 @@ export const healthSafetyQuestions = [
     id: "hs-050",
     question: "What is a method statement?",
     options: [
-      "A written in normal practice",
+      "A written safe system of work for carrying out a task",
       "A list of tools",
       "A visitor log",
       "A PPE inventory",
@@ -653,10 +653,10 @@ export const healthSafetyQuestions = [
     id: "hs-051",
     question: "What is a safe isolation procedure?",
     options: [
-      "A method to disconnect and secure electrical",
+      "A method to disconnect, secure, and prove an electrical circuit is dead",
       "A way to test live equipment without barriers",
-      "A permit to work at height in normal practice",
-      "A site evacuation plan in typical site conditions",
+      "A permit to work at height",
+      "A site evacuation plan",
   ],
     correctIndex: 0,
     explanation:
@@ -666,10 +666,10 @@ export const healthSafetyQuestions = [
     id: "hs-052",
     question: "What is the approximate lethal shock current mentioned?",
     options: [
-      "About 50 mA in normal practice",
-      "About 5 mA in normal practice",
+      "About 50 mA",
+      "About 5 mA",
       "About 500 mA",
-      "About 1 mA in normal practice",
+      "About 1 mA",
   ],
     correctIndex: 0,
     explanation:
@@ -682,7 +682,7 @@ export const healthSafetyQuestions = [
       "Switch off the supply if possible",
       "Grab them with bare hands",
       "Give them water",
-      "Run away in typical site conditions",
+      "Run away without isolating the supply",
   ],
     correctIndex: 0,
     explanation:
@@ -705,8 +705,8 @@ export const healthSafetyQuestions = [
     id: "hs-055",
     question: "Which site voltage is recommended for portable tools?",
     options: [
-      "110 V in normal practice",
-      "400 V in normal practice",
+      "110 V",
+      "400 V",
       "230 V with RCD protection",
       "50 V extra‑low voltage",
 ],
@@ -718,10 +718,10 @@ export const healthSafetyQuestions = [
     id: "hs-056",
     question: "What voltage is recommended for portable lamps in damp/confined places?",
     options: [
-      "SELV in normal practice",
-      "400 V in normal practice",
-      "230 V in normal practice",
-      "110 V in normal practice",
+      "SELV (extra-low voltage)",
+      "400 V",
+      "230 V",
+      "110 V",
   ],
     correctIndex: 0,
     explanation:
@@ -757,10 +757,10 @@ export const healthSafetyQuestions = [
     id: "hs-059",
     question: "Why is user checking of equipment important?",
     options: [
-      "Most faults can be spotted by a in normal practice",
+      "Most faults can be spotted by a simple visual check",
       "It replaces all PAT testing",
       "It satisfies legal duty without further testing",
-      "It is optional in typical site conditions",
+      "It is optional",
 ],
     correctIndex: 0,
     explanation:
@@ -770,9 +770,9 @@ export const healthSafetyQuestions = [
     id: "hs-060",
     question: "Which is a warning sign of unsafe portable equipment?",
     options: [
-      "Damage exposing",
+      "Damage exposing live conductors",
       "A clean casing",
-      "A new label in normal practice",
+      "A new label",
       "A tight cord grip",
   ],
     correctIndex: 0,
@@ -784,9 +784,9 @@ export const healthSafetyQuestions = [
     question: "What does a PAT earth bond test check?",
     options: [
       "Continuity of the earth path",
-      "Cable color in normal practice",
+      "Cable colour",
       "Insulation resistance between live and neutral",
-      "Tool weight in normal practice",
+      "Tool weight",
 ],
     correctIndex: 0,
     explanation:
@@ -812,7 +812,7 @@ export const healthSafetyQuestions = [
       "It should be removed from service and repaired",
       "It should be used carefully",
       "It should be labeled but left in use",
-      "It should be sold in typical site conditions",
+      "It should be sold",
   ],
     correctIndex: 0,
     explanation:
@@ -822,7 +822,7 @@ export const healthSafetyQuestions = [
     id: "hs-064",
     question: "What is first aid (as defined in the text)?",
     options: [
-      "Initial assistance before",
+      "Immediate assistance before professional medical help arrives",
       "Full medical treatment",
       "Treatment by a qualified nurse only",
       "A health and safety poster",
@@ -835,7 +835,7 @@ export const healthSafetyQuestions = [
     id: "hs-065",
     question: "Who is an appointed person for first aid?",
     options: [
-      "Someone in normal practice",
+      "A nominated person who takes charge, calls for help, and looks after first-aid arrangements",
       "Anyone on site",
       "A qualified paramedic on call for the site",
       "A trained first aider who must provide full treatment",
@@ -848,10 +848,10 @@ export const healthSafetyQuestions = [
     id: "hs-066",
     question: "What is asphyxiation?",
     options: [
-      "Lack of air in normal practice",
+      "Lack of air (suffocation)",
       "A broken bone",
       "A burn injury",
-      "A sprain in normal practice",
+      "A sprain",
   ],
     correctIndex: 0,
     explanation:
@@ -887,10 +887,10 @@ export const healthSafetyQuestions = [
     id: "hs-069",
     question: "What is the correct response to a suspected broken bone?",
     options: [
-      "Support the limb and in normal practice",
+      "Support the limb and keep it still",
       "Force the limb straight",
       "Ask them to walk",
-      "Apply heat in normal practice",
+      "Apply heat immediately",
   ],
     correctIndex: 0,
     explanation:
@@ -915,7 +915,7 @@ export const healthSafetyQuestions = [
     options: [
       "Move to fresh air and seek medical advice",
       "Keep the person lying in the fume area",
-      "Give them food in normal practice",
+      "Give them food or drink",
       "Ignore if they seem fine",
   ],
     correctIndex: 0,
@@ -927,7 +927,7 @@ export const healthSafetyQuestions = [
     question: "What is the immediate treatment for sprains or bruising?",
     options: [
       "Apply a cold compress",
-      "Apply heat in normal practice",
+      "Apply heat immediately",
       "Massage vigorously",
       "Bandage tightly without cooling",
   ],
@@ -940,7 +940,7 @@ export const healthSafetyQuestions = [
     question: "What should be done after every accident?",
     options: [
       "Report and document",
-      "Ignore if minor in normal practice",
+      "Ignore if minor",
       "Record only if time off work occurs",
       "Record only if medical treatment is required",
 ],
@@ -965,8 +965,8 @@ export const healthSafetyQuestions = [
     id: "hs-075",
     question: "What is a dangerous occurrence?",
     options: [
-      "A near miss that in normal practice",
-      "A minor cut in normal practice",
+      "A near miss with potential for serious harm",
+      "A minor cut",
       "A planned shutdown",
       "A routine inspection",
   ],
@@ -981,7 +981,7 @@ export const healthSafetyQuestions = [
       "Equipment failure",
       "A missing toolbox",
       "A late delivery",
-      "A noisy fan in normal practice",
+      "A noisy fan",
   ],
     correctIndex: 0,
     explanation:
@@ -1032,7 +1032,7 @@ export const healthSafetyQuestions = [
     options: [
       "Confined spaces",
       "Office desks",
-      "Break rooms in normal practice",
+      "Break rooms",
       "Reception areas",
   ],
     correctIndex: 0,
@@ -1043,10 +1043,10 @@ export const healthSafetyQuestions = [
     id: "hs-081",
     question: "What is the recommended ladder angle?",
     options: [
-      "4 up to 1 out",
+      "4 up to 1 out (about 75°)",
       "1 up to 4 out",
-      "90 degrees in normal practice",
-      "30 degrees in normal practice",
+      "90 degrees",
+      "30 degrees",
   ],
     correctIndex: 0,
     explanation:
@@ -1058,7 +1058,7 @@ export const healthSafetyQuestions = [
     options: [
       "At least 1.05 m or five rungs",
       "Two rungs or about 0.5 m above the landing",
-      "Half a rung in normal practice",
+      "Half a rung",
       "It does not need to extend",
 ],
     correctIndex: 0,
@@ -1069,7 +1069,7 @@ export const healthSafetyQuestions = [
     id: "hs-083",
     question: "When should ladders be used for work at height?",
     options: [
-      "Only for access and in normal practice",
+      "Only for access and short-duration work",
       "For all high‑level work",
       "For long‑duration work if secured",
       "For routine work at height indoors",
@@ -1084,8 +1084,8 @@ export const healthSafetyQuestions = [
     options: [
       "At least two boards or 450 mm",
       "At least 300 mm in width",
-      "150 mm in normal practice",
-      "No minimum in normal practice",
+      "150 mm",
+      "No minimum",
 ],
     correctIndex: 0,
     explanation:
@@ -1108,10 +1108,10 @@ export const healthSafetyQuestions = [
     id: "hs-086",
     question: "What is the safe base‑to‑height ratio for a scaffold tower?",
     options: [
-      "1:3 in normal practice",
-      "1:1 in normal practice",
-      "1:6 in normal practice",
-      "3:1 in normal practice",
+      "1:3",
+      "1:1",
+      "1:6",
+      "3:1",
   ],
     correctIndex: 0,
     explanation:
@@ -1121,7 +1121,7 @@ export const healthSafetyQuestions = [
     id: "hs-087",
     question: "What must be done before moving a mobile scaffold tower?",
     options: [
-      "Clear tools and people and in normal practice",
+      "Clear tools and people before moving the tower",
       "Push from the top",
       "Leave tools on the platform",
       "Lock the wheels and move it",
@@ -1160,7 +1160,7 @@ export const healthSafetyQuestions = [
     id: "hs-090",
     question: "What is ‘good housekeeping’ in a safety context?",
     options: [
-      "Keeping the workplace tidy and in normal practice",
+      "Keeping the workplace tidy and free from hazards",
       "Making tea for the team",
       "Leaving tools out for convenience",
       "Skipping clean‑ups to save time",
@@ -1173,7 +1173,7 @@ export const healthSafetyQuestions = [
     id: "hs-091",
     question: "Why must asbestos removal be done by specialists?",
     options: [
-      "It is highly hazardous and in normal practice",
+      "It is highly hazardous and legally controlled",
       "It is cheap to remove",
       "It is easy to identify by color alone",
       "It is safe to handle",
@@ -1251,9 +1251,9 @@ export const healthSafetyQuestions = [
     id: "hs-097",
     question: "What does a duty of care require at work?",
     options: [
-      "Protect the health and safety of in normal practice",
+      "Protect the health and safety of yourself and others",
       "Ignore hazards outside your trade",
-      "Work without PPE in normal practice",
+      "Work without PPE",
       "Finish as fast as possible",
   ],
     correctIndex: 0,
@@ -1264,9 +1264,9 @@ export const healthSafetyQuestions = [
     id: "hs-098",
     question: "What is the purpose of the fire extinguisher color code?",
     options: [
-      "Identify the correct",
+      "Identify the correct extinguisher for the fire class",
       "Decorate the site",
-      "Show ownership in normal practice",
+      "Show ownership",
       "Indicate age of the extinguisher",
   ],
     correctIndex: 0,
@@ -1278,7 +1278,7 @@ export const healthSafetyQuestions = [
     question: "What should you do if you discover a fire?",
     options: [
       "Raise the alarm",
-      "Ignore it in normal practice",
+      "Ignore it",
       "Hide it from others",
       "Run without warning",
   ],
@@ -1292,7 +1292,7 @@ export const healthSafetyQuestions = [
     options: [
       "Show that precautions were taken",
       "Replace training",
-      "Avoid PPE in normal practice",
+      "Avoid PPE",
       "Reduce supervision",
   ],
     correctIndex: 0,

@@ -1,4 +1,4 @@
-export const principlesElectricalScienceQuestions = [
+const principlesElectricalScienceQuestionBank = [
   {
     id: "pes-001",
     question: "What is the SI unit of electric current?",
@@ -720,3 +720,12 @@ export const principlesElectricalScienceQuestions = [
     explanation: "In series, voltage divides proportional to resistance.",
   },
 ];
+
+const LEVEL2_PES_ALLOWED_IDS = new Set([
+  "pes-001", "pes-002", "pes-003", "pes-004", "pes-005", "pes-006", "pes-007", "pes-008", "pes-009", "pes-010", "pes-011", "pes-012",
+  "pes-015", "pes-016", "pes-020", "pes-021", "pes-043", "pes-044", "pes-045", "pes-058", "pes-059", "pes-060",
+]);
+
+export const principlesElectricalScienceQuestions = principlesElectricalScienceQuestionBank.filter((q) =>
+  LEVEL2_PES_ALLOWED_IDS.has(q.id),
+);
