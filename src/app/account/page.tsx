@@ -470,7 +470,7 @@ export default function AccountPage() {
           <section className="rounded-3xl border border-white/10 bg-white/[0.06] p-6 shadow-[0_12px_40px_rgba(0,0,0,0.25)]">
             <h1 className="text-3xl font-semibold tracking-tight">My Account</h1>
             <p className="mt-2 text-sm text-white/65">
-              Manage your profile, billing, subscription, and account settings.
+              Manage your profile, billing, subscription, and settings.
             </p>
 
             <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.05] p-5">
