@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, type User } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 
 import ProgressReport, { type StoredResult } from "@/components/ProgressReport";
@@ -19,6 +19,7 @@ import { inspectionTestingCommissioningLevel3Questions } from "@/data/inspection
 
 type Question = {
   id: string;
+  legacyIds?: string[];
   question: string;
   options: [string, string, string, string];
   correctIndex: number;
@@ -31,10 +32,36 @@ type ProblemStat = {
 };
 
 type ProblemStats = Record<string, ProblemStat>;
+type QuestionTopicMeta = {
+  slug: string;
+  title: string;
+};
 
 const STORAGE_KEY_LEVEL2 = "qm_results_v1";
 const STORAGE_KEY_LEVEL3 = "qm_results_v1_level3";
 const DEFAULT_QUIZ_SIZE = 4;
+const QUESTION_ID_MIGRATION_MAP: Record<string, string> = {
+  "hs-051": "hs-071",
+  "hs-052": "hs-072",
+  "hs-053": "hs-073",
+  "hs-054": "hs-074",
+  "hs-055": "hs-075",
+  "hs-056": "hs-076",
+  "hs-057": "hs-077",
+  "hs-058": "hs-078",
+  "hs-059": "hs-079",
+  "hs-060": "hs-080",
+  "hs-061": "hs-081",
+  "hs-062": "hs-082",
+  "hs-063": "hs-083",
+  "hs-064": "hs-084",
+  "hs-065": "hs-085",
+  "hs-066": "hs-086",
+  "hs-067": "hs-087",
+  "hs-068": "hs-088",
+  "hs-069": "hs-089",
+  "hs-070": "hs-090",
+};
 
 const LOCKED_LEVEL2_TOPICS = new Set([
   "electrical-installation-technology",
@@ -62,11 +89,19 @@ function problemKeyForTopic(level: string, topic: string) {
   return `qm_problem_${level === "3" ? "3" : "2"}_${safeTopic}`;
 }
 
+function canonicalQuestionId(id: string): string {
+  return QUESTION_ID_MIGRATION_MAP[id] ?? id;
+}
+
 function loadSeenIds(key: string): Set<string> {
   try {
     const raw = JSON.parse(localStorage.getItem(key) || "[]");
     if (!Array.isArray(raw)) return new Set();
-    return new Set(raw.filter((x) => typeof x === "string"));
+    return new Set(
+      raw
+        .filter((x): x is string => typeof x === "string")
+        .map((id) => canonicalQuestionId(id))
+    );
   } catch {
     return new Set();
   }
@@ -84,7 +119,18 @@ function loadProblemStats(key: string): ProblemStats {
   try {
     const raw = JSON.parse(localStorage.getItem(key) || "{}");
     if (!raw || typeof raw !== "object") return {};
-    return raw as ProblemStats;
+    const migrated: ProblemStats = {};
+    for (const [id, stat] of Object.entries(raw as Record<string, unknown>)) {
+      if (!stat || typeof stat !== "object") continue;
+      const typed = stat as Partial<ProblemStat>;
+      const nextId = canonicalQuestionId(id);
+      const existing = migrated[nextId] || { wrong: 0, total: 0 };
+      migrated[nextId] = {
+        wrong: existing.wrong + (Number.isFinite(typed.wrong) ? Number(typed.wrong) : 0),
+        total: existing.total + (Number.isFinite(typed.total) ? Number(typed.total) : 0),
+      };
+    }
+    return migrated;
   } catch {
     return {};
   }
@@ -156,6 +202,12 @@ function normalizeQuestion(raw: unknown, index: number): Question | null {
   if (!isRecord(raw)) return null;
 
   const id = typeof raw.id === "string" ? raw.id : `q-${index + 1}`;
+  const legacyIds = Array.isArray(raw.legacyIds)
+    ? raw.legacyIds
+        .filter((x): x is string => typeof x === "string")
+        .map((x) => x.trim())
+        .filter((x) => x && x !== id)
+    : [];
   const question = typeof raw.question === "string" ? raw.question : "";
   const options = toStringArray4(raw.options);
   const correctIndex = toNumber(raw.correctIndex);
@@ -167,7 +219,37 @@ function normalizeQuestion(raw: unknown, index: number): Question | null {
   if (!question || !options || correctIndex === null) return null;
   if (correctIndex < 0 || correctIndex > 3) return null;
 
-  return { id, question, options, correctIndex, explanation };
+  return {
+    id,
+    legacyIds: legacyIds.length > 0 ? legacyIds : undefined,
+    question,
+    options,
+    correctIndex,
+    explanation,
+  };
+}
+
+function allQuestionIds(q: Question): string[] {
+  return q.legacyIds ? [q.id, ...q.legacyIds] : [q.id];
+}
+
+function mergedProblemStat(stats: ProblemStats, q: Question): ProblemStat {
+  const ids = allQuestionIds(q);
+  return ids.reduce(
+    (acc, id) => {
+      const s = stats[id];
+      if (!s) return acc;
+      return {
+        wrong: acc.wrong + (Number.isFinite(s.wrong) ? s.wrong : 0),
+        total: acc.total + (Number.isFinite(s.total) ? s.total : 0),
+      };
+    },
+    { wrong: 0, total: 0 }
+  );
+}
+
+function hasSeenQuestion(seen: Set<string>, q: Question): boolean {
+  return allQuestionIds(q).some((id) => seen.has(id));
 }
 
 function shuffleQuestionOptions(q: Question): Question {
@@ -204,18 +286,128 @@ function topicTitle(topic: string) {
     : "Health & Safety Quiz";
 }
 
+function topicTitlePlain(topic: string) {
+  return topic === "principles-electrical-science"
+    ? "Principles of Electrical Science"
+    : topic === "electrical-technology"
+    ? "Electrical Technology"
+    : topic === "inspection-testing-commissioning"
+    ? "Inspection, Testing & Commissioning"
+    : topic === "electrical-installation-technology"
+    ? "Electrical Installation Technology"
+    : topic === "installation-wiring-systems-enclosures"
+    ? "Installation Wiring Systems & Enclosures"
+    : topic === "communication-within-building-services-engineering"
+    ? "Communication within BSE"
+    : "Health & Safety";
+}
+
+function topicCatalogForLevel(level: string): QuestionTopicMeta[] {
+  if (level === "3") {
+    return [
+      { slug: "principles-electrical-science", title: "Principles of Electrical Science" },
+      { slug: "electrical-technology", title: "Electrical Technology" },
+      { slug: "inspection-testing-commissioning", title: "Inspection, Testing & Commissioning" },
+    ];
+  }
+  return [
+    { slug: "health-safety", title: "Health & Safety" },
+    { slug: "principles-electrical-science", title: "Principles of Electrical Science" },
+    { slug: "electrical-installation-technology", title: "Electrical Installation Technology" },
+    { slug: "installation-wiring-systems-enclosures", title: "Installation Wiring Systems & Enclosures" },
+    { slug: "communication-within-building-services-engineering", title: "Communication within BSE" },
+  ];
+}
+
+function rawBankForTopic(topic: string, level: string): unknown[] {
+  if (topic === "all-level-2") {
+    return [
+      ...(healthSafetyQuestions as unknown[]),
+      ...(principlesElectricalScienceQuestions as unknown[]),
+      ...(electricalInstallationTechnologyQuestions as unknown[]),
+      ...(installationWiringQuestions as unknown[]),
+      ...(communicationWithinBSEQuestions as unknown[]),
+    ];
+  }
+  if (topic === "all-level-3") {
+    return [
+      ...(principlesElectricalScienceLevel3Questions as unknown[]),
+      ...(electricalTechnologyLevel3Questions as unknown[]),
+      ...(inspectionTestingCommissioningLevel3Questions as unknown[]),
+    ];
+  }
+  if (topic === "principles-electrical-science") {
+    return level === "3"
+      ? (principlesElectricalScienceLevel3Questions as unknown[])
+      : (principlesElectricalScienceQuestions as unknown[]);
+  }
+  if (topic === "electrical-technology") {
+    return level === "3"
+      ? (electricalTechnologyLevel3Questions as unknown[])
+      : (electricalInstallationTechnologyQuestions as unknown[]);
+  }
+  if (topic === "inspection-testing-commissioning") {
+    return level === "3"
+      ? (inspectionTestingCommissioningLevel3Questions as unknown[])
+      : (installationWiringQuestions as unknown[]);
+  }
+  if (topic === "electrical-installation-technology") {
+    return electricalInstallationTechnologyQuestions as unknown[];
+  }
+  if (topic === "installation-wiring-systems-enclosures") {
+    return installationWiringQuestions as unknown[];
+  }
+  if (topic === "communication-within-building-services-engineering") {
+    return communicationWithinBSEQuestions as unknown[];
+  }
+  return healthSafetyQuestions as unknown[];
+}
+
 export default function QuizPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [hasPlusAccess, setHasPlusAccess] = useState(false);
   const [authReady, setAuthReady] = useState(false);
+  const [subscriptionReady, setSubscriptionReady] = useState(false);
 
   const topic = (searchParams.get("topic") ?? "").trim().toLowerCase();
 
   useEffect(() => {
+    const loadSubscription = async (user: User) => {
+      if (!user.email) {
+        setHasPlusAccess(false);
+        setSubscriptionReady(true);
+        return;
+      }
+      try {
+        const response = await fetch("/api/stripe/subscription-status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user.email }),
+        });
+        const result = (await response.json().catch(() => ({}))) as {
+          hasPlusAccess?: boolean;
+          hasSubscription?: boolean;
+        };
+        setHasPlusAccess(Boolean(result.hasPlusAccess ?? result.hasSubscription));
+      } catch {
+        setHasPlusAccess(false);
+      } finally {
+        setSubscriptionReady(true);
+      }
+    };
+
     const unsub = onAuthStateChanged(auth, (user) => {
       setUserLoggedIn(Boolean(user));
       setAuthReady(true);
+      if (!user) {
+        setHasPlusAccess(false);
+        setSubscriptionReady(true);
+        return;
+      }
+      setSubscriptionReady(false);
+      void loadSubscription(user);
     });
     return () => unsub();
   }, []);
@@ -232,64 +424,52 @@ export default function QuizPage() {
   const topicsHref =
     level === "3" ? "/trade/electrical?level=3" : "/trade/electrical";
   const unseenOnly = (searchParams.get("unseen") ?? "").trim() === "1";
-  const isLocked = ((level === "3" && LOCKED_LEVEL3_TOPICS.has(topic)) || (level !== "3" && LOCKED_LEVEL2_TOPICS.has(topic))) && authReady && !userLoggedIn;
+  const isLocked = ((level === "3" && LOCKED_LEVEL3_TOPICS.has(topic)) || (level !== "3" && LOCKED_LEVEL2_TOPICS.has(topic))) && authReady && (!userLoggedIn || !subscriptionReady || !hasPlusAccess);
 
   useEffect(() => {
-    if (isLocked) router.replace("/login");
-  }, [isLocked, router]);
+    if (!isLocked) return;
+    router.replace(userLoggedIn ? "/account" : "/login");
+  }, [isLocked, router, userLoggedIn]);
 
   const bank = useMemo<Question[]>(() => {
-    let rawBank: unknown[] = [];
+    const normalizedByTopic = (topicSlug: string): Question[] =>
+      rawBankForTopic(topicSlug, level)
+        .map((q, i) => normalizeQuestion(q, i))
+        .filter((q): q is Question => Boolean(q));
 
-    if (topic === "all-level-2") {
-      rawBank = [
-        ...(healthSafetyQuestions as unknown[]),
-        ...(principlesElectricalScienceQuestions as unknown[]),
-        ...(electricalInstallationTechnologyQuestions as unknown[]),
-        ...(installationWiringQuestions as unknown[]),
-        ...(communicationWithinBSEQuestions as unknown[]),
-      ];
-    } else if (topic === "principles-electrical-science") {
-      rawBank =
-        level === "3"
-          ? (principlesElectricalScienceLevel3Questions as unknown[])
-          : (principlesElectricalScienceQuestions as unknown[]);
-    } else if (topic === "electrical-technology") {
-      rawBank =
-        level === "3"
-          ? (electricalTechnologyLevel3Questions as unknown[])
-          : (electricalInstallationTechnologyQuestions as unknown[]);
-    } else if (topic === "inspection-testing-commissioning") {
-      rawBank =
-        level === "3"
-          ? (inspectionTestingCommissioningLevel3Questions as unknown[])
-          : (installationWiringQuestions as unknown[]);
-    } else if (topic === "electrical-installation-technology") {
-      rawBank = electricalInstallationTechnologyQuestions as unknown[];
-    } else if (topic === "installation-wiring-systems-enclosures") {
-      rawBank = installationWiringQuestions as unknown[];
-    } else if (topic === "communication-within-building-services-engineering") {
-      rawBank = communicationWithinBSEQuestions as unknown[];
-    } else {
-      rawBank = healthSafetyQuestions as unknown[];
-    }
-
-    const normalized = rawBank
-      .map((q, i) => normalizeQuestion(q, i))
-      .filter((q): q is Question => Boolean(q));
+    const normalized = normalizedByTopic(topic);
 
     if (typeof window === "undefined") return normalized;
 
     if (problemsOnly && topic) {
-      const pKey = problemKeyForTopic(level, topic);
-      const stats = loadProblemStats(pKey);
-      const problemOnly = normalized
-        .filter((q) => (stats[q.id]?.wrong ?? 0) > 0)
-        .sort(
-          (a, b) =>
-            (stats[b.id]?.wrong ?? 0) - (stats[a.id]?.wrong ?? 0)
-        );
-      return problemOnly.length > 0 ? problemOnly : [];
+      const catalog = topicCatalogForLevel(level);
+      const isAllTopics = topic === "all-level-2" || topic === "all-level-3";
+      const scopedTopics = isAllTopics
+        ? catalog
+        : catalog.filter((entry) => entry.slug === topic);
+      const mixedKey = isAllTopics ? problemKeyForTopic(level, topic) : null;
+      const seenQuestionIds = new Set<string>();
+      const collected: Array<{ question: Question; wrong: number }> = [];
+
+      for (const entry of scopedTopics) {
+        const questionsForTopic = normalizedByTopic(entry.slug);
+        const statsByTopic = loadProblemStats(problemKeyForTopic(level, entry.slug));
+        const statsForMixed = mixedKey ? loadProblemStats(mixedKey) : null;
+
+        for (const q of questionsForTopic) {
+          if (seenQuestionIds.has(q.id)) continue;
+          const topicWrong = mergedProblemStat(statsByTopic, q).wrong;
+          const mixedWrong = statsForMixed ? mergedProblemStat(statsForMixed, q).wrong : 0;
+          const wrong = topicWrong + mixedWrong;
+          if (wrong <= 0) continue;
+          seenQuestionIds.add(q.id);
+          collected.push({ question: q, wrong });
+        }
+      }
+
+      return collected
+        .sort((a, b) => b.wrong - a.wrong)
+        .map((entry) => entry.question);
     }
 
     if (!unseenOnly || !topic) return normalized;
@@ -298,7 +478,7 @@ export default function QuizPage() {
     const seen = loadSeenIds(seenKey);
     if (seen.size === 0) return normalized;
 
-    const unseen = normalized.filter((q) => !seen.has(q.id));
+    const unseen = normalized.filter((q) => !hasSeenQuestion(seen, q));
     return unseen.length > 0 ? unseen : normalized;
   }, [topic, level, unseenOnly, problemsOnly]);
 
@@ -309,6 +489,7 @@ export default function QuizPage() {
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
   const [showProblemsList, setShowProblemsList] = useState(problemsOnly);
+  const [problemTopicFilter, setProblemTopicFilter] = useState<string>("all");
   const [revealed, setRevealed] = useState(false);
 
   // prevent saving twice
@@ -322,6 +503,7 @@ export default function QuizPage() {
 
   useEffect(() => {
     setShowProblemsList(problemsOnly);
+    setProblemTopicFilter("all");
   }, [problemsOnly]);
 
   useEffect(() => {
@@ -337,9 +519,72 @@ export default function QuizPage() {
     }
   }, [showProblemsList]);
 
+  const problemTopicCatalog = useMemo(() => topicCatalogForLevel(level), [level]);
+
+  const questionTopicLookup = useMemo(() => {
+    const lookup = new Map<string, QuestionTopicMeta>();
+    for (const entry of problemTopicCatalog) {
+      const normalized = rawBankForTopic(entry.slug, level)
+        .map((q, i) => normalizeQuestion(q, i))
+        .filter((q): q is Question => Boolean(q));
+      for (const q of normalized) {
+        allQuestionIds(q).forEach((id) => lookup.set(id, entry));
+      }
+    }
+    return lookup;
+  }, [problemTopicCatalog, level]);
+
+  const resolveQuestionTopic = useCallback(
+    (q: Question): QuestionTopicMeta => {
+      for (const id of allQuestionIds(q)) {
+        const found = questionTopicLookup.get(id);
+        if (found) return found;
+      }
+      return { slug: topic || "health-safety", title: topicTitlePlain(topic) };
+    },
+    [questionTopicLookup, topic]
+  );
+
+  const allProblemSections = useMemo(() => {
+    const grouped = new Map<string, { topic: QuestionTopicMeta; questions: Question[] }>();
+    for (const q of bank) {
+      const topicMeta = resolveQuestionTopic(q);
+      const existing = grouped.get(topicMeta.slug);
+      if (existing) {
+        existing.questions.push(q);
+        continue;
+      }
+      grouped.set(topicMeta.slug, { topic: topicMeta, questions: [q] });
+    }
+
+    return problemTopicCatalog
+      .map((entry) => grouped.get(entry.slug))
+      .filter((section): section is { topic: QuestionTopicMeta; questions: Question[] } => Boolean(section))
+      .filter((section) => section.questions.length > 0);
+  }, [bank, problemTopicCatalog, resolveQuestionTopic]);
+
+  const visibleProblemSections = useMemo(() => {
+    if (problemTopicFilter === "all") return allProblemSections;
+    return allProblemSections.filter((section) => section.topic.slug === problemTopicFilter);
+  }, [allProblemSections, problemTopicFilter]);
+
+  useEffect(() => {
+    if (problemTopicFilter === "all") return;
+    const exists = allProblemSections.some(
+      (section) => section.topic.slug === problemTopicFilter
+    );
+    if (!exists) setProblemTopicFilter("all");
+  }, [allProblemSections, problemTopicFilter]);
+
+  const problemQuizBank = useMemo(() => {
+    if (problemTopicFilter === "all") return bank;
+    return bank.filter((q) => resolveQuestionTopic(q).slug === problemTopicFilter);
+  }, [bank, problemTopicFilter, resolveQuestionTopic]);
+
   const buildNewQuiz = () => {
-    const picked = shuffle(bank)
-      .slice(0, Math.min(quizSize, bank.length))
+    const source = problemsOnly ? problemQuizBank : bank;
+    const picked = shuffle(source)
+      .slice(0, Math.min(quizSize, source.length))
       .map(shuffleQuestionOptions);
 
     startedAtMsRef.current = Date.now(); // ✅ reset timer
@@ -368,7 +613,8 @@ export default function QuizPage() {
   };
 
   useEffect(() => {
-    if (bank.length === 0) {
+    const source = problemsOnly ? problemQuizBank : bank;
+    if (source.length === 0) {
       setQuestions([]);
       setCurrentIndex(0);
       setSelected(null);
@@ -382,13 +628,16 @@ export default function QuizPage() {
     }
     if (!showProblemsList) buildNewQuiz();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topic, bank.length, quizSize, showProblemsList]);
+  }, [topic, bank.length, problemQuizBank.length, problemsOnly, quizSize, showProblemsList]);
 
   useEffect(() => {
     if (!finished || !topic || questions.length === 0) return;
     const seenKey = seenKeyForTopic(level, topic);
     const seen = loadSeenIds(seenKey);
-    questions.forEach((q) => seen.add(q.id));
+    questions.forEach((q) => {
+      seen.add(q.id);
+      q.legacyIds?.forEach((legacyId) => seen.delete(legacyId));
+    });
     saveSeenIds(seenKey, seen);
   }, [finished, questions, topic, level]);
 
@@ -411,12 +660,13 @@ export default function QuizPage() {
       if (typeof window !== "undefined" && topic) {
         const pKey = problemKeyForTopic(level, topic);
         const stats = loadProblemStats(pKey);
-        const existing = stats[current.id] || { wrong: 0, total: 0 };
+        const existing = mergedProblemStat(stats, current);
         const wrong = selected === current.correctIndex ? 0 : 1;
         stats[current.id] = {
           wrong: existing.wrong + wrong,
           total: existing.total + 1,
         };
+        current.legacyIds?.forEach((legacyId) => delete stats[legacyId]);
         saveProblemStats(pKey, stats);
       }
       if (selected === current.correctIndex) setScore((s) => s + 1);
@@ -556,13 +806,47 @@ export default function QuizPage() {
             <p className="mt-2 text-sm text-white/60">
               These are questions you’ve missed before.
             </p>
-            <div className="mt-4 space-y-3">
-              {bank.map((q) => (
-                <div
-                  key={q.id}
-                  className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm text-white/80"
+            <div className="mt-4 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setProblemTopicFilter("all")}
+                className={`rounded-lg px-3 py-1.5 text-xs font-semibold ring-1 transition ${
+                  problemTopicFilter === "all"
+                    ? "bg-[#FFC400]/15 text-[#FFC400] ring-[#FFC400]/60"
+                    : "bg-white/5 text-white/75 ring-white/15 hover:bg-white/10"
+                }`}
+              >
+                All topics ({bank.length})
+              </button>
+              {allProblemSections.map((section) => (
+                <button
+                  key={section.topic.slug}
+                  type="button"
+                  onClick={() => setProblemTopicFilter(section.topic.slug)}
+                  className={`rounded-lg px-3 py-1.5 text-xs font-semibold ring-1 transition ${
+                    problemTopicFilter === section.topic.slug
+                      ? "bg-[#FFC400]/15 text-[#FFC400] ring-[#FFC400]/60"
+                      : "bg-white/5 text-white/75 ring-white/15 hover:bg-white/10"
+                  }`}
                 >
-                  {q.question}
+                  {section.topic.title} ({section.questions.length})
+                </button>
+              ))}
+            </div>
+            <div className="mt-4 space-y-3">
+              {visibleProblemSections.map((section) => (
+                <div key={section.topic.slug} className="space-y-2">
+                  <h3 className="text-sm font-semibold text-white/85">
+                    {section.topic.title} ({section.questions.length})
+                  </h3>
+                  {section.questions.map((q) => (
+                    <div
+                      key={q.id}
+                      className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm text-white/80"
+                    >
+                      {q.question}
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>

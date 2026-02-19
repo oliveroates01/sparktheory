@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
 import ProgressReport, { type StoredResult } from "@/components/ProgressReport";
 import SparkTheoryLogo from "@/components/Brand/SparkTheoryLogo";
+import { onAuthStateChanged, type User } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 import { principlesElectricalScienceLevel3Questions } from "@/data/principlesElectricalScienceLevel3";
 import { electricalTechnologyLevel3Questions } from "@/data/electricalTechnologyLevel3";
 import { inspectionTestingCommissioningLevel3Questions } from "@/data/inspectionTestingCommissioningLevel3";
@@ -18,6 +21,27 @@ type Category = {
 };
 
 const STORAGE_KEY = "qm_results_v1_level3";
+const PLUS_ACCESS_CACHE_PREFIX = "qm_plus_access_";
+const LOCKED_LEVEL3_TOPICS = new Set([
+  "electrical-technology",
+  "inspection-testing-commissioning",
+]);
+
+type TopicAccessState = "loading" | "locked" | "unlocked";
+
+function getTopicAccessState(
+  requiresPlus: boolean,
+  authReady: boolean,
+  userLoggedIn: boolean,
+  subscriptionReady: boolean,
+  hasPlusAccess: boolean
+): TopicAccessState {
+  if (!requiresPlus) return "unlocked";
+  if (!authReady) return "loading";
+  if (!userLoggedIn) return "locked";
+  if (!subscriptionReady) return "loading";
+  return hasPlusAccess ? "unlocked" : "locked";
+}
 
 function loadResults(): StoredResult[] {
   try {
@@ -94,6 +118,7 @@ const CATEGORIES: Category[] = [
 ];
 
 export default function ElectricalLevel3Page() {
+  const pathname = usePathname();
   const [results, setResults] = useState<StoredResult[]>(() => {
     if (typeof window === "undefined") return [];
     return loadResults();
@@ -103,8 +128,66 @@ export default function ElectricalLevel3Page() {
   const [unseenOnly, setUnseenOnly] = useState(false);
   const [unseenCount, setUnseenCount] = useState<number | null>(null);
   const [totalCount, setTotalCount] = useState<number | null>(null);
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [hasPlusAccess, setHasPlusAccess] = useState(false);
+  const [authReady, setAuthReady] = useState(false);
+  const [subscriptionReady, setSubscriptionReady] = useState(false);
 
   const sizes = [5, 15, 30, 50];
+
+  useEffect(() => {
+    const loadSubscription = async (user: User) => {
+      if (!user.email) {
+        setHasPlusAccess(false);
+        setSubscriptionReady(true);
+        return;
+      }
+      try {
+        const response = await fetch("/api/stripe/subscription-status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user.email }),
+        });
+        const result = (await response.json().catch(() => ({}))) as {
+          hasPlusAccess?: boolean;
+          hasSubscription?: boolean;
+        };
+        const plus = Boolean(result.hasPlusAccess ?? result.hasSubscription);
+        setHasPlusAccess(plus);
+        try {
+          localStorage.setItem(`${PLUS_ACCESS_CACHE_PREFIX}${user.uid}`, plus ? "1" : "0");
+        } catch {
+          // ignore cache failures
+        }
+      } catch {
+        // Keep cached/previous value on transient errors.
+      } finally {
+        setSubscriptionReady(true);
+      }
+    };
+
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setUserLoggedIn(Boolean(user));
+      setAuthReady(true);
+      if (!user) {
+        setHasPlusAccess(false);
+        setSubscriptionReady(true);
+        return;
+      }
+      try {
+        const cached = localStorage.getItem(`${PLUS_ACCESS_CACHE_PREFIX}${user.uid}`);
+        if (cached === "1") {
+          setHasPlusAccess(true);
+        }
+      } catch {
+        // ignore cache failures
+      }
+      setSubscriptionReady(false);
+      void loadSubscription(user);
+    });
+
+    return () => unsub();
+  }, []);
 
   useEffect(() => {
     const onStorage = (e: StorageEvent) => {
@@ -144,6 +227,11 @@ export default function ElectricalLevel3Page() {
     setPickerOpen(false);
     setPickedHref(null);
   };
+
+  useEffect(() => {
+    setPickerOpen(false);
+    setPickedHref(null);
+  }, [pathname]);
 
   const resetProgress = () => {
     try {
@@ -266,7 +354,19 @@ export default function ElectricalLevel3Page() {
         {/* Cards */}
         <section className="mt-8 mx-auto max-w-6xl">
           <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {CATEGORIES.map((c) => (
+            {CATEGORIES.map((c) => {
+              const topic = getTopicFromHref(c.href);
+              const requiresPlus = LOCKED_LEVEL3_TOPICS.has(topic);
+              const accessState = getTopicAccessState(
+                requiresPlus,
+                authReady,
+                userLoggedIn,
+                subscriptionReady,
+                hasPlusAccess
+              );
+              const isLocked = accessState === "locked";
+              const isCheckingAccess = accessState === "loading";
+              return (
               <div
                 key={c.id}
                 className="flex h-full flex-col rounded-2xl bg-white/5 p-6 ring-1 ring-white/10 transition hover:bg-white/10 hover:ring-white/15"
@@ -326,13 +426,26 @@ export default function ElectricalLevel3Page() {
 
                 <button
                   type="button"
-                  onClick={() => openPicker(c.href)}
-                  className="mt-auto block w-full rounded-xl bg-[#FFC400] px-4 py-3 text-center text-sm font-semibold text-white shadow-sm shadow-[#FF9100]/20 hover:bg-[#FF9100]"
+                  onClick={() => {
+                    if (isCheckingAccess) return;
+                    if (isLocked) {
+                      window.location.href = userLoggedIn ? "/account" : "/login";
+                      return;
+                    }
+                    openPicker(c.href);
+                  }}
+                  className={`mt-auto block w-full rounded-xl px-4 py-3 text-center text-sm font-semibold shadow-sm transition ${
+                    isLocked || isCheckingAccess
+                      ? "bg-white/10 text-white/70 ring-1 ring-white/10 hover:bg-white/15"
+                      : "bg-[#FFC400] text-white shadow-[#FF9100]/20 hover:bg-[#FF9100]"
+                  }`}
+                  disabled={isCheckingAccess}
                 >
-                  Start Quiz
+                  {isCheckingAccess ? "Checking access..." : isLocked ? "Spark Theory +" : "Start Quiz"}
                 </button>
               </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 

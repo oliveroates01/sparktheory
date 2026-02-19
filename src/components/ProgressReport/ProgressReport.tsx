@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
 
 export type StoredResult = {
@@ -225,6 +226,7 @@ export default function ProgressReport({
   lockedTopic,
   onResetProgress,
 }: Props) {
+  const pathname = usePathname();
   const [mode, setMode] = useState<Mode>(lockedTopic ? lockedTopic : "all");
   const effectiveMode = lockedTopic ? lockedTopic : mode;
 
@@ -242,6 +244,7 @@ export default function ProgressReport({
 
   // ✅ info modal (Help)
   const [infoOpen, setInfoOpen] = useState(false);
+  const [modalPath, setModalPath] = useState(pathname);
 
   // measure viewport width (responsive)
   useEffect(() => {
@@ -403,11 +406,19 @@ export default function ProgressReport({
 
   const canReset = Boolean(onResetProgress) && !lockedTopic;
 
-  const openReset = () => setResetOpen(true);
+  const openReset = () => {
+    setModalPath(pathname);
+    setResetOpen(true);
+  };
   const closeReset = () => setResetOpen(false);
 
-  const openInfo = () => setInfoOpen(true);
+  const openInfo = () => {
+    setModalPath(pathname);
+    setInfoOpen(true);
+  };
   const closeInfo = () => setInfoOpen(false);
+  const infoVisible = infoOpen && modalPath === pathname;
+  const resetVisible = resetOpen && modalPath === pathname;
 
   const confirmReset = () => {
     closeReset();
@@ -637,7 +648,7 @@ export default function ProgressReport({
       )}
 
       {/* ✅ Info modal — SAME STYLE AS RESET MODAL (updated text) */}
-      {infoOpen && (
+      {infoVisible && (
         <div
           className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-6"
           onClick={closeInfo}
@@ -674,7 +685,7 @@ export default function ProgressReport({
       )}
 
       {/* Reset confirm modal */}
-      {resetOpen && (
+      {resetVisible && (
         <div
           className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-6"
           onClick={closeReset}

@@ -1,1302 +1,1207 @@
 export const healthSafetyQuestions = [
-  {
-    id: "hs-001",
-    question: "What was the main purpose of the Health and Safety at Work Act 1974?",
-    options: [
-      "Provide a legal framework for high standards of workplace health",
-      "Set national wage levels for trades",
-      "License all construction companies",
-      "Replace all electrical regulations",
-  ],
-    correctIndex: 0,
-    explanation:
-      "The Act provides the legal framework to encourage and enforce high safety standards.",
-  },
-  {
-    id: "hs-002",
-    question: "Who shares responsibility for safety at work under the Health and Safety at Work Act?",
-    options: [
-      "Both workers and managers",
-      "The employer and managers primarily",
-      "The HSE and company directors jointly",
-      "The employer and supervisors alone",
-],
-    correctIndex: 0,
-    explanation:
-      "The Act places duties on both employers and employees.",
-  },
-  {
-    id: "hs-003",
-    question: "Under Section 2 of the Act, what must an employer provide to keep employees safe?",
-    options: [
-      "Safe working conditions",
-      "A written policy statement and posters",
-      "First aid provision and accident records",
-      "Induction briefings and warning notices",
-],
-    correctIndex: 0,
-    explanation:
-      "Employers must ensure safe conditions, equipment, PPE and training.",
-  },
-  {
-    id: "hs-004",
-    question: "Under Section 7 of the Act, what duties do employees have?",
-    options: [
-      "Take reasonable care and cooperate with safety procedures",
-      "Set company safety policy",
-      "Approve safety budgets",
-      "Ignore PPE if uncomfortable",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Employees must take reasonable care and cooperate with safety arrangements.",
-  },
-  {
-    id: "hs-005",
-    question: "What can happen legally if the Health and Safety at Work Act is breached?",
-    options: [
-      "Prosecution, fines or imprisonment",
-      "An improvement notice and compliance plan",
-      "Civil claims only with no criminal action",
-      "Internal disciplinary action only",
-],
-    correctIndex: 0,
-    explanation:
-      "Failure to comply is a criminal offence and can lead to prosecution.",
-  },
-  {
-    id: "hs-006",
-    question: "What is the role of the Health and Safety Executive (HSE)?",
-    options: [
-      "Enforce health and safety law",
-      "Write company policy statements",
-      "Hire site staff",
-      "Set electricity prices",
-  ],
-    correctIndex: 0,
-    explanation:
-      "The HSE enforces health and safety law through inspections and action.",
-  },
-  {
-    id: "hs-007",
-    question: "Name two powers given to HSE inspectors when enforcing safety law?",
-    options: [
-      "Enter sites unannounced and issue notices",
-      "Approve salaries and overtime",
-      "Set project deadlines and budgets",
-      "Choose subcontractors",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Inspectors can enter premises, investigate, and issue improvement/prohibition notices.",
-  },
-  {
-    id: "hs-008",
-    question: "What is an improvement notice?",
-    options: [
-      "A notice requiring an employer to remedy a legal breach within a set time",
-      "A notice that stops all work immediately",
-      "A certificate for excellent safety",
-      "A reminder to attend training",
-  ],
-    correctIndex: 0,
-    explanation:
-      "An improvement notice requires correction of a minor infringement within a time limit.",
-  },
-  {
-    id: "hs-009",
-    question: "What is a prohibition notice?",
-    options: [
-      "A notice that stops a dangerous",
-      "A permit to work at height",
-      "A warning that training is overdue",
-      "A notice to order new tools",
-  ],
-    correctIndex: 0,
-    explanation:
-      "A prohibition notice stops work that is likely to cause serious injury.",
-  },
-  {
-    id: "hs-010",
-    question: "What is a Statutory Regulation?",
-    options: [
-      "A law made by Parliament",
-      "Optional guidance",
-      "A company procedure",
-      "A manufacturer leaflet",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Statutory Regulations are laws passed by Parliament.",
-  },
-  {
-    id: "hs-011",
-    question: "What is a Non‑statutory Regulation?",
-    options: [
-      "Guidance or codes of practice",
-      "A criminal law",
-      "A court order",
-      "A permit issued by the HSE",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Non‑statutory regulations explain how to meet statutory requirements.",
-  },
-  {
-    id: "hs-012",
-    question: "Why are non‑statutory regulations important?",
-    options: [
-      "They explain how to comply",
-      "They replace statutory law",
-      "They replace statutory duties when adopted by a company",
-      "They are optional advertising",
-],
-    correctIndex: 0,
-    explanation:
-      "They interpret statutory law and show practical compliance.",
-  },
-  {
-    id: "hs-013",
-    question: "What is the purpose of the Electricity Safety, Quality and Continuity Regulations 2002?",
-    options: [
-      "Ensure the safe and reliable supply of electricity",
-      "Set tool hire prices",
-      "Regulate building design",
-      "License electricians",
-  ],
-    correctIndex: 0,
-    explanation:
-      "ESQCR ensures a safe and proper supply of electricity.",
-  },
-  {
-    id: "hs-014",
-    question: "What low‑voltage harmonization change took effect in the UK from 1 January 1995?",
-    options: [
-      "415/240 V became 400/230 V",
-      "230 V became 120 V",
-      "50 Hz became 60 Hz",
-      "Voltage tolerances were removed",
-  ],
-    correctIndex: 0,
-    explanation:
-      "UK supplies were harmonized to 400 V three‑phase and 230 V single‑phase.",
-  },
-  {
-    id: "hs-015",
-    question: "What is the nominal frequency for UK electricity supply?",
-    options: [
-      "50 Hz",
-      "60 Hz",
-      "45 Hz",
-      "55 Hz",
-  ],
-    correctIndex: 0,
-    explanation:
-      "The UK supply frequency is maintained at an average of 50 Hz.",
-  },
-  {
-    id: "hs-016",
-    question: "What is the purpose of the Electricity at Work Regulations 1989 (EWR)?",
-    options: [
-      "Prevent death or injury",
-      "Control energy prices",
-      "License apprentices",
-      "Regulate building permits",
-  ],
-    correctIndex: 0,
-    explanation:
-      "EWR require precautions against risks from electricity in work activities.",
-  },
-  {
-    id: "hs-017",
-    question: "According to the EWR, what is preferred before electrical work begins?",
-    options: [
-      "Make conductors dead before work",
-      "Work live to save time",
-      "Remove warning labels",
-      "Increase voltage for testing",
-  ],
-    correctIndex: 0,
-    explanation:
-      "The EWR state it is preferable to make conductors dead before work.",
-  },
-  {
-    id: "hs-018",
-    question: "What is the only acceptable defence if prosecuted for breaking the EWR?",
-    options: [
-      "Prove all reasonable steps",
-      "Say the work was urgent",
-      "Blame another worker",
-      "Claim the rules are unclear",
-  ],
-    correctIndex: 0,
-    explanation:
-      "The only acceptable defence is due diligence and reasonable steps.",
-  },
-  {
-    id: "hs-019",
-    question: "Who is a ‘duty holder’ in electrical safety?",
-    options: [
-      "The person who controls the electrical system and its safety",
-      "A site visitor with no control of the system",
-      "The tool supplier",
-      "The client regardless of control",
-],
-    correctIndex: 0,
-    explanation:
-      "A duty holder controls the electrical system and has responsibility for safety.",
-  },
-  {
-    id: "hs-020",
-    question: "What is the difference between ‘absolute’ and ‘reasonably practicable’ duties?",
-    options: [
-      "Absolute must always be met; reasonably practicable considers risk",
-      "Absolute is optional; reasonably practicable is law",
-      "Absolute applies only to high‑risk work; reasonably practicable to low‑risk work",
-      "There is no difference",
-],
-    correctIndex: 0,
-    explanation:
-      "Absolute duties must be met regardless; reasonably practicable allows a balance of risk.",
-  },
-  {
-    id: "hs-021",
-    question: "What do the Management of Health and Safety at Work Regulations 1999 require?",
-    options: [
-      "Risk assessments",
-      "No formal assessments",
-      "A written policy statement only",
-      "Accident reporting only",
-],
-    correctIndex: 0,
-    explanation:
-      "Employers must carry out risk assessments and keep significant findings.",
-  },
-  {
-    id: "hs-022",
-    question: "What is COSHH mainly concerned with?",
-    options: [
-      "Controlling exposure to substances hazardous to health",
-      "Controlling working hours",
-      "Managing site security",
-      "Setting voltage tolerances",
-  ],
-    correctIndex: 0,
-    explanation:
-      "COSHH controls exposure to substances hazardous to health.",
-  },
-  {
-    id: "hs-023",
-    question: "Which is an example of a hazardous substance category under COSHH?",
-    options: [
-      "Fumes and gases",
-      "Drinking water",
-      "Clean air vents",
-      "Safety signs",
-  ],
-    correctIndex: 0,
-    explanation:
-      "COSHH includes fumes and gases that can cause asphyxiation.",
-  },
-  {
-    id: "hs-024",
-    question: "What do the Provision and Use of Work Equipment Regulations 1998 require?",
-    options: [
-      "Minimum safety standards for plant",
-      "Only inspection of hand tools after purchase",
-      "No maintenance duties",
-      "Only requirements for hired equipment",
-],
-    correctIndex: 0,
-    explanation:
-      "PUWER places a duty on employers to ensure safe equipment and maintenance.",
-  },
-  {
-    id: "hs-025",
-    question: "Why are construction sites considered high‑risk?",
-    options: [
-      "They are temporary and have",
-      "They have no tools",
-      "They have stable conditions and predictable hazards",
-      "They do not use electricity",
-],
-    correctIndex: 0,
-    explanation:
-      "Construction sites are temporary and hazards change frequently.",
-  },
-  {
-    id: "hs-026",
-    question: "What is PPE as defined by the PPE at Work Regulations?",
-    options: [
-      "Equipment worn or held to protect against risks to health",
-      "Any work uniform",
-      "High‑visibility clothing only",
-      "Respirators and gloves only",
-],
-    correctIndex: 0,
-    explanation:
-      "PPE is protective equipment worn or held to reduce risks.",
-  },
-  {
-    id: "hs-027",
-    question: "Who pays for PPE and what must employees do with it?",
-    options: [
-      "Employers provide it free; employees",
-      "Employees pay for it; use is optional",
-      "Clients pay; supervisors decide use",
-      "It is not required by law",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Employers must provide PPE free and employees must use it properly.",
-  },
-  {
-    id: "hs-028",
-    question: "What are the four categories of safety signs?",
-    options: [
-      "Prohibition, warning,",
-      "Danger, advice, notice, caution",
-      "Fire, water, gas, electrical",
-      "Red, blue, green, black",
-  ],
-    correctIndex: 0,
-    explanation:
-      "The standard categories are prohibition, warning, mandatory and safe condition.",
-  },
-  {
-    id: "hs-029",
-    question: "What is a prohibition sign?",
-    options: [
-      "A red circular sign indicating an activity must not be done",
-      "A blue circular sign indicating an action must be done",
-      "A green rectangular sign showing safe condition information",
-      "A yellow triangle warning of danger",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Prohibition signs are red circles with a cross‑bar and mean ‘must not do’.",
-  },
-  {
-    id: "hs-030",
-    question: "What is a warning sign?",
-    options: [
-      "A yellow triangle that warns of a hazard",
-      "A green rectangle with a running man",
-      "A blue circle showing PPE",
-      "A red circle with a cross‑bar",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Warning signs are triangular and yellow with a black border.",
-  },
-  {
-    id: "hs-031",
-    question: "What is a mandatory sign?",
-    options: [
-      "A blue circle showing an action that must be obeyed",
-      "A yellow triangle warning of danger",
-      "A green rectangle for safe conditions",
-      "A red circle for prohibition",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Mandatory signs are blue circles with white symbols.",
-  },
-  {
-    id: "hs-032",
-    question: "What is a safe condition sign?",
-    options: [
-      "A green square or rectangle safety sign",
-      "A red circle with a bar",
-      "A yellow triangle",
-      "A blue circle",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Safe condition signs are green and give safety information.",
-  },
-  {
-    id: "hs-033",
-    question: "How is a workplace accident defined in the text?",
-    options: [
-      "An uncontrolled event",
-      "A planned maintenance task",
-      "A toolbox talk",
-      "A completed risk assessment",
-  ],
-    correctIndex: 0,
-    explanation:
-      "An accident is defined as an uncontrolled event causing injury or damage.",
-  },
-  {
-    id: "hs-034",
-    question: "Which accidents must be reported to the HSE?",
-    options: [
-      "Major injuries, deaths,",
-      "Any accident requiring first aid treatment",
-      "Any near miss that could have caused harm",
-      "All first aid treatments",
-],
-    correctIndex: 0,
-    explanation:
-      "Reportable accidents include deaths, major injuries, and over‑three‑day absences.",
-  },
-  {
-    id: "hs-035",
-    question: "What three elements make up the fire triangle?",
-    options: [
-      "Fuel, oxygen and heat",
-      "Water, foam and CO2",
-      "Metal, wood and plastic",
-      "Noise, dust and vibration",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Fire needs fuel, oxygen and heat to continue.",
-  },
-  {
-    id: "hs-036",
-    question: "Why must water not be used on burning liquids?",
-    options: [
-      "It spreads the burning liquid",
-      "It makes smoke darker",
-      "It cools the room too much",
-      "It increases oxygen levels",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Water spreads burning liquids and can make the fire worse.",
-  },
-  {
-    id: "hs-037",
-    question: "What are the four main fire classes?",
-    options: [
-      "A: solids, B: liquids, C: gas, D: metals",
-      "A: gas, B: water, C: foam, D: CO2",
-      "A: electrical, B: chemical, C: fuel, D: metal",
-      "A: paper, B: water, C: oil, D: plastic",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Class A solids, Class B liquids, Class C gas, Class D metals.",
-  },
-  {
-    id: "hs-038",
-    question: "When is it acceptable to fight a fire with an extinguisher?",
-    options: [
-      "Only if you can do so",
-      "Any time you see flames",
-      "If a supervisor instructs you to do so",
-      "If you have the correct extinguisher but no clear exit",
-],
-    correctIndex: 0,
-    explanation:
-      "You should only fight a fire if it is safe to do so.",
-  },
-  {
-    id: "hs-039",
-    question: "Why is hot working more hazardous than cold working?",
-    options: [
-      "It introduces extra fire risk",
-      "It requires no PPE",
-      "It involves no fuel sources",
-      "It generally produces less heat than cold working",
-],
-    correctIndex: 0,
-    explanation:
-      "Hot working increases fire risk and needs strict procedures.",
-  },
-  {
-    id: "hs-040",
-    question: "What must be in place before hot working starts?",
-    options: [
-      "A written method statement",
-      "A hot‑work permit and fire watch only",
-      "A risk assessment and extinguisher only",
-      "Isolation of all electrical circuits in the building",
-],
-    correctIndex: 0,
-    explanation:
-      "Hot working must follow written procedures in a method statement.",
-  },
-  {
-    id: "hs-041",
-    question: "What does the ‘running man’ symbol indicate?",
-    options: [
-      "Escape route or emergency exit",
-      "No entry",
-      "Wear eye protection",
-      "High voltage",
-  ],
-    correctIndex: 0,
-    explanation:
-      "It marks escape routes for evacuation.",
-  },
-  {
-    id: "hs-042",
-    question: "What is the purpose of an assembly point?",
-    options: [
-      "A safe place to gather for roll call after evacuation",
-      "A tool storage area",
-      "A smoking area",
-      "A delivery bay",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Assembly points keep people safe and allow roll‑call after evacuation.",
-  },
-  {
-    id: "hs-043",
-    question: "What is a hazard?",
-    options: [
-      "Something with the potential to cause harm",
-      "The chance of harm happening",
-      "A safety notice",
-      "A risk assessment form",
-  ],
-    correctIndex: 0,
-    explanation:
-      "A hazard is anything that could cause harm.",
-  },
-  {
-    id: "hs-044",
-    question: "What is a risk?",
-    options: [
-      "The likelihood",
-      "A warning sign",
-      "A safety helmet",
-      "A duty holder",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Risk is the chance that harm will be done.",
-  },
-  {
-    id: "hs-045",
-    question: "What is a competent person in safety terms?",
-    options: [
-      "Someone with the skills",
-      "Anyone on site",
-      "Anyone with years on site regardless of training",
-      "Anyone appointed by the employer without training",
-],
-    correctIndex: 0,
-    explanation:
-      "A competent person has the skills, training and experience to do the task safely.",
-  },
-  {
-    id: "hs-046",
-    question: "Which list contains common categories of workplace risks?",
-    options: [
-      "Slips/trips, manual handling, tools,",
-      "Uniform colors, pay rates, schedules",
-      "Office seating, parking, emails",
-      "Holiday requests, overtime",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Common categories include slips/trips, manual handling, equipment, fire and electricity.",
-  },
-  {
-    id: "hs-047",
-    question: "Which is a recommended order of risk control?",
-    options: [
-      "Eliminate, substitute, guard, safe systems, PPE",
-      "PPE first, then eliminate",
-      "Training, PPE, then elimination of hazards",
-      "Do nothing unless an accident occurs",
-],
-    correctIndex: 0,
-    explanation:
-      "Risk control prioritizes elimination, substitution, guarding, safe systems, PPE last.",
-  },
-  {
-    id: "hs-048",
-    question: "Why should PPE be the last resort in risk control?",
-    options: [
-      "Because other controls reduce",
-      "Because PPE is the most expensive control option",
-      "Because PPE is free",
-      "Because PPE is illegal",
-],
-    correctIndex: 0,
-    explanation:
-      "PPE does not remove the hazard; higher‑level controls should be used first.",
-  },
-  {
-    id: "hs-049",
-    question: "How many steps are recommended for risk assessment?",
-    options: [
-      "Five",
-      "Two",
-      "Eight",
-      "Ten",
-  ],
-    correctIndex: 0,
-    explanation:
-      "The HSE recommends five steps in risk assessment.",
-  },
-  {
-    id: "hs-050",
-    question: "What is a method statement?",
-    options: [
-      "A written safe system of work for carrying out a task",
-      "A list of tools",
-      "A visitor log",
-      "A PPE inventory",
-  ],
-    correctIndex: 0,
-    explanation:
-      "A method statement sets out the safe work sequence and procedure.",
-  },
-  {
-    id: "hs-051",
-    question: "What is a safe isolation procedure?",
-    options: [
-      "A method to disconnect, secure, and prove an electrical circuit is dead",
-      "A way to test live equipment without barriers",
-      "A permit to work at height",
-      "A site evacuation plan",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Safe isolation ensures equipment is disconnected and secured before work.",
-  },
-  {
-    id: "hs-052",
-    question: "What is the approximate lethal shock current mentioned?",
-    options: [
-      "About 50 mA",
-      "About 5 mA",
-      "About 500 mA",
-      "About 1 mA",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Around 50 mA can cause fatal effects such as heart fibrillation.",
-  },
-  {
-    id: "hs-053",
-    question: "What should you do first if a coworker receives an electric shock?",
-    options: [
-      "Switch off the supply if possible",
-      "Grab them with bare hands",
-      "Give them water",
-      "Run away without isolating the supply",
-  ],
-    correctIndex: 0,
-    explanation:
-      "First isolate the supply; never touch the person directly while live.",
-  },
-  {
-    id: "hs-054",
-    question: "What does the EWR say about live repair work?",
-    options: [
-      "Live repairs must not be carried out",
-      "Live repairs are preferred",
-      "Live repairs require no training",
-      "Live repairs are allowed without barriers",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Live repair work is forbidden; equipment must be isolated first.",
-  },
-  {
-    id: "hs-055",
-    question: "Which site voltage is recommended for portable tools?",
-    options: [
-      "110 V",
-      "400 V",
-      "230 V with RCD protection",
-      "50 V extra‑low voltage",
-],
-    correctIndex: 0,
-    explanation:
-      "Portable tools are recommended to use 110 V supplies.",
-  },
-  {
-    id: "hs-056",
-    question: "What voltage is recommended for portable lamps in damp/confined places?",
-    options: [
-      "SELV (extra-low voltage)",
-      "400 V",
-      "230 V",
-      "110 V",
-  ],
-    correctIndex: 0,
-    explanation:
-      "SELV is recommended for portable lamps in damp or confined places.",
-  },
-  {
-    id: "hs-057",
-    question: "Why are site sockets keyed and color coded?",
-    options: [
-      "To prevent equipment being",
-      "To standardize connector sizes across suppliers",
-      "To reduce cable length",
-      "To increase voltage",
-],
-    correctIndex: 0,
-    explanation:
-      "Keying and colors prevent incorrect voltage connections.",
-  },
-  {
-    id: "hs-058",
-    question: "What is the three‑level system for portable appliance maintenance?",
-    options: [
-      "User checks, visual inspection, combined inspection",
-      "Monthly PAT by contractor only",
-      "Visual checks only by supervisors",
-      "Self‑certification by users only",
-],
-    correctIndex: 0,
-    explanation:
-      "The HSE recommends user checks, visual inspection, and combined testing.",
-  },
-  {
-    id: "hs-059",
-    question: "Why is user checking of equipment important?",
-    options: [
-      "Most faults can be spotted by a simple visual check",
-      "It replaces all PAT testing",
-      "It satisfies legal duty without further testing",
-      "It is optional",
-],
-    correctIndex: 0,
-    explanation:
-      "A simple visual check can detect most faults or damage.",
-  },
-  {
-    id: "hs-060",
-    question: "Which is a warning sign of unsafe portable equipment?",
-    options: [
-      "Damage exposing live conductors",
-      "A clean casing",
-      "A new label",
-      "A tight cord grip",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Exposed conductors or damaged leads are clear signs of danger.",
-  },
-  {
-    id: "hs-061",
-    question: "What does a PAT earth bond test check?",
-    options: [
-      "Continuity of the earth path",
-      "Cable colour",
-      "Insulation resistance between live and neutral",
-      "Tool weight",
-],
-    correctIndex: 0,
-    explanation:
-      "It tests the effectiveness of the earth connection.",
-  },
-  {
-    id: "hs-062",
-    question: "What does a PAT insulation resistance test check?",
-    options: [
-      "Insulation between live/neutral",
-      "Continuity of the earth conductor",
-      "Battery level",
-      "Cable length",
-],
-    correctIndex: 0,
-    explanation:
-      "It checks insulation integrity between live/neutral and earth.",
-  },
-  {
-    id: "hs-063",
-    question: "What should happen to equipment that fails a PAT test?",
-    options: [
-      "It should be removed from service and repaired",
-      "It should be used carefully",
-      "It should be labeled but left in use",
-      "It should be sold",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Failed equipment must be taken out of service and repaired.",
-  },
-  {
-    id: "hs-064",
-    question: "What is first aid (as defined in the text)?",
-    options: [
-      "Immediate assistance before professional medical help arrives",
-      "Full medical treatment",
-      "Treatment by a qualified nurse only",
-      "A health and safety poster",
-],
-    correctIndex: 0,
-    explanation:
-      "First aid is initial assistance before a doctor or ambulance arrives.",
-  },
-  {
-    id: "hs-065",
-    question: "Who is an appointed person for first aid?",
-    options: [
-      "A nominated person who takes charge, calls for help, and looks after first-aid arrangements",
-      "Anyone on site",
-      "A qualified paramedic on call for the site",
-      "A trained first aider who must provide full treatment",
-],
-    correctIndex: 0,
-    explanation:
-      "An appointed person takes charge and calls help; they may manage first aid equipment.",
-  },
-  {
-    id: "hs-066",
-    question: "What is asphyxiation?",
-    options: [
-      "Lack of air (suffocation)",
-      "A broken bone",
-      "A burn injury",
-      "A sprain",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Asphyxiation is suffocation caused by lack of air.",
-  },
-  {
-    id: "hs-067",
-    question: "How should severe bleeding be treated initially?",
-    options: [
-      "Apply direct pressure",
-      "Wash with hot water",
-      "Leave it uncovered",
-      "Apply ointment",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Apply pressure, elevate if possible, and dress the wound.",
-  },
-  {
-    id: "hs-068",
-    question: "What is the correct first aid for burns?",
-    options: [
-      "Cool with clean cold water",
-      "Break blisters and apply cream",
-      "Remove stuck clothing",
-      "Rub the area vigorously",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Cool the burn with clean water and cover with a clean, dry dressing.",
-  },
-  {
-    id: "hs-069",
-    question: "What is the correct response to a suspected broken bone?",
-    options: [
-      "Support the limb and keep it still",
-      "Force the limb straight",
-      "Ask them to walk",
-      "Apply heat immediately",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Support the limb and avoid movement until help arrives.",
-  },
-  {
-    id: "hs-070",
-    question: "What should you do after contact with chemicals?",
-    options: [
-      "Rinse thoroughly with clean water",
-      "Rub the area with a dry cloth",
-      "Apply lotion immediately",
-      "Cover tightly without rinsing",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Flush with clean water, remove contaminated clothing and seek help.",
-  },
-  {
-    id: "hs-071",
-    question: "How should exposure to toxic fumes be treated?",
-    options: [
-      "Move to fresh air and seek medical advice",
-      "Keep the person lying in the fume area",
-      "Give them food or drink",
-      "Ignore if they seem fine",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Get them into fresh air and obtain medical advice.",
-  },
-  {
-    id: "hs-072",
-    question: "What is the immediate treatment for sprains or bruising?",
-    options: [
-      "Apply a cold compress",
-      "Apply heat immediately",
-      "Massage vigorously",
-      "Bandage tightly without cooling",
-  ],
-    correctIndex: 0,
-    explanation:
-      "A cold compress reduces swelling and pain.",
-  },
-  {
-    id: "hs-073",
-    question: "What should be done after every accident?",
-    options: [
-      "Report and document",
-      "Ignore if minor",
-      "Record only if time off work occurs",
-      "Record only if medical treatment is required",
-],
-    correctIndex: 0,
-    explanation:
-      "All accidents should be reported and documented.",
-  },
-  {
-    id: "hs-074",
-    question: "What does RIDDOR stand for?",
-    options: [
-      "Reporting of Injuries, Diseases and Dangerous",
-      "Register of Industrial Design and Duties",
-      "Regulations for Installation of Domestic Outlets",
-      "Reporting of Inspections for Daily Operations",
-  ],
-    correctIndex: 0,
-    explanation:
-      "RIDDOR is the Reporting of Injuries, Diseases and Dangerous Occurrences Regulations.",
-  },
-  {
-    id: "hs-075",
-    question: "What is a dangerous occurrence?",
-    options: [
-      "A near miss with potential for serious harm",
-      "A minor cut",
-      "A planned shutdown",
-      "A routine inspection",
-  ],
-    correctIndex: 0,
-    explanation:
-      "A dangerous occurrence is a near miss with potential for serious harm.",
-  },
-  {
-    id: "hs-076",
-    question: "What is a hazardous malfunction?",
-    options: [
-      "Equipment failure",
-      "A missing toolbox",
-      "A late delivery",
-      "A noisy fan",
-  ],
-    correctIndex: 0,
-    explanation:
-      "A hazardous malfunction is a failure that could cause harm.",
-  },
-  {
-    id: "hs-077",
-    question: "What is a permit‑to‑work system used for?",
-    options: [
-      "Managing high‑risk",
-      "Ordering materials",
-      "Logging visitors",
-      "Issuing pay slips",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Permits‑to‑work control high‑risk tasks with strict safeguards.",
-  },
-  {
-    id: "hs-078",
-    question: "Which is a typical situation requiring a permit‑to‑work?",
-    options: [
-      "Working in confined spaces",
-      "Taking a break",
-      "Checking emails",
-      "Painting signage",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Confined space work often requires a permit‑to‑work.",
-  },
-  {
-    id: "hs-079",
-    question: "Why is working alone prohibited in certain situations?",
-    options: [
-      "Because help may be needed",
-      "Because it slows work",
-      "Because it saves PPE",
-      "Because it slows coordination and productivity",
-],
-    correctIndex: 0,
-    explanation:
-      "High‑risk situations require assistance and safe procedures.",
-  },
-  {
-    id: "hs-080",
-    question: "Where should you never work alone according to the text?",
-    options: [
-      "Confined spaces",
-      "Office desks",
-      "Break rooms",
-      "Reception areas",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Working alone is unsafe in confined spaces, excavations and other high‑risk areas.",
-  },
-  {
-    id: "hs-081",
-    question: "What is the recommended ladder angle?",
-    options: [
-      "4 up to 1 out (about 75°)",
-      "1 up to 4 out",
-      "90 degrees",
-      "30 degrees",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Ladders should be set at a 4:1 ratio or about 75 degrees.",
-  },
-  {
-    id: "hs-082",
-    question: "How far should a ladder extend above a landing?",
-    options: [
-      "At least 1.05 m or five rungs",
-      "Two rungs or about 0.5 m above the landing",
-      "Half a rung",
-      "It does not need to extend",
-],
-    correctIndex: 0,
-    explanation:
-      "Ladders should extend at least 1.05 m or five rungs above the landing.",
-  },
-  {
-    id: "hs-083",
-    question: "When should ladders be used for work at height?",
-    options: [
-      "Only for access and short-duration work",
-      "For all high‑level work",
-      "For long‑duration work if secured",
-      "For routine work at height indoors",
-],
-    correctIndex: 0,
-    explanation:
-      "Ladders are for access and short‑duration work only.",
-  },
-  {
-    id: "hs-084",
-    question: "What is the minimum platform width for a trestle scaffold?",
-    options: [
-      "At least two boards or 450 mm",
-      "At least 300 mm in width",
-      "150 mm",
-      "No minimum",
-],
-    correctIndex: 0,
-    explanation:
-      "Trestle scaffolds must be at least two boards or 450 mm wide.",
-  },
-  {
-    id: "hs-085",
-    question: "When must guardrails and toeboards be fitted on trestle scaffolds?",
-    options: [
-      "If the platform is more than 2 m above ground level",
-      "When the platform is above 1 m in height",
-      "Whenever work is outdoors or near edges",
-      "Only when materials are being lifted to the platform",
-],
-    correctIndex: 0,
-    explanation:
-      "Platforms over 2 m require guardrails and toeboards.",
-  },
-  {
-    id: "hs-086",
-    question: "What is the safe base‑to‑height ratio for a scaffold tower?",
-    options: [
-      "1:3",
-      "1:1",
-      "1:6",
-      "3:1",
-  ],
-    correctIndex: 0,
-    explanation:
-      "A base‑to‑height ratio of about 1:3 provides good stability.",
-  },
-  {
-    id: "hs-087",
-    question: "What must be done before moving a mobile scaffold tower?",
-    options: [
-      "Clear tools and people before moving the tower",
-      "Push from the top",
-      "Leave tools on the platform",
-      "Lock the wheels and move it",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Clear the platform and push from the base; never move it with people or tools on it.",
-  },
-  {
-    id: "hs-088",
-    question: "Why must access ladders be fixed inside a scaffold tower?",
-    options: [
-      "Leaning ladders",
-      "It saves space",
-      "It reduces height",
-      "It is optional",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Leaning ladders can destabilize the tower and cause it to tip.",
-  },
-  {
-    id: "hs-089",
-    question: "What is the key rule about water on electrical fires?",
-    options: [
-      "Do not use water on electrical fires",
-      "Use water once the power is isolated",
-      "Use water for Class B liquid fires",
-      "Water increases safety",
-],
-    correctIndex: 0,
-    explanation:
-      "Water must not be used on electrical fires; isolate supply and use correct extinguisher.",
-  },
-  {
-    id: "hs-090",
-    question: "What is ‘good housekeeping’ in a safety context?",
-    options: [
-      "Keeping the workplace tidy and free from hazards",
-      "Making tea for the team",
-      "Leaving tools out for convenience",
-      "Skipping clean‑ups to save time",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Good housekeeping means tidy work areas and proper waste disposal.",
-  },
-  {
-    id: "hs-091",
-    question: "Why must asbestos removal be done by specialists?",
-    options: [
-      "It is highly hazardous and legally controlled",
-      "It is cheap to remove",
-      "It is easy to identify by color alone",
-      "It is safe to handle",
-],
-    correctIndex: 0,
-    explanation:
-      "Asbestos is a serious health hazard and requires specialist removal.",
-  },
-  {
-    id: "hs-092",
-    question: "Which asbestos types are considered most dangerous?",
-    options: [
-      "Blue (crocidolite)",
-      "White and brown asbestos only",
-      "All types are safe",
-      "Green and yellow",
-],
-    correctIndex: 0,
-    explanation:
-      "Blue and brown asbestos are the most dangerous types.",
-  },
-  {
-    id: "hs-093",
-    question: "Why are fluorescent tubes treated as hazardous waste?",
-    options: [
-      "They contain mercury",
-      "They are made of wood",
-      "They are biodegradable",
-      "They are non‑electrical",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Fluorescent tubes contain mercury and must be recycled safely.",
-  },
-  {
-    id: "hs-094",
-    question: "Why must visitors sign in and out on a construction site?",
-    options: [
-      "To know who is on",
-      "To issue pay slips",
-      "To approve tool use",
-      "To reduce PPE",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Sign‑in helps account for everyone on site during emergencies.",
-  },
-  {
-    id: "hs-095",
-    question: "Which is a correct safe‑isolation step sequence?",
-    options: [
-      "Test live, isolate, test",
-      "Isolate, work, then test",
-      "Work live, then isolate",
-      "Isolate, lock off, then test live at the circuit",
-],
-    correctIndex: 0,
-    explanation:
-      "Correct safe isolation includes proving the tester before and after isolation.",
-  },
-  {
-    id: "hs-096",
-    question: "What is the primary purpose of PAT testing records?",
-    options: [
-      "Quality control and ensuring",
-      "To track employee attendance",
-      "To set tool prices",
-      "To replace risk assessments",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Records ensure inspections and tests are completed when due.",
-  },
-  {
-    id: "hs-097",
-    question: "What does a duty of care require at work?",
-    options: [
-      "Protect the health and safety of yourself and others",
-      "Ignore hazards outside your trade",
-      "Work without PPE",
-      "Finish as fast as possible",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Duty of care means taking reasonable steps to protect others.",
-  },
-  {
-    id: "hs-098",
-    question: "What is the purpose of the fire extinguisher color code?",
-    options: [
-      "Identify the correct extinguisher for the fire class",
-      "Decorate the site",
-      "Show ownership",
-      "Indicate age of the extinguisher",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Color coding helps match the extinguisher to the fire class.",
-  },
-  {
-    id: "hs-099",
-    question: "What should you do if you discover a fire?",
-    options: [
-      "Raise the alarm",
-      "Ignore it",
-      "Hide it from others",
-      "Run without warning",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Raise the alarm and only tackle small fires when safe to do so.",
-  },
-  {
-    id: "hs-100",
-    question: "What is the main purpose of risk assessment records?",
-    options: [
-      "Show that precautions were taken",
-      "Replace training",
-      "Avoid PPE",
-      "Reduce supervision",
-  ],
-    correctIndex: 0,
-    explanation:
-      "Records provide evidence that risks were assessed and controlled.",
-  },
-];
+    {
+      id: "hs-001",
+      question: "What is the main aim of the Health and Safety at Work Act 1974?",
+      options: [
+        "To define safety duties for employers and workers",
+        "To control wages and working hours nationally",
+        "To manage pollution on construction projects",
+        "To licence all trades working on site",
+      ],
+      correctIndex: 0,
+      explanation:
+        "The Act sets legal duties for employers and employees to protect health and safety.",
+    },
+    {
+      id: "hs-002",
+      question:
+        "Under the Health and Safety at Work Act 1974, which is a worker’s responsibility?",
+      options: [
+        "Take reasonable care for self and others",
+        "Approve company safety spending decisions",
+        "Change site rules when they disagree",
+        "Remove guards to make work easier",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Workers must take reasonable care and cooperate with safety arrangements.",
+    },
+    {
+      id: "hs-003",
+      question:
+        "Under the Health and Safety at Work Act 1974, which is an employer’s responsibility?",
+      options: [
+        "Provide safe equipment and workplace",
+        "Rely on workers supplying their own PPE",
+        "Remove written procedures to save time",
+        "Allow unsafe work if deadlines are tight",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Employers must provide safe systems, equipment, and environments.",
+    },
+    {
+      id: "hs-004",
+      question:
+        "What can happen if someone fails to comply with the Health and Safety at Work Act 1974?",
+      options: [
+        "They may be prosecuted and fined",
+        "They may be moved to another site",
+        "They may receive advice only",
+        "They cannot face legal action",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Failure to comply can lead to prosecution, fines or imprisonment.",
+    },
+    {
+      id: "hs-005",
+      question: "What is the main role of enforcing authorities such as the HSE?",
+      options: [
+        "Enforce safety law through inspections",
+        "Provide tools and PPE to workers",
+        "Manage daily site operations",
+        "Set company pay and overtime rates",
+      ],
+      correctIndex: 0,
+      explanation:
+        "The HSE enforces health and safety law through inspections and investigations.",
+    },
+    {
+      id: "hs-006",
+      question:
+        "Which of these is an example of a power used by enforcing authorities?",
+      options: [
+        "Enter sites to inspect and investigate",
+        "Approve staff pay rises on request",
+        "Choose which contractors get hired",
+        "Control project deadlines and targets",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Inspectors can enter premises and carry out investigations and measurements.",
+    },
+    {
+      id: "hs-007",
+      question: "Which statement best describes statutory regulations?",
+      options: [
+        "They are laws that must be followed",
+        "They are optional safety suggestions",
+        "They apply only to office workers",
+        "They apply only if a company agrees",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Statutory regulations are legal requirements and must be complied with.",
+    },
+    {
+      id: "hs-008",
+      question: "What is non-statutory guidance mainly used for?",
+      options: [
+        "To show ways to comply with the law",
+        "To replace legal duties on site",
+        "To allow workers to ignore rules",
+        "To create new criminal offences",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Guidance shows practical ways of meeting legal requirements.",
+    },
+    {
+      id: "hs-009",
+      question:
+        "What is described as the ‘electrician’s bible’ for installation work?",
+      options: [
+        "The IET Wiring Regulations",
+        "The Fire Safety Order",
+        "A company toolbox talk sheet",
+        "A manufacturer’s instruction leaflet",
+      ],
+      correctIndex: 0,
+      explanation:
+        "The IET Wiring Regulations provide the framework for electrical installations.",
+    },
+    {
+      id: "hs-010",
+      question:
+        "What is the purpose of the Electricity at Work Regulations 1989 (EWR)?",
+      options: [
+        "Prevent injury or death from electricity",
+        "Control the price of electrical power",
+        "Manage building planning permissions",
+        "Certify plumbers for electrical work",
+      ],
+      correctIndex: 0,
+      explanation:
+        "The EWR require precautions to prevent danger from electricity at work.",
+    },
+    {
+      id: "hs-011",
+      question:
+        "According to the EWR, what is preferred before electrical work begins?",
+      options: [
+        "Make systems dead and isolated",
+        "Work live to save time",
+        "Remove warning labels first",
+        "Increase voltage for testing",
+      ],
+      correctIndex: 0,
+      explanation:
+        "It is preferable that conductors are made dead before work starts.",
+    },
+    {
+      id: "hs-012",
+      question:
+        "If prosecuted for breaking the EWR, what is the only acceptable defence?",
+      options: [
+        "Show reasonable steps were taken",
+        "Say the job was urgent to finish",
+        "Blame another worker on site",
+        "Claim the rules do not apply",
+      ],
+      correctIndex: 0,
+      explanation:
+        "The defence is proving reasonable steps and due diligence were taken.",
+    },
+    {
+      id: "hs-013",
+      question: "Who is described as a ‘duty holder’ in electrical safety?",
+      options: [
+        "The person in control of the system",
+        "The person delivering materials to site",
+        "The person approving timesheets weekly",
+        "The person ordering tools and equipment",
+      ],
+      correctIndex: 0,
+      explanation:
+        "A duty holder is the person who controls electrical systems and equipment.",
+    },
+    {
+      id: "hs-014",
+      question: "Which statement best describes ‘duty of care’ at work?",
+      options: [
+        "Protect others affected by your work",
+        "Finish work as quickly as possible",
+        "Ignore hazards outside your trade",
+        "Work without PPE to show confidence",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Duty of care means protecting the health and safety of others.",
+    },
+    {
+      id: "hs-015",
+      question:
+        "What is the difference between ‘absolute’ and ‘reasonably practicable’ duties?",
+      options: [
+        "One must always be met; one balances risk",
+        "One applies to offices; one to sites",
+        "One is optional; one is guidance only",
+        "One depends on pay; one on experience",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Absolute duties must be met; reasonably practicable considers risk, time and cost.",
+    },
+    {
+      id: "hs-016",
+      question:
+        "What do the Management of Health and Safety at Work Regulations 1999 require employers to do?",
+      options: [
+        "Carry out risk assessments and plan safety",
+        "Provide PPE only with no assessments",
+        "Ignore hazards until accidents occur",
+        "Train managers only, not workers",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Employers must carry out risk assessments and implement safety arrangements.",
+    },
+    {
+      id: "hs-017",
+      question:
+        "Which of these is an example of a risk needing formal assessment on site?",
+      options: [
+        "Working at height",
+        "Choosing a logo colour",
+        "Picking a uniform style",
+        "Deciding lunch break times",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Working at height is a common risk that must be assessed.",
+    },
+    {
+      id: "hs-018",
+      question: "What is the main purpose of COSHH regulations?",
+      options: [
+        "Control exposure to harmful substances",
+        "Control working hours on site",
+        "Regulate site parking arrangements",
+        "Set electricity supply tolerances",
+      ],
+      correctIndex: 0,
+      explanation:
+        "COSHH controls exposure to hazardous substances to reduce health risks.",
+    },
+    {
+      id: "hs-019",
+      question: "Which is an example of a hazardous substance category mentioned?",
+      options: [
+        "Dust and fumes affecting breathing",
+        "Clean bottled drinking water",
+        "Fresh air ventilation systems",
+        "A safety notice board",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Dust and fumes can cause respiratory problems and are classed as hazardous.",
+    },
+    {
+      id: "hs-020",
+      question: "What does PUWER focus on?",
+      options: [
+        "Safe use of work equipment",
+        "Pricing of equipment hire",
+        "Design of company branding",
+        "Awarding trade qualifications",
+      ],
+      correctIndex: 0,
+      explanation:
+        "PUWER sets minimum standards for the safe use of work equipment.",
+    },
+    {
+      id: "hs-021",
+      question: "Why are construction sites often considered high risk?",
+      options: [
+        "Many hazards change as work progresses",
+        "Offices are usually more dangerous",
+        "PPE is not normally required",
+        "Construction rarely involves tools",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Construction sites have changing environments and multiple hazards.",
+    },
+    {
+      id: "hs-022",
+      question: "What is the main purpose of the PPE at Work Regulations?",
+      options: [
+        "Protect workers when other controls fail",
+        "Replace training and supervision",
+        "Allow unsafe equipment to be used",
+        "Remove the need for risk assessments",
+      ],
+      correctIndex: 0,
+      explanation:
+        "PPE is used when risks cannot be fully controlled by other means.",
+    },
+    {
+      id: "hs-023",
+      question: "Which of the following is a correct example of PPE?",
+      options: [
+        "Safety helmet and eye protection",
+        "Mobile phone and headphones",
+        "Bright coloured stationery",
+        "Personal coffee cup",
+      ],
+      correctIndex: 0,
+      explanation:
+        "PPE includes items such as helmets, goggles, gloves and boots.",
+    },
+    {
+      id: "hs-024",
+      question: "What are typical methods of protecting against falling objects?",
+      options: [
+        "Safety helmets and harness systems",
+        "Lightweight trainers and hoodies",
+        "Removing warning signs on site",
+        "Assuming falling objects are unlikely",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Helmets and harnesses are common methods of protection.",
+    },
+    {
+      id: "hs-025",
+      question: "Which statement best describes prohibition signs?",
+      options: [
+        "Red circle with line through symbol",
+        "Yellow triangle warning of danger",
+        "Blue circle showing required action",
+        "Green sign showing safe conditions",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Prohibition signs are red circles with a diagonal line.",
+    },
+    {
+      id: "hs-026",
+      question: "Which statement best describes warning signs?",
+      options: [
+        "Yellow triangle warning of hazard",
+        "Green rectangle for first aid",
+        "Blue circle for mandatory action",
+        "Red circle showing prohibition",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Warning signs are triangular and yellow with black borders.",
+    },
+    {
+      id: "hs-027",
+      question: "Which statement best describes mandatory signs?",
+      options: [
+        "Blue circle showing required action",
+        "Yellow triangle warning of hazard",
+        "Green rectangle showing safe route",
+        "Red circle showing forbidden action",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Mandatory signs are blue circles that show actions that must be followed.",
+    },
+    {
+      id: "hs-028",
+      question: "Which statement best describes safe condition signs?",
+      options: [
+        "Green signs showing safety information",
+        "Red signs showing prohibited actions",
+        "Yellow signs warning of hazards",
+        "Blue signs showing mandatory actions",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Safe condition signs are green and provide safety guidance.",
+    },
+    {
+      id: "hs-029",
+      question: "What is an accident at work?",
+      options: [
+        "An unplanned event causing harm or damage",
+        "A planned maintenance activity",
+        "A routine toolbox talk session",
+        "A completed risk assessment form",
+      ],
+      correctIndex: 0,
+      explanation:
+        "An accident is an unplanned event causing injury or damage.",
+    },
+    {
+      id: "hs-030",
+      question: "What does the fire triangle show is needed for fire to burn?",
+      options: [
+        "Fuel, oxygen and heat",
+        "Water, foam and carbon dioxide",
+        "Electricity, metal and plastic",
+        "Noise, dust and vibration",
+      ],
+      correctIndex: 0,
+      explanation: "Fire needs fuel, oxygen and heat to exist.",
+    },
+  
+    // ✅ Next batch starts here (still inside the same array)
+    {
+      id: "hs-031",
+      question:
+        "After 30 June 2000, what must workplaces with 5+ employees display?",
+      options: [
+        "The official HSE health and safety law poster",
+        "A company advert showing site rules",
+        "A weekly rota of staff holidays",
+        "A toolbox talk schedule for the month",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Workplaces employing five or more people had to display the HSE-style health and safety law poster.",
+    },
+    {
+      id: "hs-032",
+      question: "Why should an employer consult safety representatives?",
+      options: [
+        "To improve health and safety measures",
+        "To reduce wages and overtime costs",
+        "To avoid providing PPE on site",
+        "To replace risk assessments completely",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Employers should consult safety reps to promote and improve health and safety arrangements.",
+    },
+    {
+      id: "hs-033",
+      question: "In many companies with more than 20 employees, safety is managed by a:",
+      options: [
+        "Safety committee with reps and an officer",
+        "Marketing team with site supervisors",
+        "Payroll group with line managers",
+        "Customer service team with HR staff",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Where over 20 people are employed, it’s commonly done through a safety committee.",
+    },
+    {
+      id: "hs-034",
+      question: "What should an employee do first after spotting a dangerous situation?",
+      options: [
+        "Report it to the site safety representative",
+        "Post it on social media immediately",
+        "Keep quiet to avoid delays",
+        "Fix it alone without telling anyone",
+      ],
+      correctIndex: 0,
+      explanation:
+        "The first step is to report the hazard to the site safety representative.",
+    },
+    {
+      id: "hs-035",
+      question: "Why should safety committee actions be documented?",
+      options: [
+        "To show safety actions were taken",
+        "To advertise the company publicly",
+        "To avoid reporting accidents legally",
+        "To replace method statements on site",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Records show the business takes health and safety seriously and acted on issues.",
+    },
+    {
+      id: "hs-036",
+      question:
+        "What is the purpose of the Electricity Safety, Quality and Continuity Regulations 2002?",
+      options: [
+        "Ensure a safe supply up to consumer terminals",
+        "Set rules for internal company wiring only",
+        "Control energy prices for households",
+        "Certify electricians for domestic work",
+      ],
+      correctIndex: 0,
+      explanation:
+        "These regulations are designed to ensure a proper and safe electricity supply to consumers.",
+    },
+    {
+      id: "hs-037",
+      question: "Which supply voltages were harmonised in the UK from 1 January 1995?",
+      options: [
+        "400 V three-phase and 230 V single-phase",
+        "240 V three-phase and 415 V single-phase",
+        "110 V single-phase and 220 V three-phase",
+        "50 V single-phase and 100 V three-phase",
+      ],
+      correctIndex: 0,
+      explanation:
+        "The UK harmonised to 230 V single-phase and 400 V three-phase supplies.",
+    },
+    {
+      id: "hs-038",
+      question: "What is the permitted voltage range for a nominal 230 V supply?",
+      options: [
+        "216 V to 253 V",
+        "200 V to 260 V",
+        "220 V to 240 V",
+        "210 V to 270 V",
+      ],
+      correctIndex: 0,
+      explanation:
+        "With +10% / -6% tolerance, a 230 V supply range is 216–253 V.",
+    },
+    {
+      id: "hs-039",
+      question: "What is the permitted voltage range for a nominal 400 V supply?",
+      options: [
+        "376 V to 440 V",
+        "360 V to 460 V",
+        "390 V to 410 V",
+        "350 V to 450 V",
+      ],
+      correctIndex: 0,
+      explanation:
+        "With +10% / -6% tolerance, a 400 V supply range is 376–440 V.",
+    },
+    {
+      id: "hs-040",
+      question: "Why is the supply frequency controlled over 24 hours?",
+      options: [
+        "To keep electric clocks accurate",
+        "To prevent lamps from overheating",
+        "To increase power at peak times",
+        "To stop circuits from tripping often",
+      ],
+      correctIndex: 0,
+      explanation:
+        "The frequency is maintained at an average 50 Hz so electric clocks keep time.",
+    },
+    {
+      id: "hs-041",
+      question: "Under the supply regulations, what can a distributor refuse to do?",
+      options: [
+        "Refuse to connect an unsafe installation",
+        "Refuse to provide emergency lighting",
+        "Refuse to allow PPE on construction",
+        "Refuse to issue toolbox talk notes",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Regulation 29 allows refusal to connect an installation not built to a suitable standard.",
+    },
+    {
+      id: "hs-042",
+      question: "When would refusal to connect a supply most likely happen?",
+      options: [
+        "If the installation fails IET standards",
+        "If the site has a late delivery",
+        "If the client requests extra sockets",
+        "If the work is carried out at night",
+      ],
+      correctIndex: 0,
+      explanation:
+        "It would be enforced if the installation didn’t meet IET Wiring Regulations standards.",
+    },
+    {
+      id: "hs-043",
+      question: "What does the EWR say about electrical systems and maintenance?",
+      options: [
+        "Systems must prevent danger and be maintained",
+        "Systems must be cheaper than alternatives",
+        "Systems must be installed only after lunch",
+        "Systems must use plastic enclosures always",
+      ],
+      correctIndex: 0,
+      explanation:
+        "The EWR requires systems to be constructed to prevent danger and be properly maintained.",
+    },
+    {
+      id: "hs-044",
+      question: "What does the EWR say about carrying out work activities?",
+      options: [
+        "Work must not create danger",
+        "Work must always be finished quickly",
+        "Work must avoid written procedures",
+        "Work must ignore manufacturer guidance",
+      ],
+      correctIndex: 0,
+      explanation:
+        "The EWR requires work activities to be carried out in a way that does not give rise to danger.",
+    },
+    {
+      id: "hs-045",
+      question: "In electrical work, what is preferred before starting work?",
+      options: [
+        "Make conductors dead before work starts",
+        "Increase load to test the circuit",
+        "Remove labels to reduce confusion",
+        "Use wet hands to improve grip",
+      ],
+      correctIndex: 0,
+      explanation:
+        "The EWR states it is preferable that conductors are made dead before work begins.",
+    },
+    {
+      id: "hs-046",
+      question: "In an EWR prosecution, what is the key defence?",
+      options: [
+        "Prove reasonable steps and due diligence",
+        "Say you were told to hurry up",
+        "Say the task looked low risk",
+        "Say the client accepted the risk",
+      ],
+      correctIndex: 0,
+      explanation:
+        "The accepted defence is proving all reasonable steps were taken and diligence exercised.",
+    },
+    {
+      id: "hs-047",
+      question: "Who is most likely to be classed as a duty holder on site?",
+      options: [
+        "A person controlling systems and conductors",
+        "A person delivering parts to stores",
+        "A person cleaning the canteen area",
+        "A person printing site induction cards",
+      ],
+      correctIndex: 0,
+      explanation:
+        "A duty holder is the person exercising control over systems, equipment and conductors on site.",
+    },
+    {
+      id: "hs-048",
+      question: "What is meant by an 'absolute' duty in regulations?",
+      options: [
+        "It must be met regardless of cost",
+        "It applies only to office work",
+        "It can be ignored if busy",
+        "It is only suggested practice",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Absolute duties must be met with no balancing of cost, time or difficulty.",
+    },
+    {
+      id: "hs-049",
+      question: "What is meant by 'reasonably practicable' in safety duties?",
+      options: [
+        "Balance risk against time, cost and effort",
+        "Do the cheapest option every time",
+        "Follow only what the client requests",
+        "Avoid using written procedures always",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Reasonably practicable means weighing risk against time, trouble, cost and difficulty.",
+    },
+    {
+      id: "hs-050",
+      question: "Why should electricians be 'legally aware' about safety and workmanship?",
+      options: [
+        "Poor work can lead to serious prosecution",
+        "It makes the job quicker to complete",
+        "It reduces the need for inspections",
+        "It removes the need for risk assessments",
+      ],
+      correctIndex: 0,
+      explanation:
+        "The text highlights that negligence or poor workmanship can lead to prosecution and possible imprisonment.",
+    },  {
+        id: "hs-051",
+        question: "What is the purpose of a risk assessment?",
+        options: [
+          "Identify hazards and reduce risks",
+          "Decide who gets overtime pay",
+          "Replace the need for supervision",
+          "Show customers company branding",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Risk assessments identify hazards and help control risks before work starts.",
+      },
+      {
+        id: "hs-052",
+        question: "Who is responsible for carrying out risk assessments on site?",
+        options: [
+          "The employer or responsible person",
+          "Only the newest apprentice",
+          "Only visiting inspectors",
+          "Only the site cleaner",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Employers or those in control of work activities are responsible for assessments.",
+      },
+      {
+        id: "hs-053",
+        question: "What should you do if you are unsure how to complete a task safely?",
+        options: [
+          "Ask for instruction or supervision",
+          "Guess and hope for the best",
+          "Ignore the task and walk away",
+          "Rush the job to finish quickly",
+        ],
+        correctIndex: 0,
+        explanation:
+          "You should always seek guidance if unsure about safety or procedures.",
+      },
+      {
+        id: "hs-054",
+        question: "Why are toolbox talks used on site?",
+        options: [
+          "To remind workers of safety issues",
+          "To replace all formal training",
+          "To discuss company profits only",
+          "To plan holiday schedules",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Toolbox talks reinforce safety awareness and good working practices.",
+      },
+      {
+        id: "hs-055",
+        question: "What is a near miss?",
+        options: [
+          "An incident that could have caused harm",
+          "A planned safety inspection",
+          "A completed accident report",
+          "A successful job completion",
+        ],
+        correctIndex: 0,
+        explanation:
+          "A near miss is an unplanned event that did not cause injury but could have.",
+      },
+      {
+        id: "hs-056",
+        question: "Why should near misses be reported?",
+        options: [
+          "To prevent future accidents",
+          "To blame someone immediately",
+          "To reduce company paperwork",
+          "To avoid further training",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Reporting near misses helps identify risks before serious accidents occur.",
+      },
+      {
+        id: "hs-057",
+        question: "What is the safest way to lift heavy objects?",
+        options: [
+          "Bend knees and keep back straight",
+          "Twist while lifting quickly",
+          "Lift with arms only",
+          "Pull with one hand",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Correct lifting technique reduces strain and risk of injury.",
+      },
+      {
+        id: "hs-058",
+        question: "What should you do before using a ladder?",
+        options: [
+          "Check it is secure and undamaged",
+          "Assume it is safe to use",
+          "Place it on loose materials",
+          "Lean it against glass surfaces",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Ladders must always be checked for stability and condition before use.",
+      },
+      {
+        id: "hs-059",
+        question: "When should damaged equipment be used?",
+        options: [
+          "Never, it should be reported",
+          "When the job is urgent",
+          "If only used for short tasks",
+          "If no manager is nearby",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Damaged equipment must not be used and should be reported immediately.",
+      },
+      {
+        id: "hs-060",
+        question: "What is the purpose of lock-off devices?",
+        options: [
+          "Prevent circuits being switched on",
+          "Make tools easier to carry",
+          "Increase voltage during testing",
+          "Allow faster working methods",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Lock-off devices stop accidental re-energising during electrical work.",
+      },
+      {
+        id: "hs-061",
+        question: "Why should test instruments be checked before use?",
+        options: [
+          "To confirm they are working correctly",
+          "To make the test quicker",
+          "To reduce the need for isolation",
+          "To avoid using PPE",
+        ],
+        correctIndex: 0,
+        explanation:
+          "You must confirm test instruments function correctly before relying on results.",
+      },
+      {
+        id: "hs-062",
+        question: "What is the main aim of safe isolation?",
+        options: [
+          "Ensure circuits are dead before work",
+          "Speed up installation times",
+          "Reduce paperwork on site",
+          "Allow tools to run cooler",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Safe isolation ensures no electrical energy is present before work begins.",
+      },
+      {
+        id: "hs-063",
+        question: "What should you do if a fire alarm sounds on site?",
+        options: [
+          "Leave immediately using the escape route",
+          "Finish the job before leaving",
+          "Ignore it if unsure",
+          "Wait for friends before exiting",
+        ],
+        correctIndex: 0,
+        explanation:
+          "You must evacuate immediately using designated escape routes.",
+      },
+      {
+        id: "hs-064",
+        question: "What is the main purpose of emergency exits?",
+        options: [
+          "Allow quick and safe evacuation",
+          "Provide staff smoking areas",
+          "Store spare equipment",
+          "Control access to site",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Emergency exits allow people to leave the building quickly and safely.",
+      },
+      {
+        id: "hs-065",
+        question: "What should you do if you discover a fire?",
+        options: [
+          "Raise the alarm immediately",
+          "Finish your current task",
+          "Try to hide the fire",
+          "Wait for someone else to act",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Raising the alarm quickly helps protect everyone on site.",
+      },
+      {
+        id: "hs-066",
+        question: "What does RIDDOR relate to?",
+        options: [
+          "Reporting serious workplace incidents",
+          "Rules for electrical colour codes",
+          "Guidance for tool maintenance",
+          "Regulations for uniform standards",
+        ],
+        correctIndex: 0,
+        explanation:
+          "RIDDOR requires certain injuries, diseases and incidents to be reported.",
+      },
+      {
+        id: "hs-067",
+        question: "Which of these would normally be reportable under RIDDOR?",
+        options: [
+          "A major injury requiring hospital treatment",
+          "A minor paper cut",
+          "A late arrival to work",
+          "A broken mobile phone",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Serious injuries must be reported under RIDDOR regulations.",
+      },
+      {
+        id: "hs-068",
+        question: "Why must walkways be kept clear on site?",
+        options: [
+          "To prevent trips and allow safe access",
+          "To improve site appearance only",
+          "To reduce cleaning time",
+          "To avoid using warning signs",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Clear walkways reduce the risk of slips, trips and blocked exits.",
+      },
+      {
+        id: "hs-069",
+        question: "What is the safest action if you feel unwell at work?",
+        options: [
+          "Inform a supervisor immediately",
+          "Ignore it and continue working",
+          "Leave site without telling anyone",
+          "Take someone else’s medication",
+        ],
+        correctIndex: 0,
+        explanation:
+          "You should report feeling unwell so action can be taken to protect safety.",
+      },
+      {
+        id: "hs-070",
+        question: "Why should visitors to site receive a safety induction?",
+        options: [
+          "So they understand site hazards and rules",
+          "So they can start work immediately",
+          "So they can inspect other workers",
+          "So they avoid signing paperwork",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Inductions ensure visitors understand risks and how to stay safe on site.",
+      },  {
+        id: "hs-071",
+        legacyIds: ["hs-051"],
+        question: "What is the main purpose of a risk assessment?",
+        options: [
+          "Identify hazards and reduce risks",
+          "Decide who gets overtime pay",
+          "Replace the need for supervision",
+          "Show customers company branding",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Risk assessments identify hazards and help control risks before work starts.",
+      },
+      {
+        id: "hs-072",
+        legacyIds: ["hs-052"],
+        question: "Who is responsible for carrying out risk assessments on site?",
+        options: [
+          "The employer or responsible person",
+          "Only the newest apprentice",
+          "Only visiting inspectors",
+          "Only the site receptionist",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Employers or those in control of work activities must ensure risk assessments are carried out.",
+      },
+      {
+        id: "hs-073",
+        legacyIds: ["hs-053"],
+        question: "Why must risk assessments be reviewed regularly?",
+        options: [
+          "Because site conditions can change",
+          "Because law requires daily paperwork",
+          "Because clients request new logos",
+          "Because tools lose colour over time",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Assessments must be reviewed when work changes or new hazards appear.",
+      },
+      {
+        id: "hs-074",
+        legacyIds: ["hs-054"],
+        question: "What is a hazard?",
+        options: [
+          "Something with potential to cause harm",
+          "Something that always causes injury",
+          "A completed safety document",
+          "A type of warning sign only",
+        ],
+        correctIndex: 0,
+        explanation:
+          "A hazard is anything that could cause harm.",
+      },
+      {
+        id: "hs-075",
+        legacyIds: ["hs-055"],
+        question: "What is risk?",
+        options: [
+          "The chance of harm occurring",
+          "The size of a toolbox",
+          "The number of workers on site",
+          "The colour of safety signs",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Risk is the likelihood that a hazard will cause harm.",
+      },
+      {
+        id: "hs-076",
+        legacyIds: ["hs-056"],
+        question: "Which activity is most likely to require a permit to work?",
+        options: [
+          "Working in confined spaces",
+          "Completing paperwork in the office",
+          "Attending a toolbox talk",
+          "Cleaning hand tools after work",
+        ],
+        correctIndex: 0,
+        explanation:
+          "High-risk activities like confined space work often require permits.",
+      },
+      {
+        id: "hs-077",
+        legacyIds: ["hs-057"],
+        question: "What is the purpose of a permit to work system?",
+        options: [
+          "Control high-risk work safely",
+          "Replace the need for supervision",
+          "Speed up job completion",
+          "Reduce the need for PPE",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Permits help ensure dangerous work is controlled and properly managed.",
+      },
+      {
+        id: "hs-078",
+        legacyIds: ["hs-058"],
+        question: "Which document explains how a task will be carried out safely?",
+        options: [
+          "Method statement",
+          "Payslip",
+          "Delivery note",
+          "Tool catalogue",
+        ],
+        correctIndex: 0,
+        explanation:
+          "A method statement describes safe working procedures for a task.",
+      },
+      {
+        id: "hs-079",
+        legacyIds: ["hs-059"],
+        question: "Why should workers follow method statements?",
+        options: [
+          "To work safely and reduce risk",
+          "To increase speed regardless of safety",
+          "To avoid using PPE",
+          "To ignore manufacturer guidance",
+        ],
+        correctIndex: 0,
+        explanation:
+          "They provide instructions to complete work safely.",
+      },
+      {
+        id: "hs-080",
+        legacyIds: ["hs-060"],
+        question: "What does RAMS stand for?",
+        options: [
+          "Risk Assessment and Method Statement",
+          "Register of Approved Management Systems",
+          "Routine Appliance Maintenance Schedule",
+          "Record of Annual Machinery Servicing",
+        ],
+        correctIndex: 0,
+        explanation:
+          "RAMS means Risk Assessment and Method Statement.",
+      },
+      {
+        id: "hs-081",
+        legacyIds: ["hs-061"],
+        question: "What is the purpose of a toolbox talk?",
+        options: [
+          "Share safety information with workers",
+          "Decide company holidays",
+          "Train customers on products",
+          "Promote company branding",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Toolbox talks are used to communicate safety information on site.",
+      },
+      {
+        id: "hs-082",
+        legacyIds: ["hs-062"],
+        question: "Why is good housekeeping important on site?",
+        options: [
+          "It reduces slips, trips and falls",
+          "It improves mobile phone signal",
+          "It increases working hours",
+          "It removes the need for PPE",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Poor housekeeping is a major cause of accidents.",
+      },
+      {
+        id: "hs-083",
+        legacyIds: ["hs-063"],
+        question: "Which of these is a common cause of slips and trips?",
+        options: [
+          "Trailing cables and loose materials",
+          "Wearing a high-visibility vest",
+          "Using approved access equipment",
+          "Reading safety signs carefully",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Loose materials and cables create trip hazards.",
+      },
+      {
+        id: "hs-084",
+        legacyIds: ["hs-064"],
+        question: "What is the safest way to access work at height?",
+        options: [
+          "Use suitable access equipment",
+          "Stand on loose materials",
+          "Climb on stacked boxes",
+          "Use a chair instead of steps",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Proper access equipment such as platforms or towers should be used.",
+      },
+      {
+        id: "hs-085",
+        legacyIds: ["hs-065"],
+        question: "Which item is commonly used for fall protection?",
+        options: [
+          "Safety harness",
+          "Dust mask",
+          "Ear defenders",
+          "High-visibility vest",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Harnesses help protect workers when working at height.",
+      },
+      {
+        id: "hs-086",
+        legacyIds: ["hs-066"],
+        question: "What should you do before using access equipment?",
+        options: [
+          "Check it is safe and undamaged",
+          "Assume it is safe by default",
+          "Modify it to suit your task",
+          "Use it even if parts are missing",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Equipment must be checked before use to ensure it is safe.",
+      },
+      {
+        id: "hs-087",
+        legacyIds: ["hs-067"],
+        question: "Why should defective tools be reported immediately?",
+        options: [
+          "They can cause injury if used",
+          "They reduce work speed only",
+          "They affect company reputation",
+          "They increase paperwork",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Damaged tools can cause accidents and must not be used.",
+      },
+      {
+        id: "hs-088",
+        legacyIds: ["hs-068"],
+        question: "What should you do if you are unsure how to do a task safely?",
+        options: [
+          "Ask a supervisor for guidance",
+          "Guess and continue working",
+          "Copy someone without checking",
+          "Ignore the task completely",
+        ],
+        correctIndex: 0,
+        explanation:
+          "You should always seek guidance if unsure.",
+      },
+      {
+        id: "hs-089",
+        legacyIds: ["hs-069"],
+        question: "Why is safety training important for workers?",
+        options: [
+          "It helps prevent accidents and injuries",
+          "It removes the need for supervision",
+          "It replaces the need for PPE",
+          "It shortens working hours",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Training ensures workers understand hazards and safe methods.",
+      },
+      {
+        id: "hs-090",
+        legacyIds: ["hs-070"],
+        question: "What is the safest action if an accident occurs on site?",
+        options: [
+          "Report it immediately and seek help",
+          "Ignore it if no one saw it",
+          "Finish the task before reporting",
+          "Post about it on social media",
+        ],
+        correctIndex: 0,
+        explanation:
+          "All accidents should be reported so they can be dealt with properly.",
+      },
+    
+    
+  ];
+  

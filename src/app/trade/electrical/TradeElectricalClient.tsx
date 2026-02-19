@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ProgressReport, { type StoredResult } from "@/components/ProgressReport";
 import SparkTheoryLogo from "@/components/Brand/SparkTheoryLogo";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, type User } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { healthSafetyQuestions } from "@/data/healthSafety";
 import { principlesElectricalScienceQuestions } from "@/data/principlesElectricalScience";
@@ -15,15 +15,13 @@ import { communicationWithinBSEQuestions } from "@/data/communicationWithinBSE";
 import { principlesElectricalScienceLevel3Questions } from "@/data/principlesElectricalScienceLevel3";
 import { electricalTechnologyLevel3Questions } from "@/data/electricalTechnologyLevel3";
 import { inspectionTestingCommissioningLevel3Questions } from "@/data/inspectionTestingCommissioningLevel3";
+import {
+  type ElectricalCategory,
+  ELECTRICAL_LEVEL2_CATEGORIES,
+  ELECTRICAL_LEVEL3_CATEGORIES,
+} from "@/data/electricalTopicCategories";
 
-type Category = {
-  id: string;
-  title: string;
-  description: string;
-  tag: string;
-  href?: string;
-  topicHref?: string;
-};
+type Category = ElectricalCategory;
 
 const LOCKED_LEVEL2_TOPICS = new Set([
   "all-level-2",
@@ -41,6 +39,29 @@ const LOCKED_LEVEL3_TOPICS = new Set([
 const STORAGE_KEY_LEVEL2 = "qm_results_v1";
 const STORAGE_KEY_LEVEL3 = "qm_results_v1_level3";
 const SCROLL_RESTORE_KEY = "qm_scroll_trade_electrical";
+const PLUS_ACCESS_CACHE_PREFIX = "qm_plus_access_";
+const QUESTION_ID_MIGRATION_MAP: Record<string, string> = {
+  "hs-051": "hs-071",
+  "hs-052": "hs-072",
+  "hs-053": "hs-073",
+  "hs-054": "hs-074",
+  "hs-055": "hs-075",
+  "hs-056": "hs-076",
+  "hs-057": "hs-077",
+  "hs-058": "hs-078",
+  "hs-059": "hs-079",
+  "hs-060": "hs-080",
+  "hs-061": "hs-081",
+  "hs-062": "hs-082",
+  "hs-063": "hs-083",
+  "hs-064": "hs-084",
+  "hs-065": "hs-085",
+  "hs-066": "hs-086",
+  "hs-067": "hs-087",
+  "hs-068": "hs-088",
+  "hs-069": "hs-089",
+  "hs-070": "hs-090",
+};
 
 function storageKeyForLevel(level: "2" | "3") {
   return level === "3" ? STORAGE_KEY_LEVEL3 : STORAGE_KEY_LEVEL2;
@@ -69,152 +90,115 @@ function getLevelFromHref(href?: string, fallback: "2" | "3" = "2") {
   return sp.get("level") === "3" ? "3" : fallback;
 }
 
+function requiresPlusTopic(level: "2" | "3", topic: string) {
+  return level === "2"
+    ? LOCKED_LEVEL2_TOPICS.has(topic)
+    : LOCKED_LEVEL3_TOPICS.has(topic);
+}
+
+type TopicAccessState = "loading" | "locked" | "unlocked";
+
+function getTopicAccessState(
+  requiresPlus: boolean,
+  authReady: boolean,
+  userLoggedIn: boolean,
+  subscriptionReady: boolean,
+  hasPlusAccess: boolean
+): TopicAccessState {
+  if (!requiresPlus) return "unlocked";
+  if (!authReady) return "loading";
+  if (!userLoggedIn) return "locked";
+  if (!subscriptionReady) return "loading";
+  return hasPlusAccess ? "unlocked" : "locked";
+}
+
 function seenKeyForTopic(level: "2" | "3", topic: string) {
   const safeTopic = topic || "unknown";
   return `qm_seen_${level}_${safeTopic}`;
+}
+
+function canonicalQuestionId(id: string): string {
+  return QUESTION_ID_MIGRATION_MAP[id] ?? id;
 }
 
 function loadSeenIds(key: string): Set<string> {
   try {
     const raw = JSON.parse(localStorage.getItem(key) || "[]");
     if (!Array.isArray(raw)) return new Set();
-    return new Set(raw.filter((x) => typeof x === "string"));
+    return new Set(
+      raw
+        .filter((x): x is string => typeof x === "string")
+        .map((id) => canonicalQuestionId(id))
+    );
   } catch {
     return new Set();
   }
 }
 
-function totalQuestionsFor(topic: string, level: "2" | "3") {
+function questionBankFor(topic: string, level: "2" | "3"): unknown[] {
   if (level === "3") {
     if (topic === "principles-electrical-science") {
-      return principlesElectricalScienceLevel3Questions.length;
+      return principlesElectricalScienceLevel3Questions as unknown[];
     }
     if (topic === "electrical-technology") {
-      return electricalTechnologyLevel3Questions.length;
+      return electricalTechnologyLevel3Questions as unknown[];
     }
     if (topic === "inspection-testing-commissioning") {
-      return inspectionTestingCommissioningLevel3Questions.length;
+      return inspectionTestingCommissioningLevel3Questions as unknown[];
     }
-    return 0;
+    return [];
   }
 
   if (topic === "principles-electrical-science") {
-    return principlesElectricalScienceQuestions.length;
+    return principlesElectricalScienceQuestions as unknown[];
   }
   if (topic === "all-level-2") {
     return (
-      healthSafetyQuestions.length +
-      principlesElectricalScienceQuestions.length +
-      electricalInstallationTechnologyQuestions.length +
-      installationWiringQuestions.length +
-      communicationWithinBSEQuestions.length
+      [
+        ...(healthSafetyQuestions as unknown[]),
+        ...(principlesElectricalScienceQuestions as unknown[]),
+        ...(electricalInstallationTechnologyQuestions as unknown[]),
+        ...(installationWiringQuestions as unknown[]),
+        ...(communicationWithinBSEQuestions as unknown[]),
+      ]
     );
   }
   if (topic === "electrical-installation-technology") {
-    return electricalInstallationTechnologyQuestions.length;
+    return electricalInstallationTechnologyQuestions as unknown[];
   }
   if (topic === "installation-wiring-systems-enclosures") {
-    return installationWiringQuestions.length;
+    return installationWiringQuestions as unknown[];
   }
   if (topic === "communication-within-building-services-engineering") {
-    return communicationWithinBSEQuestions.length;
+    return communicationWithinBSEQuestions as unknown[];
   }
-  return healthSafetyQuestions.length;
+  return healthSafetyQuestions as unknown[];
 }
 
-const CATEGORIES: Category[] = [
-  {
-    id: "all-level-2",
-    title: "Level 2 Mixed (All Topics)",
-    description:
-      "All Level 2 topics combined for a full mixed practice quiz.",
-    tag: "Electrical Lessons",
-    href: "/quiz?trade=electrical&topic=all-level-2",
-  },
-  {
-    id: "health-safety",
-    title: "Health & Safety",
-    description:
-      "Key laws, risk assessments, PPE, safe isolation, and site safety basics.",
-    tag: "Electrical Lessons",
-    href: "/quiz?trade=electrical&topic=health-safety",
-    topicHref: "/trade/electrical/health-safety",
-  },
-  {
-    id: "principles-electrical-science",
-    title: "Principles of Electrical Science",
-    description:
-      "Ohm’s law, voltage, current, resistance, power, and AC/DC fundamentals.",
-    tag: "Electrical Lessons",
-    href: "/quiz?trade=electrical&topic=principles-electrical-science",
-    topicHref: "/trade/electrical/principles-electrical-science",
-  },
-  {
-    id: "electrical-installation-technology",
-    title: "Electrical Installation Technology",
-    description:
-      "Wiring systems, containment, terminations, circuit design basics, and installation methods.",
-    tag: "Electrical Lessons",
-    href: "/quiz?trade=electrical&topic=electrical-installation-technology",
-    topicHref: "/trade/electrical/electrical-installation-technology",
-  },
-  {
-    id: "installation-wiring-systems-enclosures",
-    title: "Installation of Wiring Systems & Enclosures",
-    description:
-      "Cable routes, safe zones, containment (trunking/conduit), fixings, entries, and enclosures.",
-    tag: "Electrical Lessons",
-    href: "/quiz?trade=electrical&topic=installation-wiring-systems-enclosures",
-    topicHref: "/trade/electrical/installation-wiring-systems-enclosures",
-  },
-  {
-    id: "communication-within-building-services-engineering",
-    title: "Communication within Building Services Engineering",
-    description:
-      "Communication methods, documentation, teamwork, and coordinating safely on site.",
-    tag: "Electrical Lessons",
-    href: "/quiz?trade=electrical&topic=communication-within-building-services-engineering",
-    topicHref: "/trade/electrical/communication-within-building-services-engineering",
-  },
-];
+function totalQuestionsFor(topic: string, level: "2" | "3") {
+  return questionBankFor(topic, level).length;
+}
 
-const LEVEL3_CATEGORIES: Category[] = [
-  {
-    id: "all-level-3",
-    title: "Level 3 Mixed (All Topics)",
-    description:
-      "All Level 3 topics combined for a full mixed practice quiz.",
-    tag: "Electrical Lessons",
-    href: "/quiz?trade=electrical&topic=all-level-3&level=3",
-  },
-  {
-    id: "principles-electrical-science",
-    title: "Principles of Electrical Science",
-    description:
-      "Advanced theory, calculations, magnetism, induction, and electronic components.",
-    tag: "Electrical Lessons",
-    href: "/quiz?trade=electrical&topic=principles-electrical-science&level=3",
-    topicHref: "/trade/electrical/principles-electrical-science?level=3",
-  },
-  {
-    id: "electrical-technology",
-    title: "Electrical Technology",
-    description:
-      "Regulations, technical information, supply systems, intake and earthing, and consumer installations.",
-    tag: "Electrical Lessons",
-    href: "/quiz?trade=electrical&topic=electrical-technology&level=3",
-    topicHref: "/trade/electrical/electrical-technology?level=3",
-  },
-  {
-    id: "inspection-testing-commissioning",
-    title: "Inspection, Testing & Commissioning",
-    description:
-      "Initial verification, schedules of inspection, and key test requirements.",
-    tag: "Electrical",
-    href: "/quiz?trade=electrical&topic=inspection-testing-commissioning&level=3",
-    topicHref: "/trade/electrical/inspection-testing-commissioning?level=3",
-  },
-];
+function seenCountForTopic(topic: string, level: "2" | "3", seen: Set<string>) {
+  const bank = questionBankFor(topic, level);
+  if (bank.length === 0) return 0;
+
+  let count = 0;
+  for (const raw of bank) {
+    if (!raw || typeof raw !== "object") continue;
+    const rec = raw as Record<string, unknown>;
+    const id = typeof rec.id === "string" ? rec.id : "";
+    const legacy = Array.isArray(rec.legacyIds)
+      ? rec.legacyIds.filter((x): x is string => typeof x === "string")
+      : [];
+    const ids = id ? [id, ...legacy] : legacy;
+    if (ids.some((qid) => seen.has(qid))) count += 1;
+  }
+  return count;
+}
+
+const CATEGORIES: Category[] = ELECTRICAL_LEVEL2_CATEGORIES;
+const LEVEL3_CATEGORIES: Category[] = ELECTRICAL_LEVEL3_CATEGORIES;
 
 export default function ElectricalPage() {
   const [level, setLevel] = useState<"2" | "3">("2");
@@ -224,12 +208,14 @@ export default function ElectricalPage() {
   const storageKey = storageKeyForLevel(level);
   const [results, setResults] = useState<StoredResult[]>([]);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [hasPlusAccess, setHasPlusAccess] = useState(false);
   const [authReady, setAuthReady] = useState(false);
+  const [subscriptionReady, setSubscriptionReady] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickedHref, setPickedHref] = useState<string | null>(null);
+  const [selectedQuizSize, setSelectedQuizSize] = useState<number | null>(null);
   const [progressOpen, setProgressOpen] = useState(false);
   const [unseenOnly, setUnseenOnly] = useState(false);
-  const [problemOnly, setProblemOnly] = useState(false);
   const [isSwitchingLevel, setIsSwitchingLevel] = useState(false);
   const [unseenCount, setUnseenCount] = useState<number | null>(null);
   const [totalCount, setTotalCount] = useState<number | null>(null);
@@ -237,9 +223,54 @@ export default function ElectricalPage() {
   const sizes = [5, 15, 30, 50];
 
   useEffect(() => {
+    const loadSubscription = async (user: User) => {
+      if (!user.email) {
+        setHasPlusAccess(false);
+        setSubscriptionReady(true);
+        return;
+      }
+      try {
+        const response = await fetch("/api/stripe/subscription-status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user.email }),
+        });
+        const result = (await response.json().catch(() => ({}))) as {
+          hasPlusAccess?: boolean;
+          hasSubscription?: boolean;
+        };
+        const plus = Boolean(result.hasPlusAccess ?? result.hasSubscription);
+        setHasPlusAccess(plus);
+        try {
+          localStorage.setItem(`${PLUS_ACCESS_CACHE_PREFIX}${user.uid}`, plus ? "1" : "0");
+        } catch {
+          // ignore cache failures
+        }
+      } catch {
+        // Keep cached/previous value on transient errors.
+      } finally {
+        setSubscriptionReady(true);
+      }
+    };
+
     const unsub = onAuthStateChanged(auth, (user) => {
       setUserLoggedIn(Boolean(user));
       setAuthReady(true);
+      if (!user) {
+        setHasPlusAccess(false);
+        setSubscriptionReady(true);
+        return;
+      }
+      try {
+        const cached = localStorage.getItem(`${PLUS_ACCESS_CACHE_PREFIX}${user.uid}`);
+        if (cached === "1") {
+          setHasPlusAccess(true);
+        }
+      } catch {
+        // ignore cache failures
+      }
+      setSubscriptionReady(false);
+      void loadSubscription(user);
     });
     return () => unsub();
   }, []);
@@ -359,7 +390,8 @@ export default function ElectricalPage() {
     }
     const seenKey = seenKeyForTopic(lvl, topic);
     const seen = loadSeenIds(seenKey);
-    const unseen = Math.max(total - seen.size, 0);
+    const seenCount = seenCountForTopic(topic, lvl, seen);
+    const unseen = Math.max(total - seenCount, 0);
     setUnseenCount(unseen);
   }, [pickerOpen, pickedHref, level]);
 
@@ -367,16 +399,32 @@ export default function ElectricalPage() {
     if (!href) return;
     const withLevel = level === "3" ? `${href}&level=3` : href;
     setPickedHref(withLevel);
+    setSelectedQuizSize(null);
     setPickerOpen(true);
   };
 
   const closePicker = () => {
     setPickerOpen(false);
     setPickedHref(null);
+    setSelectedQuizSize(null);
+  };
+
+  const startSelectedQuiz = () => {
+    if (!pickedHref || !selectedQuizSize) return;
+    const href = `${pickedHref}&n=${selectedQuizSize}${unseenOnly ? "&unseen=1" : ""}`;
+    closePicker();
+    router.push(href);
   };
 
   const openProgress = () => setProgressOpen(true);
   const closeProgress = () => setProgressOpen(false);
+
+  useEffect(() => {
+    setPickerOpen(false);
+    setPickedHref(null);
+    setSelectedQuizSize(null);
+    setProgressOpen(false);
+  }, [pathname]);
 
   // ✅ THIS is what the reset icon will do (clears progress graph data)
   const resetProgress = () => {
@@ -488,6 +536,17 @@ export default function ElectricalPage() {
               const shouldSpanFull =
                 displayCategories.length % 3 === 1 &&
                 index === displayCategories.length - 1;
+              const topic = getTopicFromHref(c.href);
+              const requiresPlus = requiresPlusTopic(level, topic);
+              const accessState = getTopicAccessState(
+                requiresPlus,
+                authReady,
+                userLoggedIn,
+                subscriptionReady,
+                hasPlusAccess
+              );
+              const isLocked = accessState === "locked";
+              const isCheckingAccess = accessState === "loading";
               return (
               <div
                 key={c.id}
@@ -506,11 +565,13 @@ export default function ElectricalPage() {
                         aria-label={`Open ${c.title} topic`}
                         className="inline-flex items-center gap-2 rounded-full bg-[#FFC400]/20 px-3 py-1 text-xs font-semibold text-[#FFC400] ring-1 ring-[#FF9100]/30 transition hover:bg-[#FFC400]/25"
                         onClick={(e) => {
-                          const topic = getTopicFromHref(c.href);
-                          const isLocked = ((level === "2" && LOCKED_LEVEL2_TOPICS.has(topic)) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(topic))) && authReady && !userLoggedIn;
+                          if (isCheckingAccess) {
+                            e.preventDefault();
+                            return;
+                          }
                           if (isLocked) {
                             e.preventDefault();
-                            window.location.href = "/login";
+                            window.location.href = userLoggedIn ? "/account" : "/login";
                             return;
                           }
                           if (typeof window !== "undefined") {
@@ -567,23 +628,21 @@ export default function ElectricalPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    const topic = getTopicFromHref(c.href);
-                    const isLocked = ((level === "2" && LOCKED_LEVEL2_TOPICS.has(topic)) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(topic))) && authReady && !userLoggedIn;
+                    if (isCheckingAccess) return;
                     if (isLocked) {
-                      window.location.href = "/login";
+                      window.location.href = userLoggedIn ? "/account" : "/login";
                       return;
                     }
                     openPicker(c.href);
                   }}
                   className={`mt-auto block w-full rounded-xl px-4 py-3 text-center text-sm font-semibold shadow-sm transition ${
-                    ( (level === "2" && LOCKED_LEVEL2_TOPICS.has(getTopicFromHref(c.href))) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(getTopicFromHref(c.href))) ) && authReady && !userLoggedIn
+                    isLocked || isCheckingAccess
                       ? "bg-white/10 text-white/70 ring-1 ring-white/10 hover:bg-white/15"
                       : "bg-[#FFC400] text-black shadow-[#FF9100]/20 hover:bg-[#FF9100]"
                   }`}
+                  disabled={isCheckingAccess}
                 >
-                  {( (level === "2" && LOCKED_LEVEL2_TOPICS.has(getTopicFromHref(c.href))) || (level === "3" && LOCKED_LEVEL3_TOPICS.has(getTopicFromHref(c.href))) ) && authReady && !userLoggedIn
-                    ? "Log in to start"
-                    : "Start Quiz"}
+                  {isCheckingAccess ? "Checking access..." : isLocked ? "Spark Theory +" : "Start Quiz"}
                 </button>
               </div>
               );
@@ -629,14 +688,18 @@ export default function ElectricalPage() {
 
             <div className="mt-5 grid grid-cols-2 gap-3">
               {sizes.map((n) => (
-                <Link
+                <button
                   key={n}
-                  href={`${pickedHref}&n=${n}${unseenOnly ? "&unseen=1" : ""}${problemOnly ? "&problems=1" : ""}`}
-                  className="rounded-xl bg-white/10 px-4 py-3 text-center text-sm font-semibold ring-1 ring-white/15 hover:bg-white/15"
-                  onClick={closePicker}
+                  type="button"
+                  onClick={() => setSelectedQuizSize(n)}
+                  className={`rounded-xl px-4 py-3 text-center text-sm font-semibold ring-1 transition ${
+                    selectedQuizSize === n
+                      ? "bg-[#FFC400]/15 text-[#FFC400] ring-[#FFC400]/70"
+                      : "bg-white/10 text-white ring-white/15 hover:bg-white/15"
+                  }`}
                 >
                   {n} questions
-                </Link>
+                </button>
               ))}
             </div>
 
@@ -653,6 +716,14 @@ export default function ElectricalPage() {
             </div>
 
             <div className="mt-4">
+              <button
+                type="button"
+                onClick={startSelectedQuiz}
+                disabled={!selectedQuizSize}
+                className="mb-3 block w-full rounded-xl bg-[#FFC400] px-4 py-3 text-center text-sm font-semibold text-black ring-1 ring-[#FF9100]/40 hover:bg-[#FF9100] disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-white/60 disabled:ring-white/15"
+              >
+                Start quiz
+              </button>
               <Link
                 href={`${pickedHref}&problems=1`}
                 className="block w-full rounded-xl bg-[#FFC400] px-4 py-3 text-center text-sm font-semibold text-black ring-1 ring-[#FF9100]/40 hover:bg-[#FF9100]"

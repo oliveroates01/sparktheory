@@ -4,6 +4,15 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import SparkTheoryLogo from "@/components/Brand/SparkTheoryLogo";
+import { getElectricalLevel3Categories } from "@/data/electricalTopicCategories";
+import { healthSafetyQuestions } from "@/data/healthSafety";
+import { principlesElectricalScienceQuestions } from "@/data/principlesElectricalScience";
+import { electricalInstallationTechnologyQuestions } from "@/data/ElectricalInstallationTechnology";
+import { installationWiringQuestions } from "@/data/installationWiring";
+import { communicationWithinBSEQuestions } from "@/data/communicationWithinBSE";
+import { principlesElectricalScienceLevel3Questions } from "@/data/principlesElectricalScienceLevel3";
+import { electricalTechnologyLevel3Questions } from "@/data/electricalTechnologyLevel3";
+import { inspectionTestingCommissioningLevel3Questions } from "@/data/inspectionTestingCommissioningLevel3";
 
 type Card = {
   id: string;
@@ -18,6 +27,15 @@ interface TradeData {
   topics: Card[];
   level3?: Card[];
 }
+
+const ELECTRICAL_LEVEL3_TOPICS_FOR_TOPICS_PAGE: Card[] =
+  getElectricalLevel3Categories({ includeMixed: false }).map((category) => ({
+    id: `el-${category.id}`,
+    title: category.title,
+    description: category.description,
+    questionCount: 0,
+    tag: "",
+  }));
 
 const DATA = {
   electrical: {
@@ -64,54 +82,149 @@ const DATA = {
         tag: "",
       },
     ],
-    level3: [
-      {
-        id: "el-advanced-circuits",
-        title: "Advanced Circuit Design",
-        description:
-          "Complex circuit analysis, protection schemes, and fault calculations.",
-        questionCount: 0,
-        tag: "",
-      },
-      {
-        id: "el-automation",
-        title: "Automation & Controls",
-        description:
-          "Control systems, PLC basics, sensors, and industrial automation concepts.",
-        questionCount: 0,
-        tag: "",
-      },
-      {
-        id: "el-installation-advanced",
-        title: "Advanced Installation Practices",
-        description:
-          "Testing procedures, commissioning, and advanced installation standards.",
-        questionCount: 0,
-        tag: "",
-      },
-      {
-        id: "el-power-systems",
-        title: "Power Systems",
-        description:
-          "Distribution systems, transformers, load balancing, and power quality.",
-        questionCount: 0,
-        tag: "",
-      },
-      {
-        id: "el-design-planning",
-        title: "Design & Planning",
-        description:
-          "Design calculations, drawings, and project planning fundamentals.",
-        questionCount: 0,
-        tag: "",
-      },
-    ],
+    level3: ELECTRICAL_LEVEL3_TOPICS_FOR_TOPICS_PAGE,
   },
 
   // Plumbing trade removed for now
 } satisfies Record<string, TradeData>;
 
 type TradeKey = keyof typeof DATA;
+
+type ProblemStat = {
+  wrong: number;
+  total: number;
+};
+
+type ProblemPreviewItem = {
+  title: string;
+  count: number;
+};
+
+type ProblemPreview = {
+  totalCount: number;
+  topTopics: ProblemPreviewItem[];
+  sampleQuestions: string[];
+  hasRealData: boolean;
+};
+
+type ProblemTopicMeta = {
+  slug: string;
+  title: string;
+  questions: unknown[];
+};
+
+type ProblemQuestion = {
+  id: string;
+  question: string;
+  legacyIds?: string[];
+};
+
+const LEVEL2_PROBLEM_TOPICS: ProblemTopicMeta[] = [
+  { slug: "health-safety", title: "Health & Safety", questions: healthSafetyQuestions as unknown[] },
+  { slug: "principles-electrical-science", title: "Principles of Electrical Science", questions: principlesElectricalScienceQuestions as unknown[] },
+  { slug: "electrical-installation-technology", title: "Electrical Installation Technology", questions: electricalInstallationTechnologyQuestions as unknown[] },
+  { slug: "installation-wiring-systems-enclosures", title: "Installation Wiring Systems & Enclosures", questions: installationWiringQuestions as unknown[] },
+  { slug: "communication-within-building-services-engineering", title: "Communication within BSE", questions: communicationWithinBSEQuestions as unknown[] },
+];
+
+const LEVEL3_PROBLEM_TOPICS: ProblemTopicMeta[] = [
+  { slug: "principles-electrical-science", title: "Principles of Electrical Science", questions: principlesElectricalScienceLevel3Questions as unknown[] },
+  { slug: "electrical-technology", title: "Electrical Technology", questions: electricalTechnologyLevel3Questions as unknown[] },
+  { slug: "inspection-testing-commissioning", title: "Inspection, Testing & Commissioning", questions: inspectionTestingCommissioningLevel3Questions as unknown[] },
+];
+
+const DEMO_PROBLEM_PREVIEW_LEVEL2: ProblemPreview = {
+  totalCount: 18,
+  hasRealData: false,
+  topTopics: [
+    { title: "Health & Safety", count: 8 },
+    { title: "Electrical Installation Technology", count: 5 },
+    { title: "Principles of Electrical Science", count: 5 },
+  ],
+  sampleQuestions: [
+    "Who is an appointed person for first aid?",
+    "What is the primary purpose of PAT testing records?",
+    "When should a circuit be isolated before work starts?",
+  ],
+};
+
+const DEMO_PROBLEM_PREVIEW_LEVEL3: ProblemPreview = {
+  totalCount: 10,
+  hasRealData: false,
+  topTopics: [
+    { title: "Electrical Technology", count: 4 },
+    { title: "Inspection, Testing & Commissioning", count: 3 },
+    { title: "Principles of Electrical Science", count: 3 },
+  ],
+  sampleQuestions: [
+    "What is the purpose of earthing in an installation?",
+    "Which test confirms continuity of protective conductors?",
+    "How does inductive reactance change with frequency?",
+  ],
+};
+
+function normalizeProblemQuestion(raw: unknown, index: number): ProblemQuestion | null {
+  if (!raw || typeof raw !== "object") return null;
+  const rec = raw as Record<string, unknown>;
+  const id = typeof rec.id === "string" ? rec.id.trim() : `q-${index + 1}`;
+  const question = typeof rec.question === "string" ? rec.question.trim() : "";
+  const legacyIds = Array.isArray(rec.legacyIds)
+    ? rec.legacyIds.filter((x): x is string => typeof x === "string").map((x) => x.trim()).filter(Boolean)
+    : [];
+  if (!id || !question) return null;
+  return { id, question, legacyIds: legacyIds.length > 0 ? legacyIds : undefined };
+}
+
+function loadProblemStats(key: string): Record<string, ProblemStat> {
+  try {
+    const raw = JSON.parse(localStorage.getItem(key) || "{}");
+    if (!raw || typeof raw !== "object") return {};
+    return raw as Record<string, ProblemStat>;
+  } catch {
+    return {};
+  }
+}
+
+function problemPreviewFromStorage(level: "2" | "3"): ProblemPreview | null {
+  const topics = level === "3" ? LEVEL3_PROBLEM_TOPICS : LEVEL2_PROBLEM_TOPICS;
+  const prefix = level === "3" ? "qm_problem_3_" : "qm_problem_2_";
+  const topicSummaries: Array<{ title: string; count: number }> = [];
+  const samplePool: Array<{ question: string; wrong: number }> = [];
+
+  for (const topic of topics) {
+    const stats = loadProblemStats(`${prefix}${topic.slug}`);
+    const normalized = topic.questions
+      .map((q, i) => normalizeProblemQuestion(q, i))
+      .filter((q): q is ProblemQuestion => Boolean(q));
+
+    let topicCount = 0;
+    for (const q of normalized) {
+      const ids = q.legacyIds ? [q.id, ...q.legacyIds] : [q.id];
+      const wrong = ids.reduce((acc, id) => acc + (Number(stats[id]?.wrong) || 0), 0);
+      if (wrong <= 0) continue;
+      topicCount += 1;
+      samplePool.push({ question: q.question, wrong });
+    }
+
+    if (topicCount > 0) topicSummaries.push({ title: topic.title, count: topicCount });
+  }
+
+  const totalCount = topicSummaries.reduce((acc, topic) => acc + topic.count, 0);
+  if (totalCount === 0) return null;
+
+  const topTopics = [...topicSummaries].sort((a, b) => b.count - a.count).slice(0, 3);
+  const sampleQuestions = [...samplePool]
+    .sort((a, b) => b.wrong - a.wrong)
+    .slice(0, 3)
+    .map((item) => item.question);
+
+  return {
+    totalCount,
+    topTopics,
+    sampleQuestions,
+    hasRealData: true,
+  };
+}
 
 export default function TopicsPage() {
   const router = useRouter();
@@ -144,12 +257,7 @@ export default function TopicsPage() {
   }, [cards]);
 
   useEffect(() => {
-    const copy = [...level3Cards];
-    for (let i = copy.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [copy[i], copy[j]] = [copy[j], copy[i]];
-    }
-    setShuffledLevel3(copy);
+    setShuffledLevel3(level3Cards);
   }, [level3Cards]);
 
   const activeSet = showLevel3 ? shuffledLevel3 : shuffledCards;
@@ -186,6 +294,7 @@ export default function TopicsPage() {
   const segmentCount = demoSegments.length;
   const [progressIndex, setProgressIndex] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
+  const [problemPreview, setProblemPreview] = useState<ProblemPreview | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -228,6 +337,28 @@ export default function TopicsPage() {
     };
   }, [drawMs, pauseMs, resetMs, segmentCount]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const refresh = () => {
+      const level: "2" | "3" = showLevel3 ? "3" : "2";
+      const fromStorage = problemPreviewFromStorage(level);
+      if (fromStorage) {
+        setProblemPreview(fromStorage);
+        return;
+      }
+      setProblemPreview(level === "3" ? DEMO_PROBLEM_PREVIEW_LEVEL3 : DEMO_PROBLEM_PREVIEW_LEVEL2);
+    };
+
+    refresh();
+    window.addEventListener("storage", refresh);
+    window.addEventListener("focus", refresh);
+    return () => {
+      window.removeEventListener("storage", refresh);
+      window.removeEventListener("focus", refresh);
+    };
+  }, [showLevel3]);
+
   const handleTradeClick = (key: TradeKey) => {
     if (key === "electrical") {
       router.push("/trade/electrical");
@@ -235,6 +366,10 @@ export default function TopicsPage() {
     }
     setActiveTrade(key);
   };
+
+  const problemQuestionsHref = showLevel3
+    ? "/quiz?trade=electrical&topic=all-level-3&level=3&problems=1"
+    : "/quiz?trade=electrical&topic=all-level-2&problems=1";
 
   return (
     <main className="min-h-screen bg-[#1F1F1F] text-white">
@@ -258,7 +393,7 @@ export default function TopicsPage() {
               href="/signup"
               className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-sm text-white/80 hover:bg-white/10"
             >
-              Sign up
+              Subscribe
             </Link>
             <Link
               href="/account"
@@ -457,24 +592,50 @@ export default function TopicsPage() {
                       return null;
                     })}
 
-                    {['Principles', 'Health & Safety', 'Install', 'All Level 2', 'Comms', 'Power', 'Design'].map((label, index) => {
-                      if (index !== 0 && index > completedCount) return null;
-                      const x = chartLeft + index * ((chartRight - chartLeft) / 6);
-                      return (
-                        <text
-                          key={label}
-                          x={x}
-                          y="198"
-                          fontSize="9"
-                          textAnchor="middle"
-                          fill="rgba(255,255,255,0.55)"
-                        >
-                          {label}
-                        </text>
-                      );
-                    })}
                   </svg>
                 </div>
+              </div>
+
+              <div className="mt-6 rounded-3xl bg-gradient-to-br from-[#2A2A2A]/80 via-[#1F1F1F]/70 to-[#2A2A2A]/80 p-6 ring-1 ring-white/10">
+                <div className="text-sm font-semibold text-white/80">Problem questions</div>
+                <p className="mt-2 text-sm text-white/70">
+                  Questions you&apos;ve missed before — practise these to improve fastest.
+                </p>
+                {problemPreview && (
+                  <>
+                    <p className="mt-3 text-sm text-white/85">
+                      {problemPreview.totalCount} problem question{problemPreview.totalCount === 1 ? "" : "s"}
+                      {problemPreview.hasRealData ? " tracked" : " (demo)"}
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {problemPreview.topTopics.map((topic) => (
+                        <span
+                          key={topic.title}
+                          className="rounded-full border border-white/15 bg-white/5 px-2 py-1 text-xs text-white/75"
+                        >
+                          {topic.title} ({topic.count})
+                        </span>
+                      ))}
+                    </div>
+                    <div className="mt-3 space-y-1">
+                      {problemPreview.sampleQuestions.map((question) => (
+                        <p
+                          key={question}
+                          className="truncate text-xs text-white/65"
+                          title={question}
+                        >
+                          • {question}
+                        </p>
+                      ))}
+                    </div>
+                  </>
+                )}
+                <Link
+                  href={problemQuestionsHref}
+                  className="mt-4 inline-flex rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/15 hover:bg-white/15"
+                >
+                  Review problem questions
+                </Link>
               </div>
             </div>
           </div>
