@@ -6,7 +6,9 @@ import { usePathname } from "next/navigation";
 import ProgressReport, { type StoredResult } from "@/components/ProgressReport";
 import SparkTheoryLogo from "@/components/Brand/SparkTheoryLogo";
 import { onAuthStateChanged, type User } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import { auth } from "@/lib/firebase";
+import { db } from "@/lib/firebase";
 import { principlesElectricalScienceLevel3Questions } from "@/data/principlesElectricalScienceLevel3";
 import { electricalTechnologyLevel3Questions } from "@/data/electricalTechnologyLevel3";
 import { inspectionTestingCommissioningLevel3Questions } from "@/data/inspectionTestingCommissioningLevel3";
@@ -142,25 +144,38 @@ export default function ElectricalLevel3Page() {
         setSubscriptionReady(true);
         return;
       }
+      let plusFromStripe = false;
+      let plusFromProfile = false;
       try {
         const response = await fetch("/api/stripe/subscription-status", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: user.email }),
+          body: JSON.stringify({ email: user.email, uid: user.uid }),
         });
         const result = (await response.json().catch(() => ({}))) as {
           hasPlusAccess?: boolean;
           hasSubscription?: boolean;
         };
-        const plus = Boolean(result.hasPlusAccess ?? result.hasSubscription);
+        plusFromStripe = Boolean(result.hasPlusAccess ?? result.hasSubscription);
+      } catch {
+        // Keep cached/previous value on transient errors.
+      }
+
+      try {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        plusFromProfile = Boolean(userDoc.data()?.hasPlusAccess);
+      } catch {
+        // Ignore profile lookup errors.
+      }
+
+      try {
+        const plus = plusFromStripe || plusFromProfile;
         setHasPlusAccess(plus);
         try {
           localStorage.setItem(`${PLUS_ACCESS_CACHE_PREFIX}${user.uid}`, plus ? "1" : "0");
         } catch {
           // ignore cache failures
         }
-      } catch {
-        // Keep cached/previous value on transient errors.
       } finally {
         setSubscriptionReady(true);
       }
