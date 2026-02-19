@@ -163,7 +163,17 @@ export default function ElectricalLevel3Page() {
 
       try {
         const userDoc = await getDoc(doc(db, "users", user.uid));
-        plusFromProfile = Boolean(userDoc.data()?.hasPlusAccess);
+        const profile = userDoc.data() as
+          | {
+              hasPlusAccess?: boolean;
+              plan?: string;
+              subscriptionStatus?: string;
+            }
+          | undefined;
+        const plan = (profile?.plan || "").toUpperCase();
+        const status = (profile?.subscriptionStatus || "").toLowerCase();
+        plusFromProfile =
+          Boolean(profile?.hasPlusAccess) || (plan === "PLUS" && status === "active");
       } catch {
         // Ignore profile lookup errors.
       }

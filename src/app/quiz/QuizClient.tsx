@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { onAuthStateChanged, type User } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import { auth } from "@/lib/firebase";
+import { db } from "@/lib/firebase";
 
 import ProgressReport, { type StoredResult } from "@/components/ProgressReport";
 
@@ -40,6 +42,7 @@ type QuestionTopicMeta = {
 const STORAGE_KEY_LEVEL2 = "qm_results_v1";
 const STORAGE_KEY_LEVEL3 = "qm_results_v1_level3";
 const DEFAULT_QUIZ_SIZE = 4;
+const PLUS_ACCESS_CACHE_PREFIX = "qm_plus_access_";
 const QUESTION_ID_MIGRATION_MAP: Record<string, string> = {
   "hs-051": "hs-071",
   "hs-052": "hs-072",
@@ -380,19 +383,48 @@ export default function QuizPage() {
         setSubscriptionReady(true);
         return;
       }
+      let plusFromStripe = false;
+      let plusFromProfile = false;
       try {
         const response = await fetch("/api/stripe/subscription-status", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: user.email }),
+          body: JSON.stringify({ email: user.email, uid: user.uid }),
         });
         const result = (await response.json().catch(() => ({}))) as {
           hasPlusAccess?: boolean;
           hasSubscription?: boolean;
         };
-        setHasPlusAccess(Boolean(result.hasPlusAccess ?? result.hasSubscription));
+        plusFromStripe = Boolean(result.hasPlusAccess ?? result.hasSubscription);
       } catch {
-        setHasPlusAccess(false);
+        // Keep cached/previous value on transient errors.
+      }
+
+      try {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        const profile = userDoc.data() as
+          | {
+              hasPlusAccess?: boolean;
+              plan?: string;
+              subscriptionStatus?: string;
+            }
+          | undefined;
+        const plan = (profile?.plan || "").toUpperCase();
+        const status = (profile?.subscriptionStatus || "").toLowerCase();
+        plusFromProfile =
+          Boolean(profile?.hasPlusAccess) || (plan === "PLUS" && status === "active");
+      } catch {
+        // Ignore profile lookup errors.
+      }
+
+      try {
+        const plus = plusFromStripe || plusFromProfile;
+        setHasPlusAccess(plus);
+        try {
+          localStorage.setItem(`${PLUS_ACCESS_CACHE_PREFIX}${user.uid}`, plus ? "1" : "0");
+        } catch {
+          // ignore cache failures
+        }
       } finally {
         setSubscriptionReady(true);
       }
@@ -405,6 +437,14 @@ export default function QuizPage() {
         setHasPlusAccess(false);
         setSubscriptionReady(true);
         return;
+      }
+      try {
+        const cached = localStorage.getItem(`${PLUS_ACCESS_CACHE_PREFIX}${user.uid}`);
+        if (cached === "1") {
+          setHasPlusAccess(true);
+        }
+      } catch {
+        // ignore cache failures
       }
       setSubscriptionReady(false);
       void loadSubscription(user);

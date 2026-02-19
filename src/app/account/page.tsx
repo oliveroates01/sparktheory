@@ -292,7 +292,7 @@ export default function AccountPage() {
         })
       : "";
 
-    const planLabel = subscription.hasSubscription ? "PRO" : "FREE";
+    const planLabel = subscription.hasSubscription ? "PLUS" : "FREE";
 
     const planText = subscription.cancelAtPeriodEnd
       ? `Cancels on ${formatPeriodEnd(subscription.currentPeriodEnd) || "period end"}`
