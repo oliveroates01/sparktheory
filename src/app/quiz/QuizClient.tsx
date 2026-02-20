@@ -7,6 +7,7 @@ import { onAuthStateChanged, type User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth } from "@/lib/firebase";
 import { db } from "@/lib/firebase";
+import { normalizeManualOverride, resolvePlusAccess } from "@/lib/entitlements";
 
 import ProgressReport, { type StoredResult } from "@/components/ProgressReport";
 
@@ -410,12 +411,15 @@ export default function QuizPage() {
               hasPlusAccess?: boolean;
               plan?: string;
               subscriptionStatus?: string;
+              manualOverride?: string;
             }
           | undefined;
-        const plan = (profile?.plan || "").toUpperCase();
-        const status = (profile?.subscriptionStatus || "").toLowerCase();
-        plusFromProfile =
-          Boolean(profile?.hasPlusAccess) || (plan === "PLUS" && status === "active");
+        plusFromProfile = resolvePlusAccess({
+          hasPlusAccess: Boolean(profile?.hasPlusAccess),
+          plan: String(profile?.plan || "FREE"),
+          subscriptionStatus: String(profile?.subscriptionStatus || "none"),
+          manualOverride: normalizeManualOverride(profile?.manualOverride),
+        });
       } catch {
         // Ignore profile lookup errors.
       }

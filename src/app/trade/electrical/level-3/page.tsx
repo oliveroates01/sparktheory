@@ -12,6 +12,7 @@ import { db } from "@/lib/firebase";
 import { principlesElectricalScienceLevel3Questions } from "@/data/principlesElectricalScienceLevel3";
 import { electricalTechnologyLevel3Questions } from "@/data/electricalTechnologyLevel3";
 import { inspectionTestingCommissioningLevel3Questions } from "@/data/inspectionTestingCommissioningLevel3";
+import { normalizeManualOverride, resolvePlusAccess } from "@/lib/entitlements";
 
 type Category = {
   id: string;
@@ -168,12 +169,15 @@ export default function ElectricalLevel3Page() {
               hasPlusAccess?: boolean;
               plan?: string;
               subscriptionStatus?: string;
+              manualOverride?: string;
             }
           | undefined;
-        const plan = (profile?.plan || "").toUpperCase();
-        const status = (profile?.subscriptionStatus || "").toLowerCase();
-        plusFromProfile =
-          Boolean(profile?.hasPlusAccess) || (plan === "PLUS" && status === "active");
+        plusFromProfile = resolvePlusAccess({
+          hasPlusAccess: Boolean(profile?.hasPlusAccess),
+          plan: String(profile?.plan || "FREE"),
+          subscriptionStatus: String(profile?.subscriptionStatus || "none"),
+          manualOverride: normalizeManualOverride(profile?.manualOverride),
+        });
       } catch {
         // Ignore profile lookup errors.
       }

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import { upsertUserProfile } from "@/lib/userProfile";
+import { ensureUserProfile } from "@/lib/userProfile";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -31,14 +31,7 @@ export default function SignupPage() {
       if (name.trim()) {
         await updateProfile(cred.user, { displayName: name.trim() });
       }
-      await upsertUserProfile({
-        uid: cred.user.uid,
-        email: cred.user.email || email,
-        displayName: name.trim() || undefined,
-        plan: "FREE",
-        hasPlusAccess: false,
-        subscriptionStatus: "none",
-      });
+      await ensureUserProfile(cred.user);
       router.replace("/account");
     } catch (err) {
       setError("Could not create account. Check your details and try again.");

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import { upsertUserProfile } from "@/lib/userProfile";
+import { ensureUserProfile } from "@/lib/userProfile";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -27,11 +27,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const cred = await signInWithEmailAndPassword(auth, email, password);
-      void upsertUserProfile({
-        uid: cred.user.uid,
-        email: cred.user.email || email,
-        displayName: cred.user.displayName || undefined,
-      });
+      void ensureUserProfile(cred.user);
       router.replace("/trade/electrical");
     } catch (err) {
       setError("Invalid email or password.");

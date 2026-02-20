@@ -1,5 +1,7 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
+import { FieldValue } from "firebase-admin/firestore";
+import { getAdminServicesOrNull } from "@/lib/firebaseAdmin";
 
 export const runtime = "nodejs";
 
@@ -23,6 +25,18 @@ function verifyStripeSignature(payload: string, signatureHeader: string, secret:
   }
 
   return timingSafeEqual(expectedBuffer, v1Buffer);
+}
+
+function getString(value: unknown) {
+  return typeof value === "string" ? value : "";
+}
+
+function statusToPlan(status: string): "PLUS" | "FREE" {
+  return status === "active" ? "PLUS" : "FREE";
+}
+
+function statusToAccess(status: string): boolean {
+  return status === "active";
 }
 
 export async function POST(request: Request) {
@@ -49,16 +63,79 @@ export async function POST(request: Request) {
       type: string;
       data?: { object?: Record<string, unknown> };
     };
+    const object = (event.data?.object || {}) as Record<string, any>;
+
+    const services = getAdminServicesOrNull();
+    if (!services) {
+      return NextResponse.json(
+        { error: "Missing Firebase admin environment variables" },
+        { status: 500 }
+      );
+    }
+    const adminDb = services.db;
+
+    async function updateUserByUidOrEmail(
+      uid: string,
+      email: string,
+      status: string
+    ) {
+      const updatePayload = {
+        plan: statusToPlan(status),
+        subscriptionStatus: status,
+        hasPlusAccess: statusToAccess(status),
+        updatedAt: FieldValue.serverTimestamp(),
+      };
+
+      if (uid) {
+        await adminDb.collection("users").doc(uid).set(updatePayload, { merge: true });
+        return;
+      }
+
+      if (!email) return;
+      const snap = await adminDb
+        .collection("users")
+        .where("email", "==", email)
+        .limit(1)
+        .get();
+      if (snap.empty) return;
+      await snap.docs[0].ref.set(updatePayload, { merge: true });
+    }
 
     switch (event.type) {
-      case "checkout.session.completed":
+      case "checkout.session.completed": {
+        const uid = getString(object.client_reference_id) || getString(object.metadata?.firebaseUid);
+        const email =
+          getString(object.customer_email) ||
+          getString(object.customer_details?.email) ||
+          getString(object.metadata?.email);
+        await updateUserByUidOrEmail(uid, email, "active");
+        console.log("stripe.webhook", event.type, { uid, email, status: "active" });
+        break;
+      }
       case "customer.subscription.created":
       case "customer.subscription.updated":
-      case "customer.subscription.deleted":
-      case "invoice.payment_succeeded":
-      case "invoice.payment_failed":
-        console.log("stripe.webhook", event.type, event.data?.object);
+      case "customer.subscription.deleted": {
+        const uid = getString(object.metadata?.firebaseUid);
+        const email = getString(object.metadata?.email);
+        const status = getString(object.status) || "none";
+        await updateUserByUidOrEmail(uid, email, status);
+        console.log("stripe.webhook", event.type, { uid, email, status });
         break;
+      }
+      case "invoice.payment_succeeded": {
+        const uid = getString(object.metadata?.firebaseUid);
+        const email = getString(object.customer_email) || getString(object.metadata?.email);
+        await updateUserByUidOrEmail(uid, email, "active");
+        console.log("stripe.webhook", event.type, { uid, email, status: "active" });
+        break;
+      }
+      case "invoice.payment_failed": {
+        const uid = getString(object.metadata?.firebaseUid);
+        const email = getString(object.customer_email) || getString(object.metadata?.email);
+        await updateUserByUidOrEmail(uid, email, "past_due");
+        console.log("stripe.webhook", event.type, { uid, email, status: "past_due" });
+        break;
+      }
       default:
         console.log("stripe.webhook.unhandled", event.type);
         break;

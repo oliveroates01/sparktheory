@@ -22,6 +22,7 @@ import {
   ELECTRICAL_LEVEL2_CATEGORIES,
   ELECTRICAL_LEVEL3_CATEGORIES,
 } from "@/data/electricalTopicCategories";
+import { normalizeManualOverride, resolvePlusAccess } from "@/lib/entitlements";
 
 type Category = ElectricalCategory;
 
@@ -255,12 +256,15 @@ export default function ElectricalPage() {
               hasPlusAccess?: boolean;
               plan?: string;
               subscriptionStatus?: string;
+              manualOverride?: string;
             }
           | undefined;
-        const plan = (profile?.plan || "").toUpperCase();
-        const status = (profile?.subscriptionStatus || "").toLowerCase();
-        plusFromProfile =
-          Boolean(profile?.hasPlusAccess) || (plan === "PLUS" && status === "active");
+        plusFromProfile = resolvePlusAccess({
+          hasPlusAccess: Boolean(profile?.hasPlusAccess),
+          plan: String(profile?.plan || "FREE"),
+          subscriptionStatus: String(profile?.subscriptionStatus || "none"),
+          manualOverride: normalizeManualOverride(profile?.manualOverride),
+        });
       } catch {
         // Ignore profile lookup errors.
       }

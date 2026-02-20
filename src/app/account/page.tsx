@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged, signOut, type User } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import SparkTheoryLogo from "@/components/Brand/SparkTheoryLogo";
-import { upsertUserProfile } from "@/lib/userProfile";
+import { ensureUserProfile } from "@/lib/userProfile";
 
 type AccountData = {
   brandName: string;
@@ -78,7 +78,6 @@ export default function AccountPage() {
     status: "none",
     currentPeriodEnd: null,
   });
-  const lastProfileSyncKeyRef = useRef("");
 
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") return;
@@ -173,6 +172,9 @@ export default function AccountPage() {
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(u);
       setLoading(false);
+      if (u) {
+        void ensureUserProfile(u);
+      }
     });
     return () => unsub();
   }, []);
@@ -205,7 +207,7 @@ export default function AccountPage() {
         const response = await fetch("/api/stripe/subscription-status", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: user.email }),
+          body: JSON.stringify({ email: user.email, uid: user.uid }),
         });
 
         const result = (await response.json().catch(() => ({}))) as {
@@ -213,6 +215,8 @@ export default function AccountPage() {
           hasSubscription?: boolean;
           cancelAtPeriodEnd?: boolean;
           status?: string;
+          subscriptionStatus?: string;
+          hasPlusAccess?: boolean;
           currentPeriodEnd?: number | null;
         };
 
@@ -221,8 +225,10 @@ export default function AccountPage() {
         }
 
         if (!cancelled) {
-          const hasSubscription = Boolean(result.hasSubscription);
-          const nextStatus = result.status || "none";
+          const hasSubscription = Boolean(
+            result.hasPlusAccess ?? result.hasSubscription
+          );
+          const nextStatus = result.subscriptionStatus || result.status || "none";
           const nextSubscription = {
             hasSubscription,
             cancelAtPeriodEnd: Boolean(result.cancelAtPeriodEnd),
@@ -243,26 +249,6 @@ export default function AccountPage() {
             return nextSubscription;
           });
 
-          const syncKey = [
-            user.uid,
-            user.email,
-            user.displayName || "",
-            hasSubscription ? "PLUS" : "FREE",
-            hasSubscription ? "1" : "0",
-            nextStatus,
-          ].join("|");
-
-          if (lastProfileSyncKeyRef.current !== syncKey) {
-            lastProfileSyncKeyRef.current = syncKey;
-            void upsertUserProfile({
-              uid: user.uid,
-              email: user.email,
-              displayName: user.displayName || undefined,
-              plan: hasSubscription ? "PLUS" : "FREE",
-              hasPlusAccess: hasSubscription,
-              subscriptionStatus: nextStatus,
-            });
-          }
         }
       } catch (error) {
         if (!cancelled) {

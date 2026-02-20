@@ -4,38 +4,67 @@ import {
   listSubscriptions,
   pickCurrentSubscription,
 } from "@/lib/stripe";
+import { getAdminServicesOrNull } from "@/lib/firebaseAdmin";
+import { normalizeManualOverride, resolvePlusAccess } from "@/lib/entitlements";
 
 type SubscriptionStatusPayload = {
   email?: string;
+  uid?: string;
 };
 
 export async function POST(request: Request) {
   try {
     const payload = (await request.json().catch(() => ({}))) as SubscriptionStatusPayload;
 
-    if (!payload.email) {
-      return NextResponse.json({ error: "Email is required" }, { status: 400 });
+    if (!payload.email && !payload.uid) {
+      return NextResponse.json({ error: "Email or uid is required" }, { status: 400 });
     }
 
-    const customer = await findCustomerByEmail(payload.email);
-
-    if (!customer) {
-      return NextResponse.json({ hasSubscription: false, hasPlusAccess: false });
+    const services = getAdminServicesOrNull();
+    let userDocData: Record<string, unknown> = {};
+    if (services && payload.uid) {
+      const userRef = services.db.collection("users").doc(payload.uid);
+      const snapshot = await userRef.get();
+      if (snapshot.exists) {
+        userDocData = snapshot.data() || {};
+      }
     }
 
-    const subscriptions = await listSubscriptions(customer.id);
-    const current = pickCurrentSubscription(subscriptions);
-
-    if (!current) {
-      return NextResponse.json({ hasSubscription: false, hasPlusAccess: false });
+    let current:
+      | {
+          status: string;
+          cancel_at_period_end: boolean;
+          current_period_end?: number;
+        }
+      | undefined;
+    if (payload.email) {
+      const customer = await findCustomerByEmail(payload.email);
+      if (customer) {
+        const subscriptions = await listSubscriptions(customer.id);
+        current = pickCurrentSubscription(subscriptions);
+      }
     }
+
+    const plan = String(userDocData.plan || "FREE");
+    const subscriptionStatus = String(userDocData.subscriptionStatus || "none");
+    const manualOverride = normalizeManualOverride(userDocData.manualOverride);
+    const storedHasPlusAccess = Boolean(userDocData.hasPlusAccess);
+    const hasPlusAccess = resolvePlusAccess({
+      hasPlusAccess: storedHasPlusAccess,
+      plan,
+      subscriptionStatus,
+      manualOverride,
+    });
 
     return NextResponse.json({
-      hasSubscription: true,
-      hasPlusAccess: true,
-      status: current.status,
-      cancelAtPeriodEnd: current.cancel_at_period_end,
-      currentPeriodEnd: current.current_period_end ?? null,
+      hasSubscription: hasPlusAccess,
+      hasPlusAccess,
+      plan,
+      subscriptionStatus,
+      manualOverride,
+      status: current?.status || subscriptionStatus,
+      cancelAtPeriodEnd: current?.cancel_at_period_end ?? false,
+      currentPeriodEnd: current?.current_period_end ?? null,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to fetch subscription status";
