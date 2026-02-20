@@ -5,7 +5,10 @@ import { getFirestore } from "firebase-admin/firestore";
 function getAdminConfig() {
   const projectId = process.env.FIREBASE_ADMIN_PROJECT_ID;
   const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;
-  const privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  const rawPrivateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY;
+  const privateKey = rawPrivateKey?.includes("\\n")
+    ? rawPrivateKey.replace(/\\n/g, "\n")
+    : rawPrivateKey;
 
   if (!projectId || !clientEmail || !privateKey) {
     return null;
@@ -38,4 +41,3 @@ export function getAdminServicesOrNull() {
     db: getFirestore(app),
   };
 }
-
