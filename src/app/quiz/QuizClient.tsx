@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth } from "@/lib/firebase";
@@ -368,11 +368,14 @@ function rawBankForTopic(topic: string, level: string): unknown[] {
 
 export default function QuizPage() {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [hasPlusAccess, setHasPlusAccess] = useState(false);
   const [authReady, setAuthReady] = useState(false);
   const [subscriptionReady, setSubscriptionReady] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [entitlementsLoading, setEntitlementsLoading] = useState(true);
 
   const topic = (searchParams.get("topic") ?? "").trim().toLowerCase();
 
@@ -427,15 +430,18 @@ export default function QuizPage() {
         }
       } finally {
         setSubscriptionReady(true);
+        setEntitlementsLoading(false);
       }
     };
 
     const unsub = onAuthStateChanged(auth, (user) => {
+      setAuthLoading(false);
       setUserLoggedIn(Boolean(user));
       setAuthReady(true);
       if (!user) {
         setHasPlusAccess(false);
         setSubscriptionReady(true);
+        setEntitlementsLoading(false);
         return;
       }
       try {
@@ -447,6 +453,7 @@ export default function QuizPage() {
         // ignore cache failures
       }
       setSubscriptionReady(false);
+      setEntitlementsLoading(true);
       void loadSubscription(user);
     });
     return () => unsub();
@@ -464,12 +471,57 @@ export default function QuizPage() {
   const topicsHref =
     level === "3" ? "/trade/electrical?level=3" : "/trade/electrical";
   const unseenOnly = (searchParams.get("unseen") ?? "").trim() === "1";
-  const isLocked = ((level === "3" && LOCKED_LEVEL3_TOPICS.has(topic)) || (level !== "3" && LOCKED_LEVEL2_TOPICS.has(topic))) && authReady && (!userLoggedIn || !subscriptionReady || !hasPlusAccess);
+  const requiresPlusTopic =
+    (level === "3" && LOCKED_LEVEL3_TOPICS.has(topic)) ||
+    (level !== "3" && LOCKED_LEVEL2_TOPICS.has(topic));
+  const accessLoading =
+    requiresPlusTopic && (authLoading || entitlementsLoading || !authReady || !subscriptionReady);
+  const isLocked =
+    requiresPlusTopic && !accessLoading && (!userLoggedIn || !hasPlusAccess);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "development") return;
+    console.log("[quiz-access]", {
+      pathname,
+      uid: auth.currentUser?.uid ?? null,
+      topic,
+      level,
+      userLoggedIn,
+      hasPlusAccess,
+      authLoading,
+      entitlementsLoading,
+      authReady,
+      subscriptionReady,
+      requiresPlusTopic,
+      accessLoading,
+      isLocked,
+    });
+  }, [
+    pathname,
+    topic,
+    level,
+    userLoggedIn,
+    hasPlusAccess,
+    authLoading,
+    entitlementsLoading,
+    authReady,
+    subscriptionReady,
+    requiresPlusTopic,
+    accessLoading,
+    isLocked,
+  ]);
 
   useEffect(() => {
     if (!isLocked) return;
+    if (process.env.NODE_ENV === "development") {
+      console.log("[quiz-access] redirect-branch", {
+        pathname,
+        uid: auth.currentUser?.uid ?? null,
+        branch: userLoggedIn ? "denied-to-account" : "not-logged-in-to-login",
+      });
+    }
     router.replace(userLoggedIn ? "/account" : "/login");
-  }, [isLocked, router, userLoggedIn]);
+  }, [isLocked, router, userLoggedIn, pathname]);
 
   const bank = useMemo<Question[]>(() => {
     const normalizedByTopic = (topicSlug: string): Question[] =>
@@ -828,6 +880,13 @@ export default function QuizPage() {
             <p className="mt-2 text-xs text-white/50">
               Topic in URL: <b>{topic || "(none)"}</b>
             </p>
+          </div>
+        )}
+
+        {accessLoading && (
+          <div className="mb-4 flex items-center gap-2 rounded-xl bg-white/5 px-3 py-2 text-xs text-white/70 ring-1 ring-white/10">
+            <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-white/25 border-t-white/80" />
+            Checking your subscription access...
           </div>
         )}
 
