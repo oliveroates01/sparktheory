@@ -390,9 +390,13 @@ export default function QuizPage() {
       let plusFromStripe = false;
       let plusFromProfile = false;
       try {
+        const token = await user.getIdToken();
         const response = await fetch("/api/stripe/subscription-status", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({ email: user.email, uid: user.uid }),
         });
         const result = (await response.json().catch(() => ({}))) as {

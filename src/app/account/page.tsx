@@ -204,9 +204,13 @@ export default function AccountPage() {
       }
 
       try {
+        const token = await user.getIdToken();
         const response = await fetch("/api/stripe/subscription-status", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({ email: user.email, uid: user.uid }),
         });
 

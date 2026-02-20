@@ -7,27 +7,42 @@ import {
 import { getAdminServicesOrNull } from "@/lib/firebaseAdmin";
 import { normalizeManualOverride, resolvePlusAccess } from "@/lib/entitlements";
 
-type SubscriptionStatusPayload = {
-  email?: string;
-  uid?: string;
-};
+function getBearerToken(request: Request): string {
+  const authHeader = request.headers.get("authorization") || "";
+  if (!authHeader.toLowerCase().startsWith("bearer ")) return "";
+  return authHeader.slice(7).trim();
+}
 
 export async function POST(request: Request) {
   try {
-    const payload = (await request.json().catch(() => ({}))) as SubscriptionStatusPayload;
-
-    if (!payload.email && !payload.uid) {
-      return NextResponse.json({ error: "Email or uid is required" }, { status: 400 });
+    const services = getAdminServicesOrNull();
+    if (!services) {
+      return NextResponse.json(
+        { error: "Missing Firebase admin environment variables" },
+        { status: 500 }
+      );
     }
 
-    const services = getAdminServicesOrNull();
+    const token = getBearerToken(request);
+    if (!token) {
+      return NextResponse.json({ error: "Missing bearer token" }, { status: 401 });
+    }
+
+    const decoded = await services.auth
+      .verifyIdToken(token)
+      .catch(() => null);
+    if (!decoded) {
+      return NextResponse.json({ error: "Invalid bearer token" }, { status: 401 });
+    }
+
+    const uid = decoded.uid;
+    const email = decoded.email || "";
+
     let userDocData: Record<string, unknown> = {};
-    if (services && payload.uid) {
-      const userRef = services.db.collection("users").doc(payload.uid);
-      const snapshot = await userRef.get();
-      if (snapshot.exists) {
-        userDocData = snapshot.data() || {};
-      }
+    const userRef = services.db.collection("users").doc(uid);
+    const snapshot = await userRef.get();
+    if (snapshot.exists) {
+      userDocData = snapshot.data() || {};
     }
 
     let current:
@@ -37,8 +52,8 @@ export async function POST(request: Request) {
           current_period_end?: number;
         }
       | undefined;
-    if (payload.email) {
-      const customer = await findCustomerByEmail(payload.email);
+    if (email) {
+      const customer = await findCustomerByEmail(email);
       if (customer) {
         const subscriptions = await listSubscriptions(customer.id);
         current = pickCurrentSubscription(subscriptions);
