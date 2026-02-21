@@ -79,18 +79,25 @@ const LOCKED_LEVEL3_TOPICS = new Set([
   "inspection-testing-commissioning",
 ]);
 
-function storageKeyForLevel(level: string) {
-  return level === "3" ? STORAGE_KEY_LEVEL3 : STORAGE_KEY_LEVEL2;
+function scopedProgressKey(baseKey: string, userId?: string | null) {
+  return userId ? `${baseKey}__uid_${userId}` : baseKey;
 }
 
-function seenKeyForTopic(level: string, topic: string) {
-  const safeTopic = topic || "unknown";
-  return `qm_seen_${level === "3" ? "3" : "2"}_${safeTopic}`;
+function storageKeyForLevel(level: string, userId?: string | null) {
+  const baseKey = level === "3" ? STORAGE_KEY_LEVEL3 : STORAGE_KEY_LEVEL2;
+  return scopedProgressKey(baseKey, userId);
 }
 
-function problemKeyForTopic(level: string, topic: string) {
+function seenKeyForTopic(level: string, topic: string, userId?: string | null) {
   const safeTopic = topic || "unknown";
-  return `qm_problem_${level === "3" ? "3" : "2"}_${safeTopic}`;
+  const baseKey = `qm_seen_${level === "3" ? "3" : "2"}_${safeTopic}`;
+  return scopedProgressKey(baseKey, userId);
+}
+
+function problemKeyForTopic(level: string, topic: string, userId?: string | null) {
+  const safeTopic = topic || "unknown";
+  const baseKey = `qm_problem_${level === "3" ? "3" : "2"}_${safeTopic}`;
+  return scopedProgressKey(baseKey, userId);
 }
 
 function canonicalQuestionId(id: string): string {
@@ -371,6 +378,7 @@ export default function QuizPage() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [hasPlusAccess, setHasPlusAccess] = useState(false);
   const [authReady, setAuthReady] = useState(false);
@@ -445,6 +453,7 @@ export default function QuizPage() {
     const unsub = onAuthStateChanged(auth, (user) => {
       setAuthLoading(false);
       setUserLoggedIn(Boolean(user));
+      setCurrentUserId(user?.uid ?? null);
       setAuthReady(true);
       if (!user) {
         setHasPlusAccess(false);
@@ -468,7 +477,7 @@ export default function QuizPage() {
   }, []);
   const level = (searchParams.get("level") ?? "").trim();
   const problemsOnly = (searchParams.get("problems") ?? "").trim() === "1";
-  const storageKey = storageKeyForLevel(level);
+  const storageKey = storageKeyForLevel(level, currentUserId);
   const nRaw = (searchParams.get("n") ?? "").trim();
   const quizSize =
     Number.isFinite(Number(nRaw)) && Number(nRaw) > 0
@@ -547,13 +556,17 @@ export default function QuizPage() {
       const scopedTopics = isAllTopics
         ? catalog
         : catalog.filter((entry) => entry.slug === topic);
-      const mixedKey = isAllTopics ? problemKeyForTopic(level, topic) : null;
+      const mixedKey = isAllTopics
+        ? problemKeyForTopic(level, topic, currentUserId)
+        : null;
       const seenQuestionIds = new Set<string>();
       const collected: Array<{ question: Question; wrong: number }> = [];
 
       for (const entry of scopedTopics) {
         const questionsForTopic = normalizedByTopic(entry.slug);
-        const statsByTopic = loadProblemStats(problemKeyForTopic(level, entry.slug));
+        const statsByTopic = loadProblemStats(
+          problemKeyForTopic(level, entry.slug, currentUserId)
+        );
         const statsForMixed = mixedKey ? loadProblemStats(mixedKey) : null;
 
         for (const q of questionsForTopic) {
@@ -574,13 +587,13 @@ export default function QuizPage() {
 
     if (!unseenOnly || !topic) return normalized;
 
-    const seenKey = seenKeyForTopic(level, topic);
+    const seenKey = seenKeyForTopic(level, topic, currentUserId);
     const seen = loadSeenIds(seenKey);
     if (seen.size === 0) return normalized;
 
     const unseen = normalized.filter((q) => !hasSeenQuestion(seen, q));
     return unseen.length > 0 ? unseen : normalized;
-  }, [topic, level, unseenOnly, problemsOnly]);
+  }, [topic, level, unseenOnly, problemsOnly, currentUserId]);
 
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -732,14 +745,14 @@ export default function QuizPage() {
 
   useEffect(() => {
     if (!finished || !topic || questions.length === 0) return;
-    const seenKey = seenKeyForTopic(level, topic);
+    const seenKey = seenKeyForTopic(level, topic, currentUserId);
     const seen = loadSeenIds(seenKey);
     questions.forEach((q) => {
       seen.add(q.id);
       q.legacyIds?.forEach((legacyId) => seen.delete(legacyId));
     });
     saveSeenIds(seenKey, seen);
-  }, [finished, questions, topic, level]);
+  }, [finished, questions, topic, level, currentUserId]);
 
   const current = questions[currentIndex] ?? null;
 
@@ -758,7 +771,7 @@ export default function QuizPage() {
 
     if (!revealed && current) {
       if (typeof window !== "undefined" && topic) {
-        const pKey = problemKeyForTopic(level, topic);
+        const pKey = problemKeyForTopic(level, topic, currentUserId);
         const stats = loadProblemStats(pKey);
         const existing = mergedProblemStat(stats, current);
         const wrong = selected === current.correctIndex ? 0 : 1;
@@ -811,7 +824,7 @@ export default function QuizPage() {
     });
 
     setHasSaved(true);
-  }, [finished, hasSaved, questions.length, score, topic]);
+  }, [finished, hasSaved, questions.length, score, topic, storageKey]);
 
   // Load topic-only results for end-of-exam chart
   useEffect(() => {

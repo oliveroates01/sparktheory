@@ -70,6 +70,14 @@ function storageKeyForLevel(level: "2" | "3") {
   return level === "3" ? STORAGE_KEY_LEVEL3 : STORAGE_KEY_LEVEL2;
 }
 
+function scopedProgressKey(baseKey: string, userId?: string | null) {
+  return userId ? `${baseKey}__uid_${userId}` : baseKey;
+}
+
+function storageKeyForLevelAndUser(level: "2" | "3", userId?: string | null) {
+  return scopedProgressKey(storageKeyForLevel(level), userId);
+}
+
 function loadResults(storageKey: string): StoredResult[] {
   try {
     const raw = JSON.parse(localStorage.getItem(storageKey) || "[]");
@@ -115,9 +123,9 @@ function getTopicAccessState(
   return hasPlusAccess ? "unlocked" : "locked";
 }
 
-function seenKeyForTopic(level: "2" | "3", topic: string) {
+function seenKeyForTopic(level: "2" | "3", topic: string, userId?: string | null) {
   const safeTopic = topic || "unknown";
-  return `qm_seen_${level}_${safeTopic}`;
+  return scopedProgressKey(`qm_seen_${level}_${safeTopic}`, userId);
 }
 
 function canonicalQuestionId(id: string): string {
@@ -208,7 +216,8 @@ export default function ElectricalPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const storageKey = storageKeyForLevel(level);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const storageKey = storageKeyForLevelAndUser(level, currentUserId);
   const [results, setResults] = useState<StoredResult[]>([]);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [hasPlusAccess, setHasPlusAccess] = useState(false);
@@ -288,6 +297,7 @@ export default function ElectricalPage() {
 
     const unsub = onAuthStateChanged(auth, (user) => {
       setUserLoggedIn(Boolean(user));
+      setCurrentUserId(user?.uid ?? null);
       setAuthReady(true);
       if (!user) {
         setHasPlusAccess(false);
@@ -421,12 +431,12 @@ export default function ElectricalPage() {
       setUnseenCount(null);
       return;
     }
-    const seenKey = seenKeyForTopic(lvl, topic);
+    const seenKey = seenKeyForTopic(lvl, topic, currentUserId);
     const seen = loadSeenIds(seenKey);
     const seenCount = seenCountForTopic(topic, lvl, seen);
     const unseen = Math.max(total - seenCount, 0);
     setUnseenCount(unseen);
-  }, [pickerOpen, pickedHref, level]);
+  }, [pickerOpen, pickedHref, level, currentUserId]);
 
   const openPicker = (href?: string) => {
     if (!href) return;

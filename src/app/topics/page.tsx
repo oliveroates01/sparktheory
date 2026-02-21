@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { onAuthStateChanged } from "firebase/auth";
 import SparkTheoryLogo from "@/components/Brand/SparkTheoryLogo";
+import { auth } from "@/lib/firebase";
 import { getElectricalLevel3Categories } from "@/data/electricalTopicCategories";
 import { healthSafetyQuestions } from "@/data/healthSafety";
 import { principlesElectricalScienceQuestions } from "@/data/principlesElectricalScience";
@@ -185,14 +187,20 @@ function loadProblemStats(key: string): Record<string, ProblemStat> {
   }
 }
 
-function problemPreviewFromStorage(level: "2" | "3"): ProblemPreview | null {
+function scopedProgressKey(baseKey: string, userId?: string | null) {
+  return userId ? `${baseKey}__uid_${userId}` : baseKey;
+}
+
+function problemPreviewFromStorage(level: "2" | "3", userId?: string | null): ProblemPreview | null {
   const topics = level === "3" ? LEVEL3_PROBLEM_TOPICS : LEVEL2_PROBLEM_TOPICS;
   const prefix = level === "3" ? "qm_problem_3_" : "qm_problem_2_";
   const topicSummaries: Array<{ title: string; count: number }> = [];
   const samplePool: Array<{ question: string; wrong: number }> = [];
 
   for (const topic of topics) {
-    const stats = loadProblemStats(`${prefix}${topic.slug}`);
+    const stats = loadProblemStats(
+      scopedProgressKey(`${prefix}${topic.slug}`, userId)
+    );
     const normalized = topic.questions
       .map((q, i) => normalizeProblemQuestion(q, i))
       .filter((q): q is ProblemQuestion => Boolean(q));
@@ -228,6 +236,7 @@ function problemPreviewFromStorage(level: "2" | "3"): ProblemPreview | null {
 
 export default function TopicsPage() {
   const router = useRouter();
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [activeTrade, setActiveTrade] =
     useState<TradeKey>("electrical");
 
@@ -297,6 +306,13 @@ export default function TopicsPage() {
   const [problemPreview, setProblemPreview] = useState<ProblemPreview | null>(null);
 
   useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setCurrentUserId(user?.uid ?? null);
+    });
+    return () => unsub();
+  }, []);
+
+  useEffect(() => {
     let cancelled = false;
     const timeouts: Array<ReturnType<typeof setTimeout>> = [];
 
@@ -342,7 +358,7 @@ export default function TopicsPage() {
 
     const refresh = () => {
       const level: "2" | "3" = showLevel3 ? "3" : "2";
-      const fromStorage = problemPreviewFromStorage(level);
+      const fromStorage = problemPreviewFromStorage(level, currentUserId);
       if (fromStorage) {
         setProblemPreview(fromStorage);
         return;
@@ -357,7 +373,7 @@ export default function TopicsPage() {
       window.removeEventListener("storage", refresh);
       window.removeEventListener("focus", refresh);
     };
-  }, [showLevel3]);
+  }, [showLevel3, currentUserId]);
 
   const handleTradeClick = (key: TradeKey) => {
     if (key === "electrical") {

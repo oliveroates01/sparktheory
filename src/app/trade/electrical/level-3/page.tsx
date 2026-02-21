@@ -30,6 +30,14 @@ const LOCKED_LEVEL3_TOPICS = new Set([
   "inspection-testing-commissioning",
 ]);
 
+function scopedProgressKey(baseKey: string, userId?: string | null) {
+  return userId ? `${baseKey}__uid_${userId}` : baseKey;
+}
+
+function storageKeyForUser(userId?: string | null) {
+  return scopedProgressKey(STORAGE_KEY, userId);
+}
+
 type TopicAccessState = "loading" | "locked" | "unlocked";
 
 function getTopicAccessState(
@@ -46,9 +54,9 @@ function getTopicAccessState(
   return hasPlusAccess ? "unlocked" : "locked";
 }
 
-function loadResults(): StoredResult[] {
+function loadResults(storageKey: string): StoredResult[] {
   try {
-    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const raw = JSON.parse(localStorage.getItem(storageKey) || "[]");
     return Array.isArray(raw) ? (raw as StoredResult[]) : [];
   } catch {
     return [];
@@ -62,9 +70,9 @@ function getTopicFromHref(href?: string) {
   return (sp.get("topic") || "").trim().toLowerCase();
 }
 
-function seenKeyForTopic(level: "3", topic: string) {
+function seenKeyForTopic(level: "3", topic: string, userId?: string | null) {
   const safeTopic = topic || "unknown";
-  return `qm_seen_${level}_${safeTopic}`;
+  return scopedProgressKey(`qm_seen_${level}_${safeTopic}`, userId);
 }
 
 function loadSeenIds(key: string): Set<string> {
@@ -122,10 +130,9 @@ const CATEGORIES: Category[] = [
 
 export default function ElectricalLevel3Page() {
   const pathname = usePathname();
-  const [results, setResults] = useState<StoredResult[]>(() => {
-    if (typeof window === "undefined") return [];
-    return loadResults();
-  });
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const storageKey = storageKeyForUser(currentUserId);
+  const [results, setResults] = useState<StoredResult[]>([]);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickedHref, setPickedHref] = useState<string | null>(null);
   const [unseenOnly, setUnseenOnly] = useState(false);
@@ -201,6 +208,7 @@ export default function ElectricalLevel3Page() {
 
     const unsub = onAuthStateChanged(auth, (user) => {
       setUserLoggedIn(Boolean(user));
+      setCurrentUserId(user?.uid ?? null);
       setAuthReady(true);
       if (!user) {
         setHasPlusAccess(false);
@@ -223,19 +231,22 @@ export default function ElectricalLevel3Page() {
   }, []);
 
   useEffect(() => {
+    const syncResults = () => setResults(loadResults(storageKey));
+    syncResults();
+
     const onStorage = (e: StorageEvent) => {
-      if (e.key === STORAGE_KEY) setResults(loadResults());
+      if (e.key === storageKey) syncResults();
     };
     window.addEventListener("storage", onStorage);
 
-    const onFocus = () => setResults(loadResults());
+    const onFocus = () => syncResults();
     window.addEventListener("focus", onFocus);
 
     return () => {
       window.removeEventListener("storage", onStorage);
       window.removeEventListener("focus", onFocus);
     };
-  }, []);
+  }, [storageKey]);
 
   const resultsOldestToNewest = useMemo(() => {
     return [...results].sort((a, b) => {
@@ -268,7 +279,7 @@ export default function ElectricalLevel3Page() {
 
   const resetProgress = () => {
     try {
-      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(storageKey);
     } catch {
       // ignore
     }
@@ -289,11 +300,11 @@ export default function ElectricalLevel3Page() {
       setUnseenCount(null);
       return;
     }
-    const seenKey = seenKeyForTopic("3", topic);
+    const seenKey = seenKeyForTopic("3", topic, currentUserId);
     const seen = loadSeenIds(seenKey);
     const unseen = Math.max(total - seen.size, 0);
     setUnseenCount(unseen);
-  }, [pickerOpen, pickedHref]);
+  }, [pickerOpen, pickedHref, currentUserId]);
 
   return (
     <main className="min-h-screen bg-[#1F1F1F] text-white page-transition">
