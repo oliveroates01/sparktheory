@@ -358,6 +358,7 @@ export default function ProgressReport({
       const runningAvg = total / (idx + 1);
 
       return {
+        xKey: `${p.attempt}__${p.bucketTime || idx}__${idx}`,
         label: p.label,
         attempt: p.attempt,
         avg: Math.round(runningAvg),
@@ -645,11 +646,15 @@ export default function ProgressReport({
                   />
 
                   <XAxis
-                    dataKey="attempt"
+                    dataKey="xKey"
                     axisLine={false}
                     tickLine={false}
                     tickMargin={10}
                     height={X_AXIS_H}
+                    tickFormatter={(value) => {
+                      const text = String(value || "");
+                      return text.split("__")[0] || text;
+                    }}
                     tick={{ fill: "#94a3b8", fontSize: 12 }}
                   />
 

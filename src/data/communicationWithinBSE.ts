@@ -1,5 +1,6 @@
 export type Question = {
     id: string;
+    legacyIds?: string[];
     question: string;
     options: [string, string, string, string];
     correctIndex: number;
@@ -715,6 +716,110 @@ export type Question = {
       options: ["Reduce inspections", "Safe, accurate, efficient work", "Increase paperwork", "Avoid responsibility"],
       correctIndex: 1,
       explanation: "Effective comms supports safety, quality, and productivity."
+    },
+    {
+      id: "comm-101",
+      legacyIds: ["iwse-001"],
+      question: "Name one advantage of using electronic technical information (e.g., USB, CD, DVD)?",
+      options: [
+        "Portable and easy to update",
+        "Always works without power",
+        "Cannot be lost",
+        "Never needs backups",
+      ],
+      correctIndex: 0,
+      explanation: "Electronic sources are portable and can be updated easily."
+    },
+    {
+      id: "comm-102",
+      legacyIds: ["iwse-002"],
+      question: "A disadvantage of electronic technical information is that it?",
+      options: [
+        "Requires power or a device to access",
+        "Is always out of date",
+        "Cannot store large files",
+        "Is illegal to use on site",
+      ],
+      correctIndex: 0,
+      explanation: "Electronic data needs a device and power to view."
+    },
+    {
+      id: "comm-103",
+      legacyIds: ["iwse-003"],
+      question: "An advantage of hard‑copy technical information is that it?",
+      options: [
+        "Can be used without power",
+        "Is always up to date",
+        "Cannot be damaged",
+        "Is lighter than digital devices",
+      ],
+      correctIndex: 0,
+      explanation: "Printed information needs no power source."
+    },
+    {
+      id: "comm-104",
+      legacyIds: ["iwse-004"],
+      question: "A disadvantage of hard‑copy information is that it?",
+      options: [
+        "Can be bulky and harder to update",
+        "Cannot be taken to site",
+        "Is illegal on site",
+        "Never gets damaged",
+      ],
+      correctIndex: 0,
+      explanation: "Printed materials can be bulky and out of date."
+    },
+    {
+      id: "comm-105",
+      legacyIds: ["iwse-027"],
+      question: "A disadvantage of hard‑copy technical info on site is that it?",
+      options: [
+        "Can become outdated and damaged",
+        "Requires software updates",
+        "Needs batteries",
+        "Cannot be shared",
+      ],
+      correctIndex: 0,
+      explanation: "Printed materials can be out of date or damaged on site."
+    },
+    {
+      id: "comm-106",
+      legacyIds: ["iwse-028"],
+      question: "An advantage of electronic technical info on site is that it?",
+      options: [
+        "Can store large amounts of data in one place",
+        "Never needs charging",
+        "Cannot be lost",
+        "Cannot be corrupted",
+      ],
+      correctIndex: 0,
+      explanation: "Electronic storage can hold a lot of information."
+    },
+    {
+      id: "comm-107",
+      legacyIds: ["iwse-035"],
+      question: "An advantage of electronic technical info in the office is?",
+      options: [
+        "Easy search and fast updates",
+        "No need for backups",
+        "Cannot be shared",
+        "Always offline",
+      ],
+      correctIndex: 0,
+      explanation: "Digital info is searchable and easy to update."
+    },
+    {
+      id: "comm-108",
+      legacyIds: ["iwse-036"],
+      question: "An advantage of hard‑copy info in the office is?",
+      options: [
+        "Quick reference without devices",
+        "Never gets out of date",
+        "Always up to date",
+        "Cannot be lost",
+      ],
+      correctIndex: 0,
+      explanation: "Hard copy can be read without devices or power."
     }
   ];
   

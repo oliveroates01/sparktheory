@@ -628,8 +628,8 @@ export default function TopicsPage() {
             </button>
           </div>
           <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2">
-            {visibleCards.flatMap((c, index) => {
-              const leftCard = (
+            <div className="flex flex-col gap-6 lg:self-stretch lg:justify-between lg:gap-0">
+              {visibleCards.map((c) => (
                 <div
                   key={`${c.id}-left`}
                   className="relative min-h-[208px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#2A2A2A]/82 via-[#1F1F1F]/76 to-[#2A2A2A]/82 p-7 ring-1 ring-white/14 shadow-[0_12px_30px_rgba(0,0,0,0.22)]"
@@ -658,14 +658,12 @@ export default function TopicsPage() {
                     <div className="mt-auto" />
                   </div>
                 </div>
-              );
+              ))}
+            </div>
 
-              const rightCard = dashboardRightCards[index] ?? (
-                <div key={`placeholder-${c.id}`} aria-hidden="true" className="hidden md:block" />
-              );
-
-              return [leftCard, rightCard];
-            })}
+            <div className="flex flex-col gap-4">
+              {dashboardRightCards}
+            </div>
           </div>
         </section>
 

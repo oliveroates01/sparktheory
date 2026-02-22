@@ -1,4 +1,13 @@
-export const healthSafetyQuestions = [
+export type Question = {
+    id: string;
+    legacyIds?: string[];
+    question: string;
+    options: [string, string, string, string];
+    correctIndex: number;
+    explanation: string;
+  };
+  
+  export const healthSafetyQuestions: Question[] = [
     {
       id: "hs-001",
       question: "What is the main aim of the Health and Safety at Work Act 1974?",
@@ -1200,6 +1209,32 @@ export const healthSafetyQuestions = [
         correctIndex: 0,
         explanation:
           "All accidents should be reported so they can be dealt with properly.",
+      },
+      {
+        id: "hs-091",
+        legacyIds: ["iwse-015"],
+        question: "A key step in safe manual handling is to?",
+        options: [
+          "Bend knees and keep back straight",
+          "Keep legs straight",
+          "Twist while lifting",
+          "Lift away from body",
+        ],
+        correctIndex: 0,
+        explanation: "Safe lifting uses bent knees and a straight back.",
+      },
+      {
+        id: "hs-092",
+        legacyIds: ["iwse-021"],
+        question: "A safe manual handling technique includes?",
+        options: [
+          "Keeping the load close to the body",
+          "Holding the load at arm’s length",
+          "Twisting while lifting",
+          "Bending only at the waist",
+        ],
+        correctIndex: 0,
+        explanation: "Loads should be kept close to reduce strain.",
       },
     
     

@@ -1,53 +1,5 @@
 export const installationWiringQuestions = [
     {
-      id: "iwse-001",
-      question: "Name one advantage of using electronic technical information (e.g., USB, CD, DVD)?",
-      options: [
-        "Portable and easy to update",
-        "Always works without power",
-        "Cannot be lost",
-        "Never needs backups",
-      ],
-      correctIndex: 0,
-      explanation: "Electronic sources are portable and can be updated easily.",
-    },
-    {
-      id: "iwse-002",
-      question: "A disadvantage of electronic technical information is that it?",
-      options: [
-        "Requires power or a device to access",
-        "Is always out of date",
-        "Cannot store large files",
-        "Is illegal to use on site",
-      ],
-      correctIndex: 0,
-      explanation: "Electronic data needs a device and power to view.",
-    },
-    {
-      id: "iwse-003",
-      question: "An advantage of hard‑copy technical information is that it?",
-      options: [
-        "Can be used without power",
-        "Is always up to date",
-        "Cannot be damaged",
-        "Is lighter than digital devices",
-      ],
-      correctIndex: 0,
-      explanation: "Printed information needs no power source.",
-    },
-    {
-      id: "iwse-004",
-      question: "A disadvantage of hard‑copy information is that it?",
-      options: [
-        "Can be bulky and harder to update",
-        "Cannot be taken to site",
-        "Is illegal on site",
-        "Never gets damaged",
-      ],
-      correctIndex: 0,
-      explanation: "Printed materials can be bulky and out of date.",
-    },
-    {
       id: "iwse-005",
       question: "Which is an example of statutory regulations affecting electrical work?",
       options: [
@@ -144,18 +96,6 @@ export const installationWiringQuestions = [
       explanation: "Section 70 covers special installations or locations.",
     },
     {
-      id: "iwse-015",
-      question: "A key step in safe manual handling is to?",
-      options: [
-        "Bend knees and keep back straight",
-        "Keep legs straight",
-        "Twist while lifting",
-        "Lift away from body",
-      ],
-      correctIndex: 0,
-      explanation: "Safe lifting uses bent knees and a straight back.",
-    },
-    {
       id: "iwse-016",
       question: "One advantage of conduit/trunking/tray systems in commercial buildings is?",
       options: [
@@ -216,18 +156,6 @@ export const installationWiringQuestions = [
       explanation: "Suspended systems use suitable brackets and supports.",
     },
     {
-      id: "iwse-021",
-      question: "A safe manual handling technique includes?",
-      options: [
-        "Keeping the load close to the body",
-        "Holding the load at arm’s length",
-        "Twisting while lifting",
-        "Bending only at the waist",
-      ],
-      correctIndex: 0,
-      explanation: "Loads should be kept close to reduce strain.",
-    },
-    {
       id: "iwse-022",
       question: "Mini‑trunking in a classroom is useful because it?",
       options: [
@@ -286,30 +214,6 @@ export const installationWiringQuestions = [
       ],
       correctIndex: 0,
       explanation: "Segregation avoids interference and unsafe mixing of circuits.",
-    },
-    {
-      id: "iwse-027",
-      question: "A disadvantage of hard‑copy technical info on site is that it?",
-      options: [
-        "Can become outdated and damaged",
-        "Requires software updates",
-        "Needs batteries",
-        "Cannot be shared",
-      ],
-      correctIndex: 0,
-      explanation: "Printed materials can be out of date or damaged on site.",
-    },
-    {
-      id: "iwse-028",
-      question: "An advantage of electronic technical info on site is that it?",
-      options: [
-        "Can store large amounts of data in one place",
-        "Never needs charging",
-        "Cannot be lost",
-        "Cannot be corrupted",
-      ],
-      correctIndex: 0,
-      explanation: "Electronic storage can hold a lot of information.",
     },
     {
       id: "iwse-029",
@@ -382,30 +286,6 @@ export const installationWiringQuestions = [
       ],
       correctIndex: 0,
       explanation: "MI cable remains operational in fire conditions.",
-    },
-    {
-      id: "iwse-035",
-      question: "An advantage of electronic technical info in the office is?",
-      options: [
-        "Easy search and fast updates",
-        "No need for backups",
-        "Cannot be shared",
-        "Always offline",
-      ],
-      correctIndex: 0,
-      explanation: "Digital info is searchable and easy to update.",
-    },
-    {
-      id: "iwse-036",
-      question: "An advantage of hard‑copy info in the office is?",
-      options: [
-        "Quick reference without devices",
-        "Never gets out of date",
-        "Always cheaper",
-        "Cannot be lost",
-      ],
-      correctIndex: 0,
-      explanation: "Hard copy can be read without devices or power.",
     },
     {
       id: "iwse-037",
