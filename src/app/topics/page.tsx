@@ -627,12 +627,12 @@ export default function TopicsPage() {
               Level 3
             </button>
           </div>
-          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2">
-            <div className="flex flex-col gap-6 lg:self-stretch lg:justify-between lg:gap-0">
+          <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2">
+            <div className="flex flex-col gap-4 lg:self-stretch lg:justify-between lg:gap-0">
               {visibleCards.map((c) => (
                 <div
                   key={`${c.id}-left`}
-                  className="relative min-h-[208px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#2A2A2A]/82 via-[#1F1F1F]/76 to-[#2A2A2A]/82 p-7 ring-1 ring-white/14 shadow-[0_12px_30px_rgba(0,0,0,0.22)]"
+                  className="relative min-h-[220px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#2A2A2A]/82 via-[#1F1F1F]/76 to-[#2A2A2A]/82 p-8 ring-1 ring-white/14 shadow-[0_12px_30px_rgba(0,0,0,0.22)]"
                 >
                   <div className="absolute inset-0 bg-[radial-gradient(220px_140px_at_10%_0%,rgba(255,196,0,0.18),transparent_60%)] opacity-0" />
                   <div className="relative flex h-full flex-col gap-4">

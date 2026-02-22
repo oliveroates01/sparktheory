@@ -1236,6 +1236,19 @@ export type Question = {
         correctIndex: 0,
         explanation: "Loads should be kept close to reduce strain.",
       },
+      {
+        id: "hs-093",
+        legacyIds: ["eit-004"],
+        question: "Which is one power of HSE inspectors?",
+        options: [
+          "Enter premises unannounced to investigate",
+          "Set employee pay rates",
+          "Approve overtime",
+          "Choose contractors",
+        ],
+        correctIndex: 0,
+        explanation: "Inspectors can enter premises and investigate without notice.",
+      },
     
     
   ];

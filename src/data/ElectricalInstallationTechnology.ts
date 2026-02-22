@@ -44,18 +44,6 @@ export type Question = {
       explanation: "The HSE enforces health and safety regulations.",
     },
     {
-      id: "eit-004",
-      question: "Which is one power of HSE inspectors?",
-      options: [
-        "Enter premises unannounced to investigate",
-        "Set employee pay rates",
-        "Approve overtime",
-        "Choose contractors",
-      ],
-      correctIndex: 0,
-      explanation: "Inspectors can enter premises and investigate without notice.",
-    },
-    {
       id: "eit-005",
       question: "The Electricity Safety, Quality and Continuity Regulations 2002 are designed to?",
       options: [

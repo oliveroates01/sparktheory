@@ -284,8 +284,14 @@ export default function ProgressReport({
             (r) => (r.topic || "").toLowerCase() === effectiveMode
           );
 
-    byTopic.sort((a, b) => safeTime(a.date) - safeTime(b.date));
-    return byTopic.slice(Math.max(0, byTopic.length - MAX_POINTS));
+    const sanitized = byTopic.filter((r) => {
+      if (!r) return false;
+      const scoreNum = Number(r.score);
+      return Number.isFinite(scoreNum);
+    });
+
+    sanitized.sort((a, b) => safeTime(a.date) - safeTime(b.date));
+    return sanitized.slice(Math.max(0, sanitized.length - MAX_POINTS));
   }, [results, effectiveMode]);
 
   const chartData = useMemo(() => {
@@ -352,7 +358,8 @@ export default function ProgressReport({
     const dailyPoints = [...grouped.values()].sort((a, b) => a.bucketTime - b.bucketTime);
 
     let total = 0;
-    return dailyPoints.map((p, idx) => {
+    return dailyPoints
+      .map((p, idx) => {
       const score = Math.round(p.scoreSum / Math.max(1, p.scoreCount));
       total += score;
       const runningAvg = total / (idx + 1);
@@ -369,7 +376,13 @@ export default function ProgressReport({
         total: p.total,
         secondsTaken: p.secondsTaken,
       };
-    });
+      })
+      .filter(
+        (point) =>
+          point != null &&
+          Number.isFinite(Number(point.score)) &&
+          Number.isFinite(Number(point.avg))
+      );
   }, [filteredOldestToNewest]);
 
   const testAverage = useMemo(() => {
@@ -677,10 +690,11 @@ export default function ProgressReport({
                   <Line
                     type="monotone"
                     dataKey="avg"
+                    connectNulls
                     stroke="#FFC400"
                     strokeWidth={2}
-                    dot={{ r: 4, fill: "#FFC400" }}
-                    activeDot={{ r: 6 }}
+                    dot={{ r: 2, fill: "#FFC400" }}
+                    activeDot={{ r: 4 }}
                     isAnimationActive={false}
                   />
                 </LineChart>

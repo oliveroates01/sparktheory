@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { onAuthStateChanged, type User } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, serverTimestamp } from "firebase/firestore";
 import { auth } from "@/lib/firebase";
 import { db } from "@/lib/firebase";
 import { normalizeManualOverride, resolvePlusAccess } from "@/lib/entitlements";
@@ -628,6 +628,13 @@ export default function QuizPage() {
   const [showProblemsList, setShowProblemsList] = useState(problemsOnly);
   const [problemTopicFilter, setProblemTopicFilter] = useState<string>("all");
   const [revealed, setRevealed] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportReason, setReportReason] = useState<
+    "Wrong category" | "Wrong answer" | "Typo" | "Other"
+  >("Wrong answer");
+  const [reportNote, setReportNote] = useState("");
+  const [reportSubmitting, setReportSubmitting] = useState(false);
+  const [reportError, setReportError] = useState("");
 
   // prevent saving twice
   const [hasSaved, setHasSaved] = useState(false);
@@ -820,6 +827,44 @@ export default function QuizPage() {
     setCurrentIndex(next);
     setSelected(null);
     setRevealed(false);
+  };
+
+  const submitQuestionReport = async () => {
+    if (!current) return;
+    setReportSubmitting(true);
+    setReportError("");
+    console.log("[question-report]", {
+      questionId: current.id,
+      legacyIds: current.legacyIds ?? [],
+      trade: "electrical",
+      reason: reportReason,
+      note: reportNote.trim(),
+      topic,
+      level,
+    });
+    try {
+      await addDoc(collection(db, "questionReports"), {
+        createdAt: serverTimestamp(),
+        questionId: current.id,
+        legacyIds: current.legacyIds ?? [],
+        trade: "electrical",
+        topic: topic || null,
+        level: level || null,
+        quizUrl: typeof window !== "undefined" ? window.location.href : "",
+        reason: reportReason,
+        note: reportNote.trim(),
+        userId: currentUserId ?? null,
+      });
+      setReportOpen(false);
+      setReportReason("Wrong answer");
+      setReportNote("");
+    } catch (error) {
+      setReportError(
+        error instanceof Error ? error.message : "Failed to submit report"
+      );
+    } finally {
+      setReportSubmitting(false);
+    }
   };
 
   // ✅ SAVE RESULT WHEN FINISHED (now includes answers + time taken)
@@ -1018,6 +1063,16 @@ export default function QuizPage() {
               ))}
             </div>
 
+            <div className="mt-4">
+              <button
+                type="button"
+                onClick={() => setReportOpen(true)}
+                className="rounded-lg border border-rose-400/50 px-3 py-2 text-sm font-semibold text-rose-200 hover:bg-rose-500/10"
+              >
+                Report Question
+              </button>
+            </div>
+
             {selected !== null && revealed && (
               <div className="mt-4 rounded-xl border border-amber-300/50 bg-amber-300/15 px-4 py-3 text-sm text-amber-100 ">
                 <div className="text-xs font-semibold uppercase tracking-wide text-amber-200/80">Explanation</div>
@@ -1150,6 +1205,75 @@ export default function QuizPage() {
           </>
         )}
       </div>
+
+      {reportOpen && current && !showProblemsList && !finished && (
+        <div
+          className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-6"
+          onClick={() => setReportOpen(false)}
+        >
+          <div
+            className="w-full max-w-md rounded-2xl bg-[#1F1F1F] p-6 ring-1 ring-white/10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-lg font-bold">Report Question</h3>
+            <p className="mt-1 text-xs text-white/50">Question ID: {current.id}</p>
+
+            <div className="mt-4">
+              <label className="mb-1 block text-xs font-semibold text-white/70">
+                Reason
+              </label>
+              <select
+                value={reportReason}
+                onChange={(e) =>
+                  setReportReason(
+                    e.target.value as "Wrong category" | "Wrong answer" | "Typo" | "Other"
+                  )
+                }
+                className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none"
+              >
+                <option value="Wrong category">Wrong category</option>
+                <option value="Wrong answer">Wrong answer</option>
+                <option value="Typo">Typo</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div className="mt-4">
+              <label className="mb-1 block text-xs font-semibold text-white/70">
+                Notes (optional)
+              </label>
+              <input
+                type="text"
+                value={reportNote}
+                onChange={(e) => setReportNote(e.target.value)}
+                placeholder="Add a short note"
+                className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/35 outline-none"
+              />
+            </div>
+            {reportError && (
+              <p className="mt-3 text-xs text-rose-200">{reportError}</p>
+            )}
+
+            <div className="mt-5 flex gap-3">
+              <button
+                type="button"
+                onClick={() => setReportOpen(false)}
+                className="flex-1 rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/15 hover:bg-white/15"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={submitQuestionReport}
+                disabled={reportSubmitting}
+                className="flex-1 rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/15 hover:bg-white/15"
+              >
+                {reportSubmitting ? "Submitting..." : "Submit"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
