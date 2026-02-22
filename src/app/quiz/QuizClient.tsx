@@ -23,6 +23,7 @@ import { inspectionTestingCommissioningLevel3Questions } from "@/data/inspection
 type Question = {
   id: string;
   legacyIds?: string[];
+  topic?: string;
   question: string;
   options: [string, string, string, string];
   correctIndex: number;
@@ -233,11 +234,31 @@ function normalizeQuestion(raw: unknown, index: number): Question | null {
   return {
     id,
     legacyIds: legacyIds.length > 0 ? legacyIds : undefined,
+    topic:
+      typeof raw.topic === "string" && raw.topic.trim()
+        ? raw.topic.trim().toLowerCase()
+        : inferTopicSlugFromQuestionId(id),
     question,
     options,
     correctIndex,
     explanation,
   };
+}
+
+function inferTopicSlugFromQuestionId(id: string): string | undefined {
+  if (id.startsWith("hs-")) return "health-safety";
+  if (id.startsWith("pes-")) return "principles-electrical-science";
+  if (id.startsWith("eit-")) return "electrical-installation-technology";
+  if (id.startsWith("iwse-")) return "installation-wiring-systems-enclosures";
+  if (id.startsWith("comm-")) return "communication-within-building-services-engineering";
+  if (id.startsWith("et3-")) return "electrical-technology";
+  if (id.startsWith("itc3-")) return "inspection-testing-commissioning";
+  if (id.startsWith("pes3-")) return "principles-electrical-science";
+  return undefined;
+}
+
+function enforceTopicSlug(questions: Question[], topicSlug: string): Question[] {
+  return questions.filter((q) => q.topic === topicSlug);
 }
 
 function allQuestionIds(q: Question): string[] {
@@ -542,9 +563,12 @@ export default function QuizPage() {
 
   const bank = useMemo<Question[]>(() => {
     const normalizedByTopic = (topicSlug: string): Question[] =>
-      rawBankForTopic(topicSlug, level)
+      enforceTopicSlug(
+        rawBankForTopic(topicSlug, level)
         .map((q, i) => normalizeQuestion(q, i))
-        .filter((q): q is Question => Boolean(q));
+        .filter((q): q is Question => Boolean(q)),
+        topicSlug
+      );
 
     const normalized = normalizedByTopic(topic);
 

@@ -227,7 +227,6 @@ export default function ElectricalPage() {
   const [pickedHref, setPickedHref] = useState<string | null>(null);
   const [selectedQuizSize, setSelectedQuizSize] = useState<number | null>(null);
   const [progressOpen, setProgressOpen] = useState(false);
-  const [unseenOnly, setUnseenOnly] = useState(false);
   const [isSwitchingLevel, setIsSwitchingLevel] = useState(false);
   const [unseenCount, setUnseenCount] = useState<number | null>(null);
   const [totalCount, setTotalCount] = useState<number | null>(null);
@@ -454,13 +453,39 @@ export default function ElectricalPage() {
 
   const startSelectedQuiz = () => {
     if (!pickedHref || !selectedQuizSize) return;
-    const href = `${pickedHref}&n=${selectedQuizSize}${unseenOnly ? "&unseen=1" : ""}`;
+    const href = `${pickedHref}&n=${selectedQuizSize}`;
     closePicker();
     router.push(href);
   };
 
+  const startSelectedUnseenQuiz = () => {
+    if (!pickedHref || !selectedQuizSize) return;
+    const href = `${pickedHref}&n=${selectedQuizSize}&unseen=1`;
+    closePicker();
+    router.push(href);
+  };
+
+  const resetSeenQuestionsForPickedQuiz = () => {
+    if (typeof window === "undefined" || !pickedHref) return;
+    const topic = getTopicFromHref(pickedHref);
+    const lvl = getLevelFromHref(pickedHref, level);
+    if (!topic) return;
+    const key = seenKeyForTopic(lvl, topic, currentUserId);
+    try {
+      localStorage.removeItem(key);
+    } catch {
+      // ignore
+    }
+    const total = totalQuestionsFor(topic, lvl);
+    setTotalCount(total);
+    setUnseenCount(total);
+  };
+
   const openProgress = () => setProgressOpen(true);
   const closeProgress = () => setProgressOpen(false);
+
+  const noUnseenQuestionsAvailable =
+    typeof unseenCount === "number" && unseenCount === 0;
 
   useEffect(() => {
     setPickerOpen(false);
@@ -746,18 +771,6 @@ export default function ElectricalPage() {
               ))}
             </div>
 
-            <div className="mt-5 flex items-center gap-2 text-sm text-white/70">
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={unseenOnly}
-                  onChange={(e) => setUnseenOnly(e.target.checked)}
-                  className="h-4 w-4 rounded border-white/30 bg-white/10 text-[#FF9100]"
-                />
-                Unseen questions only
-              </label>
-            </div>
-
             <div className="mt-4">
               <button
                 type="button"
@@ -767,6 +780,14 @@ export default function ElectricalPage() {
               >
                 Start quiz
               </button>
+              <button
+                type="button"
+                onClick={startSelectedUnseenQuiz}
+                disabled={!selectedQuizSize || noUnseenQuestionsAvailable}
+                className="mb-3 block w-full rounded-xl bg-[#FFC400] px-4 py-3 text-center text-sm font-semibold text-black ring-1 ring-[#FF9100]/40 hover:bg-[#FF9100] disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-white/60 disabled:ring-white/15"
+              >
+                Unseen questions
+              </button>
               <Link
                 href={`${pickedHref}&problems=1`}
                 className="block w-full rounded-xl bg-[#FFC400] px-4 py-3 text-center text-sm font-semibold text-black ring-1 ring-[#FF9100]/40 hover:bg-[#FF9100]"
@@ -775,10 +796,19 @@ export default function ElectricalPage() {
                 My problem questions
               </Link>
             </div>
-            {unseenOnly && unseenCount === 0 && (
-              <p className="mt-2 text-xs text-white/50">
-                All questions have been seen — you’ll get the full set.
-              </p>
+            {noUnseenQuestionsAvailable && (
+              <div className="mt-2 space-y-2">
+                <p className="text-xs text-white/50">
+                  You&apos;ve seen all questions.
+                </p>
+                <button
+                  type="button"
+                  onClick={resetSeenQuestionsForPickedQuiz}
+                  className="inline-flex rounded-lg bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/75 ring-1 ring-white/12 hover:bg-white/10 hover:text-white"
+                >
+                  Reset seen questions
+                </button>
+              </div>
             )}
 
             <button

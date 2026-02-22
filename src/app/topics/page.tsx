@@ -383,9 +383,148 @@ export default function TopicsPage() {
     setActiveTrade(key);
   };
 
-  const problemQuestionsHref = showLevel3
-    ? "/quiz?trade=electrical&topic=all-level-3&level=3&problems=1"
-    : "/quiz?trade=electrical&topic=all-level-2&problems=1";
+  const dashboardRightCards = [
+    (
+      <div
+        key="revision-support"
+        className="rounded-3xl bg-gradient-to-br from-[#2A2A2A]/82 via-[#1F1F1F]/76 to-[#2A2A2A]/82 p-7 text-sm text-white/70 ring-1 ring-white/14 shadow-[0_12px_30px_rgba(0,0,0,0.22)]"
+      >
+        <div className="text-base font-semibold leading-tight text-white/85">Revision support (Level 2 & 3)</div>
+        <p className="mt-3 leading-6">Use revision support to review key topics, spot weaker areas, and plan what to study next. The progress chart shows a sample learning path so you can see how results shift over time as you revisit topics and improve your scores.</p>
+      </div>
+    ),
+    (
+      <div
+        key="progress-tracker"
+        className="rounded-3xl bg-gradient-to-br from-[#2A2A2A]/82 via-[#1F1F1F]/76 to-[#2A2A2A]/82 p-7 ring-1 ring-white/14 shadow-[0_12px_30px_rgba(0,0,0,0.22)]"
+      >
+        <div className="text-base font-semibold leading-tight text-white/85">Progress tracker</div>
+        <div className="flex items-center justify-between">
+        </div>
+
+        <div className="mt-6">
+          <svg viewBox="0 0 400 210" className="h-44 w-full">
+            <defs>
+              <linearGradient id="demoLine" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#FFC400" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#FF9100" stopOpacity="0.9" />
+              </linearGradient>
+            </defs>
+
+            {[0, 40, 80, 120, 160].map((y) => (
+              <line
+                key={y}
+                x1="40"
+                y1={y}
+                x2="380"
+                y2={y}
+                stroke="rgba(255,255,255,0.08)"
+                strokeDasharray="4 6"
+              />
+            ))}
+
+            {[0, 20, 40, 60, 80, 100].map((val) => {
+              const y = chartBottom - val * chartScale;
+              return (
+                <text
+                  key={val}
+                  x="10"
+                  y={y + 4}
+                  fontSize="10"
+                  fill="rgba(255,255,255,0.55)"
+                >
+                  {val}
+                </text>
+              );
+            })}
+
+            {demoSegments.map((seg, index) => {
+              const isComplete = index < completedCount;
+              const isActive = index === progressIndex;
+              if (!isComplete && !isActive) return null;
+              return (
+                <line
+                  key={`${seg.x1}-${seg.x2}`}
+                  x1={seg.x1}
+                  y1={seg.y1}
+                  x2={seg.x2}
+                  y2={seg.y2}
+                  stroke="url(#demoLine)"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  className={isActive ? "demo-active-seg" : undefined}
+                  style={{
+                    strokeDasharray: seg.len,
+                    strokeDashoffset: isActive ? seg.len : 0,
+                    ['--dash' as string]: seg.len,
+                    animationDuration: isActive ? `${drawMs}ms` : undefined,
+                  }}
+                />
+              );
+            })}
+            {demoCoords.map((point, index) => {
+              if (index === 0 || index <= completedCount) {
+                return (
+                  <circle
+                    key={`${point.x}-${point.y}`}
+                    cx={point.x}
+                    cy={point.y}
+                    r="4"
+                    fill="#FFC400"
+                  />
+                );
+              }
+              return null;
+            })}
+
+          </svg>
+        </div>
+      </div>
+    ),
+    (
+      <div
+        key="problem-questions"
+        className="rounded-3xl bg-gradient-to-br from-[#2A2A2A]/82 via-[#1F1F1F]/76 to-[#2A2A2A]/82 p-7 ring-1 ring-white/14 shadow-[0_12px_30px_rgba(0,0,0,0.22)]"
+      >
+        <div className="text-base font-semibold leading-tight text-white/85">Problem questions</div>
+        <p className="mt-3 text-sm leading-6 text-white/70">
+          Questions you&apos;ve missed before — practise these to improve fastest.
+        </p>
+        {problemPreview && (
+          <>
+            <p className="mt-4 text-sm text-white/85">
+              {problemPreview.totalCount} problem question{problemPreview.totalCount === 1 ? "" : "s"}
+              {problemPreview.hasRealData ? " tracked" : " (demo)"}
+            </p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {problemPreview.topTopics.map((topic) => (
+                <span
+                  key={topic.title}
+                  className="rounded-full border border-white/15 bg-white/5 px-2 py-1 text-xs text-white/75"
+                >
+                  {topic.title} ({topic.count})
+                </span>
+              ))}
+            </div>
+            <div className="mt-3 space-y-1">
+              {problemPreview.sampleQuestions.map((question) => (
+                <p
+                  key={question}
+                  className="truncate text-xs text-white/65"
+                  title={question}
+                >
+                  • {question}
+                </p>
+              ))}
+            </div>
+          </>
+        )}
+        <p className="mt-4 text-xs text-white/50">
+          Demo preview
+        </p>
+      </div>
+    ),
+  ];
 
   return (
     <main className="min-h-screen bg-[#1F1F1F] text-white">
@@ -456,44 +595,44 @@ export default function TopicsPage() {
 
         {/* Topic cards */}
         <section className="mt-10">
-          <div className="grid gap-5 md:grid-cols-[minmax(0,520px)_1fr]">
-            <div className="grid gap-5">
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowLevel3(false);
-                    setCarouselIndex(0);
-                  }}
-                  className={[
-                    "rounded-full px-4 py-1.5 text-sm font-semibold ring-1 transition",
-                    showLevel3
-                      ? "bg-white/5 text-white/70 ring-white/10 hover:bg-white/10"
-                      : "bg-[#FF9100]/15 text-white ring-[#FF9100]/50",
-                  ].join(" ")}
-                >
-                  Level 2
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowLevel3(true);
-                    setCarouselIndex(0);
-                  }}
-                  className={[
-                    "rounded-full px-4 py-1.5 text-sm font-semibold ring-1 transition",
-                    showLevel3
-                      ? "bg-[#FF9100]/15 text-white ring-[#FF9100]/50"
-                      : "bg-white/5 text-white/70 ring-white/10 hover:bg-white/10",
-                  ].join(" ")}
-                >
-                  Level 3
-                </button>
-              </div>
-              {visibleCards.map((c) => (
+          <div className="mb-6 flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                setShowLevel3(false);
+                setCarouselIndex(0);
+              }}
+              className={[
+                "rounded-full px-4 py-1.5 text-sm font-semibold ring-1 transition",
+                showLevel3
+                  ? "bg-white/5 text-white/70 ring-white/10 hover:bg-white/10"
+                  : "bg-[#FF9100]/15 text-white ring-[#FF9100]/50",
+              ].join(" ")}
+            >
+              Level 2
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setShowLevel3(true);
+                setCarouselIndex(0);
+              }}
+              className={[
+                "rounded-full px-4 py-1.5 text-sm font-semibold ring-1 transition",
+                showLevel3
+                  ? "bg-[#FF9100]/15 text-white ring-[#FF9100]/50"
+                  : "bg-white/5 text-white/70 ring-white/10 hover:bg-white/10",
+              ].join(" ")}
+            >
+              Level 3
+            </button>
+          </div>
+          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2">
+            {visibleCards.flatMap((c, index) => {
+              const leftCard = (
                 <div
-                  key={c.id}
-                  className="relative h-[190px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#2A2A2A]/80 via-[#1F1F1F]/70 to-[#2A2A2A]/80 p-6 ring-1 ring-white/10"
+                  key={`${c.id}-left`}
+                  className="relative min-h-[208px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#2A2A2A]/82 via-[#1F1F1F]/76 to-[#2A2A2A]/82 p-7 ring-1 ring-white/14 shadow-[0_12px_30px_rgba(0,0,0,0.22)]"
                 >
                   <div className="absolute inset-0 bg-[radial-gradient(220px_140px_at_10%_0%,rgba(255,196,0,0.18),transparent_60%)] opacity-0" />
                   <div className="relative flex h-full flex-col gap-4">
@@ -510,8 +649,8 @@ export default function TopicsPage() {
                     </div>
 
                     <div>
-                      <p className="text-base font-semibold">{c.title}</p>
-                      <p className="mt-2 text-sm text-white/70">
+                      <p className="text-base font-semibold leading-tight text-white">{c.title}</p>
+                      <p className="mt-2 line-clamp-2 text-sm leading-6 text-white/70">
                         {c.description}
                       </p>
                     </div>
@@ -519,141 +658,14 @@ export default function TopicsPage() {
                     <div className="mt-auto" />
                   </div>
                 </div>
-              ))}
-            </div>
-            <div className="h-fit self-start mt-16">
-              <div className="rounded-3xl bg-gradient-to-br from-[#2A2A2A]/80 via-[#1F1F1F]/70 to-[#2A2A2A]/80 p-6 text-sm text-white/70 ring-1 ring-white/10">
-                <div className="text-sm font-semibold text-white/80">Revision support (Level 2 & 3)</div>
-                <p className="mt-2">Use revision support to review key topics, spot weaker areas, and plan what to study next. The progress chart shows a sample learning path so you can see how results shift over time as you revisit topics and improve your scores.</p>
-              </div>
+              );
 
-              <div className="mt-6 rounded-3xl bg-gradient-to-br from-[#2A2A2A]/80 via-[#1F1F1F]/70 to-[#2A2A2A]/80 p-6 ring-1 ring-white/10">
-                <div className="text-sm font-semibold text-white/80">Progress tracker</div>
-                <div className="flex items-center justify-between">
-                </div>
+              const rightCard = dashboardRightCards[index] ?? (
+                <div key={`placeholder-${c.id}`} aria-hidden="true" className="hidden md:block" />
+              );
 
-                <div className="mt-5">
-                  <svg viewBox="0 0 400 210" className="h-44 w-full">
-                    <defs>
-                      <linearGradient id="demoLine" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stopColor="#FFC400" stopOpacity="0.9" />
-                        <stop offset="100%" stopColor="#FF9100" stopOpacity="0.9" />
-                      </linearGradient>
-                    </defs>
-
-                    {[0, 40, 80, 120, 160].map((y) => (
-                      <line
-                        key={y}
-                        x1="40"
-                        y1={y}
-                        x2="380"
-                        y2={y}
-                        stroke="rgba(255,255,255,0.08)"
-                        strokeDasharray="4 6"
-                      />
-                    ))}
-
-                    {[0, 20, 40, 60, 80, 100].map((val) => {
-                      const y = chartBottom - val * chartScale;
-                      return (
-                        <text
-                          key={val}
-                          x="10"
-                          y={y + 4}
-                          fontSize="10"
-                          fill="rgba(255,255,255,0.55)"
-                        >
-                          {val}
-                        </text>
-                      );
-                    })}
-
-                    {demoSegments.map((seg, index) => {
-                      const isComplete = index < completedCount;
-                      const isActive = index === progressIndex;
-                      if (!isComplete && !isActive) return null;
-                      return (
-                        <line
-                          key={`${seg.x1}-${seg.x2}`}
-                          x1={seg.x1}
-                          y1={seg.y1}
-                          x2={seg.x2}
-                          y2={seg.y2}
-                          stroke="url(#demoLine)"
-                          strokeWidth="3"
-                          strokeLinecap="round"
-                          className={isActive ? "demo-active-seg" : undefined}
-                          style={{
-                            strokeDasharray: seg.len,
-                            strokeDashoffset: isActive ? seg.len : 0,
-                            ['--dash' as string]: seg.len,
-                            animationDuration: isActive ? `${drawMs}ms` : undefined,
-                          }}
-                        />
-                      );
-                    })}
-                    {demoCoords.map((point, index) => {
-                      if (index === 0 || index <= completedCount) {
-                        return (
-                          <circle
-                            key={`${point.x}-${point.y}`}
-                            cx={point.x}
-                            cy={point.y}
-                            r="4"
-                            fill="#FFC400"
-                            
-                          />
-                        );
-                      }
-                      return null;
-                    })}
-
-                  </svg>
-                </div>
-              </div>
-
-              <div className="mt-6 rounded-3xl bg-gradient-to-br from-[#2A2A2A]/80 via-[#1F1F1F]/70 to-[#2A2A2A]/80 p-6 ring-1 ring-white/10">
-                <div className="text-sm font-semibold text-white/80">Problem questions</div>
-                <p className="mt-2 text-sm text-white/70">
-                  Questions you&apos;ve missed before — practise these to improve fastest.
-                </p>
-                {problemPreview && (
-                  <>
-                    <p className="mt-3 text-sm text-white/85">
-                      {problemPreview.totalCount} problem question{problemPreview.totalCount === 1 ? "" : "s"}
-                      {problemPreview.hasRealData ? " tracked" : " (demo)"}
-                    </p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {problemPreview.topTopics.map((topic) => (
-                        <span
-                          key={topic.title}
-                          className="rounded-full border border-white/15 bg-white/5 px-2 py-1 text-xs text-white/75"
-                        >
-                          {topic.title} ({topic.count})
-                        </span>
-                      ))}
-                    </div>
-                    <div className="mt-3 space-y-1">
-                      {problemPreview.sampleQuestions.map((question) => (
-                        <p
-                          key={question}
-                          className="truncate text-xs text-white/65"
-                          title={question}
-                        >
-                          • {question}
-                        </p>
-                      ))}
-                    </div>
-                  </>
-                )}
-                <Link
-                  href={problemQuestionsHref}
-                  className="mt-4 inline-flex rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/15 hover:bg-white/15"
-                >
-                  Review problem questions
-                </Link>
-              </div>
-            </div>
+              return [leftCard, rightCard];
+            })}
           </div>
         </section>
 

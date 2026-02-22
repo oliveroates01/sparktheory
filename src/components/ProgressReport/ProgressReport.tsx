@@ -86,6 +86,16 @@ function attemptLabel(r: StoredResult, idx: number) {
   return `${dd}/${mm}`;
 }
 
+function dayBucketKey(iso?: string, fallbackIdx = 0) {
+  if (!iso) return `undated-${fallbackIdx}`;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return `undated-${fallbackIdx}`;
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
 function easeInOutCubic(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
@@ -279,24 +289,84 @@ export default function ProgressReport({
   }, [results, effectiveMode]);
 
   const chartData = useMemo(() => {
-    let total = 0;
+    const grouped = new Map<
+      string,
+      {
+        bucketTime: number;
+        label: string;
+        attempt: string;
+        scoreSum: number;
+        scoreCount: number;
+        date?: string;
+        correct?: number;
+        total?: number;
+        secondsTaken?: number;
+        topic: string;
+      }
+    >();
 
-    return filteredOldestToNewest.map((r, idx) => {
+    filteredOldestToNewest.forEach((r, idx) => {
+      const key = dayBucketKey(r.date, idx);
       const score = clampScore(r.score);
-      total += score;
+      const existing = grouped.get(key);
+      const t = safeTime(r.date);
 
+      if (!existing) {
+        grouped.set(key, {
+          bucketTime: t,
+          label: toLabel(r, idx),
+          attempt: attemptLabel(r, idx),
+          scoreSum: score,
+          scoreCount: 1,
+          date: r.date,
+          correct: Number.isFinite(r.correct) ? Number(r.correct) : undefined,
+          total: Number.isFinite(r.total) ? Number(r.total) : undefined,
+          secondsTaken: Number.isFinite(r.secondsTaken)
+            ? Number(r.secondsTaken)
+            : undefined,
+          topic: (r.topic || "").toLowerCase(),
+        });
+        return;
+      }
+
+      existing.scoreSum += score;
+      existing.scoreCount += 1;
+      if (t >= existing.bucketTime) {
+        existing.bucketTime = t;
+        existing.label = toLabel(r, idx);
+        existing.attempt = attemptLabel(r, idx);
+        existing.date = r.date;
+        existing.topic = (r.topic || "").toLowerCase();
+      }
+      if (Number.isFinite(r.correct)) {
+        existing.correct = (existing.correct ?? 0) + Number(r.correct);
+      }
+      if (Number.isFinite(r.total)) {
+        existing.total = (existing.total ?? 0) + Number(r.total);
+      }
+      if (Number.isFinite(r.secondsTaken)) {
+        existing.secondsTaken = (existing.secondsTaken ?? 0) + Number(r.secondsTaken);
+      }
+    });
+
+    const dailyPoints = [...grouped.values()].sort((a, b) => a.bucketTime - b.bucketTime);
+
+    let total = 0;
+    return dailyPoints.map((p, idx) => {
+      const score = Math.round(p.scoreSum / Math.max(1, p.scoreCount));
+      total += score;
       const runningAvg = total / (idx + 1);
 
       return {
-        label: toLabel(r, idx),
-        attempt: attemptLabel(r, idx),
+        label: p.label,
+        attempt: p.attempt,
         avg: Math.round(runningAvg),
         score,
-        topic: (r.topic || "").toLowerCase(),
-        date: r.date,
-        correct: r.correct,
-        total: r.total,
-        secondsTaken: r.secondsTaken,
+        topic: p.topic,
+        date: p.date,
+        correct: p.correct,
+        total: p.total,
+        secondsTaken: p.secondsTaken,
       };
     });
   }, [filteredOldestToNewest]);

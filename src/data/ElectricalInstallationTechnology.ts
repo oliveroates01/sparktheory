@@ -128,18 +128,6 @@ export type Question = {
       explanation: "Employers must assess risks and keep significant records.",
     },
     {
-      id: "eit-011",
-      question: "COSHH regulations mainly control?",
-      options: [
-        "Exposure to hazardous substances",
-        "Noise levels only",
-        "Working hours",
-        "Electrical supply tolerances",
-      ],
-      correctIndex: 0,
-      explanation: "COSHH controls exposure to hazardous substances at work.",
-    },
-    {
       id: "eit-012",
       question: "Construction (Health, Safety and Welfare) Regulations apply because electrical contractors are?",
       options: [
