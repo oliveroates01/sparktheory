@@ -417,10 +417,13 @@ export default function AccountPage() {
       </div>
 
       <header className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-6">
-        <div className="flex items-center gap-4">
+        <Link
+          href="/topics"
+          className="inline-flex items-center gap-4 rounded-xl focus:outline-none focus:ring-0"
+        >
           <SparkTheoryLogo compact />
           <div className="text-xs text-white/60">Account</div>
-        </div>
+        </Link>
 
         <nav className="flex items-center gap-2">
           <Link

@@ -1,3 +1,6 @@
+import { electricalTopicGuides } from "@/data/electricalTopicGuides";
+import { electricalTopicGuidesLevel3 } from "@/data/electricalTopicGuidesLevel3";
+
 export type ElectricalCategory = {
   id: string;
   title: string;
@@ -104,4 +107,60 @@ export function getElectricalLevel3Categories(options?: { includeMixed?: boolean
     return ELECTRICAL_LEVEL3_CATEGORIES.filter((category) => category.id !== "all-level-3");
   }
   return ELECTRICAL_LEVEL3_CATEGORIES;
+}
+
+function topicSlugFromHref(href?: string): string | null {
+  if (!href) return null;
+  const path = href.split("?")[0] || "";
+  const parts = path.split("/").filter(Boolean);
+  if (parts.length < 3) return null;
+  return parts[2] || null; // /trade/electrical/:topic
+}
+
+function validateLessonLinkSlugs() {
+  const checks: Array<{
+    level: "L2" | "L3";
+    categories: ElectricalCategory[];
+    guideSlugs: Set<string>;
+  }> = [
+    {
+      level: "L2",
+      categories: ELECTRICAL_LEVEL2_CATEGORIES,
+      guideSlugs: new Set(electricalTopicGuides.map((g) => g.slug)),
+    },
+    {
+      level: "L3",
+      categories: ELECTRICAL_LEVEL3_CATEGORIES,
+      guideSlugs: new Set(electricalTopicGuidesLevel3.map((g) => g.slug)),
+    },
+  ];
+
+  const missingByLevel = checks
+    .map(({ level, categories, guideSlugs }) => {
+      const missing = categories
+        .map((category) => ({
+          categoryId: category.id,
+          slug: topicSlugFromHref(category.topicHref),
+        }))
+        .filter((entry) => entry.slug)
+        .filter((entry) => !guideSlugs.has(entry.slug as string));
+
+      return { level, missing };
+    })
+    .filter((entry) => entry.missing.length > 0);
+
+  if (missingByLevel.length === 0) return;
+
+  console.error(
+    "[electrical-lesson-slug-check] Missing lesson topic slugs in guide registry",
+    missingByLevel.map((entry) => ({
+      level: entry.level,
+      missingSlugs: entry.missing.map((m) => m.slug),
+      categories: entry.missing.map((m) => m.categoryId),
+    }))
+  );
+}
+
+if (process.env.NODE_ENV !== "production") {
+  validateLessonLinkSlugs();
 }
