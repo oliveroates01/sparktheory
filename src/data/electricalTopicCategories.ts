@@ -49,7 +49,7 @@ export const ELECTRICAL_LEVEL2_CATEGORIES: ElectricalCategory[] = [
       "Cable routes, safe zones, containment (trunking/conduit), fixings, entries, and enclosures.",
     tag: "Electrical Lessons",
     href: "/quiz?trade=electrical&topic=installation-wiring-systems-enclosures",
-    topicHref: "/trade/electrical/installation-wiring-systems-enclosures",
+    topicHref: "/trade/electrical/installation-wiring",
   },
   {
     id: "communication-within-building-services-engineering",
