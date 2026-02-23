@@ -261,6 +261,17 @@ function enforceTopicSlug(questions: Question[], topicSlug: string): Question[] 
   return questions.filter((q) => q.topic === topicSlug);
 }
 
+function dedupeQuestionsById(questions: Question[]): Question[] {
+  const seen = new Set<string>();
+  const deduped: Question[] = [];
+  for (const q of questions) {
+    if (seen.has(q.id)) continue;
+    seen.add(q.id);
+    deduped.push(q);
+  }
+  return deduped;
+}
+
 function allQuestionIds(q: Question): string[] {
   return q.legacyIds ? [q.id, ...q.legacyIds] : [q.id];
 }
@@ -563,12 +574,28 @@ export default function QuizPage() {
 
   const bank = useMemo<Question[]>(() => {
     const normalizedByTopic = (topicSlug: string): Question[] =>
-      enforceTopicSlug(
-        rawBankForTopic(topicSlug, level)
-        .map((q, i) => normalizeQuestion(q, i))
-        .filter((q): q is Question => Boolean(q)),
-        topicSlug
-      );
+      (() => {
+        const raw = rawBankForTopic(topicSlug, level);
+        const normalized = raw
+          .map((q, i) => normalizeQuestion(q, i))
+          .filter((q): q is Question => Boolean(q));
+
+        if (topicSlug === "all-level-2" || topicSlug === "all-level-3") {
+          const deduped = dedupeQuestionsById(normalized);
+          if (process.env.NODE_ENV !== "production") {
+            console.log("[quiz-mixed-bank]", {
+              topic: topicSlug,
+              level,
+              mergedBankSize: raw.length,
+              dedupedSize: deduped.length,
+              finalQuizSize: quizSize,
+            });
+          }
+          return deduped;
+        }
+
+        return enforceTopicSlug(normalized, topicSlug);
+      })();
 
     const normalized = normalizedByTopic(topic);
 
@@ -965,6 +992,8 @@ export default function QuizPage() {
             <p className="text-sm text-white/70">
               {problemsOnly
                 ? "No problem questions found yet."
+                : topic === "all-level-2" || topic === "all-level-3"
+                ? "Mixed quiz bank is empty — check topic mapping / imports."
                 : "No questions loaded for this topic."}
             </p>
             <p className="mt-2 text-xs text-white/50">
