@@ -42,6 +42,9 @@ const SCROLL_ANIM_MS = 900;
 const MARGIN = { top: 12, right: 16, bottom: 18, left: 10 };
 const Y_TICKS = [0, 20, 40, 60, 80, 100] as const;
 const X_AXIS_H = 36;
+const LINE_SEGMENT_MS = 250;
+const LINE_DOT_MS = 120;
+const LINE_LOOP_PAUSE_MS = 700;
 
 function safeTime(d?: string) {
   if (!d) return 0;
@@ -86,16 +89,6 @@ function attemptLabel(r: StoredResult, idx: number) {
   return `${dd}/${mm}`;
 }
 
-function dayBucketKey(iso?: string, fallbackIdx = 0) {
-  if (!iso) return `undated-${fallbackIdx}`;
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return `undated-${fallbackIdx}`;
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
-}
-
 function easeInOutCubic(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
@@ -116,6 +109,105 @@ function formatDateDDMMYYYY(iso?: string) {
   const mm = String(d.getMonth() + 1).padStart(2, "0");
   const yyyy = d.getFullYear();
   return `${dd}/${mm}/${yyyy}`;
+}
+
+type LineAnimState = {
+  visibleDots: number;
+  activeSegmentIndex: number;
+  segmentProgress: number;
+};
+
+type ShapePoint = {
+  x?: number | null;
+  y?: number | null;
+};
+
+type AnimatedLineShapeProps = {
+  points?: readonly ShapePoint[];
+  stroke?: string;
+  strokeWidth?: number | string;
+  animState: LineAnimState;
+};
+
+function AnimatedProgressLineShape({
+  points = [],
+  stroke = "#FFC400",
+  strokeWidth = 2,
+  animState,
+}: AnimatedLineShapeProps) {
+  const validPoints = points.filter(
+    (p): p is { x: number; y: number } =>
+      typeof p?.x === "number" && Number.isFinite(p.x) && typeof p?.y === "number" && Number.isFinite(p.y)
+  );
+
+  if (!validPoints.length) return null;
+
+  if (validPoints.length === 1) {
+    const p = validPoints[0];
+    return (
+      <g>
+        <circle cx={p.x} cy={p.y} r={4} fill={stroke} stroke={stroke} />
+      </g>
+    );
+  }
+
+  const d = validPoints
+    .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
+    .join(" ");
+
+  const segLens: number[] = [];
+  let totalLen = 0;
+  for (let i = 1; i < validPoints.length; i += 1) {
+    const a = validPoints[i - 1];
+    const b = validPoints[i];
+    const len = Math.hypot(b.x - a.x, b.y - a.y);
+    segLens.push(len);
+    totalLen += len;
+  }
+
+  const maxSegIdx = Math.max(0, segLens.length - 1);
+  const segIdx = Math.min(Math.max(animState.activeSegmentIndex, 0), maxSegIdx);
+  const segProgress = Math.min(Math.max(animState.segmentProgress, 0), 1);
+  const visibleDots = Math.min(
+    Math.max(animState.visibleDots, 0),
+    validPoints.length
+  );
+
+  let drawnLen = 0;
+  for (let i = 0; i < segIdx; i += 1) drawnLen += segLens[i] ?? 0;
+  drawnLen += (segLens[segIdx] ?? 0) * segProgress;
+  drawnLen = Math.min(Math.max(drawnLen, 0), totalLen);
+
+  const dashArray = totalLen > 0 ? totalLen : 1;
+  const dashOffset = totalLen > 0 ? Math.max(totalLen - drawnLen, 0) : 0;
+
+  return (
+    <g>
+      <path
+        d={d}
+        fill="none"
+        stroke={stroke}
+        strokeWidth={Number(strokeWidth) || 2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeDasharray={dashArray}
+        strokeDashoffset={dashOffset}
+      />
+      {validPoints.map((p, idx) => {
+        if (idx >= visibleDots) return null;
+        return (
+          <circle
+            key={`${p.x}-${p.y}-${idx}`}
+            cx={p.x}
+            cy={p.y}
+            r={4}
+            fill={stroke}
+            stroke={stroke}
+          />
+        );
+      })}
+    </g>
+  );
 }
 
 /**
@@ -255,6 +347,11 @@ export default function ProgressReport({
   // ✅ info modal (Help)
   const [infoOpen, setInfoOpen] = useState(false);
   const [modalPath, setModalPath] = useState(pathname);
+  const [lineAnim, setLineAnim] = useState<LineAnimState>({
+    visibleDots: 1,
+    activeSegmentIndex: 0,
+    segmentProgress: 0,
+  });
 
   // measure viewport width (responsive)
   useEffect(() => {
@@ -295,95 +392,137 @@ export default function ProgressReport({
   }, [results, effectiveMode]);
 
   const chartData = useMemo(() => {
-    const grouped = new Map<
-      string,
-      {
-        bucketTime: number;
-        label: string;
-        attempt: string;
-        scoreSum: number;
-        scoreCount: number;
-        date?: string;
-        correct?: number;
-        total?: number;
-        secondsTaken?: number;
-        topic: string;
-      }
-    >();
-
-    filteredOldestToNewest.forEach((r, idx) => {
-      const key = dayBucketKey(r.date, idx);
-      const score = clampScore(r.score);
-      const existing = grouped.get(key);
-      const t = safeTime(r.date);
-
-      if (!existing) {
-        grouped.set(key, {
-          bucketTime: t,
-          label: toLabel(r, idx),
-          attempt: attemptLabel(r, idx),
-          scoreSum: score,
-          scoreCount: 1,
-          date: r.date,
-          correct: Number.isFinite(r.correct) ? Number(r.correct) : undefined,
-          total: Number.isFinite(r.total) ? Number(r.total) : undefined,
-          secondsTaken: Number.isFinite(r.secondsTaken)
-            ? Number(r.secondsTaken)
-            : undefined,
-          topic: (r.topic || "").toLowerCase(),
-        });
-        return;
-      }
-
-      existing.scoreSum += score;
-      existing.scoreCount += 1;
-      if (t >= existing.bucketTime) {
-        existing.bucketTime = t;
-        existing.label = toLabel(r, idx);
-        existing.attempt = attemptLabel(r, idx);
-        existing.date = r.date;
-        existing.topic = (r.topic || "").toLowerCase();
-      }
-      if (Number.isFinite(r.correct)) {
-        existing.correct = (existing.correct ?? 0) + Number(r.correct);
-      }
-      if (Number.isFinite(r.total)) {
-        existing.total = (existing.total ?? 0) + Number(r.total);
-      }
-      if (Number.isFinite(r.secondsTaken)) {
-        existing.secondsTaken = (existing.secondsTaken ?? 0) + Number(r.secondsTaken);
-      }
-    });
-
-    const dailyPoints = [...grouped.values()].sort((a, b) => a.bucketTime - b.bucketTime);
-
     let total = 0;
-    return dailyPoints
-      .map((p, idx) => {
-      const score = Math.round(p.scoreSum / Math.max(1, p.scoreCount));
+
+    return filteredOldestToNewest.map((r, idx) => {
+      const score = clampScore(r.score);
       total += score;
+
       const runningAvg = total / (idx + 1);
 
+      const attempt = attemptLabel(r, idx);
+
       return {
-        xKey: `${p.attempt}__${p.bucketTime || idx}__${idx}`,
-        label: p.label,
-        attempt: p.attempt,
+        xKey: `${attempt}__${idx}`,
+        xTime: safeTime(r.date),
+        xOrder: idx,
+        label: toLabel(r, idx),
+        attempt,
         avg: Math.round(runningAvg),
         score,
-        topic: p.topic,
-        date: p.date,
-        correct: p.correct,
-        total: p.total,
-        secondsTaken: p.secondsTaken,
+        topic: (r.topic || "").toLowerCase(),
+        date: r.date,
+        correct: r.correct,
+        total: r.total,
+        secondsTaken: r.secondsTaken,
       };
-      })
+    });
+  }, [filteredOldestToNewest]);
+
+  const lineChartData = useMemo(() => {
+    return [...chartData]
       .filter(
         (point) =>
           point != null &&
-          Number.isFinite(Number(point.score)) &&
+          typeof point.xKey === "string" &&
+          point.xKey.length > 0 &&
           Number.isFinite(Number(point.avg))
-      );
-  }, [filteredOldestToNewest]);
+      )
+      .map((point) => ({
+        ...point,
+        xKey: String(point.xKey),
+        xTime: Number.isFinite(Number(point.xTime)) ? Number(point.xTime) : 0,
+        xOrder: Number.isFinite(Number(point.xOrder)) ? Number(point.xOrder) : 0,
+        avg: Number(point.avg),
+      }))
+      .sort((a, b) => {
+        const t = a.xTime - b.xTime;
+        if (t !== 0) return t;
+        return a.xOrder - b.xOrder;
+      });
+  }, [chartData]);
+
+  const lineAnimationKey = useMemo(
+    () => lineChartData.map((p) => `${p.xKey}:${p.avg}`).join("|"),
+    [lineChartData]
+  );
+
+  useEffect(() => {
+    if (lineChartData.length <= 1) {
+      setLineAnim({
+        visibleDots: lineChartData.length ? 1 : 0,
+        activeSegmentIndex: 0,
+        segmentProgress: 0,
+      });
+      return;
+    }
+
+    let cancelled = false;
+    let rafId: number | null = null;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    const totalSegments = lineChartData.length - 1;
+
+    const waitDot = (dotIndex: number) => {
+      if (cancelled) return;
+      setLineAnim({
+        visibleDots: Math.min(dotIndex + 1, lineChartData.length),
+        activeSegmentIndex: Math.min(dotIndex, totalSegments - 1),
+        segmentProgress: 0,
+      });
+
+      if (dotIndex >= lineChartData.length - 1) {
+        timer = setTimeout(() => {
+          if (cancelled) return;
+          waitDot(0);
+        }, LINE_LOOP_PAUSE_MS);
+        return;
+      }
+
+      timer = setTimeout(() => {
+        if (cancelled) return;
+        animateSegment(dotIndex);
+      }, LINE_DOT_MS);
+    };
+
+    const animateSegment = (segmentIndex: number) => {
+      if (cancelled) return;
+      const start = performance.now();
+      setLineAnim({
+        visibleDots: segmentIndex + 1,
+        activeSegmentIndex: segmentIndex,
+        segmentProgress: 0,
+      });
+
+      const tick = (now: number) => {
+        if (cancelled) return;
+        const t = Math.min(1, (now - start) / LINE_SEGMENT_MS);
+        const eased = easeInOutCubic(t);
+        setLineAnim({
+          visibleDots: segmentIndex + 1,
+          activeSegmentIndex: segmentIndex,
+          segmentProgress: eased,
+        });
+
+        if (t < 1) {
+          rafId = requestAnimationFrame(tick);
+          return;
+        }
+
+        waitDot(segmentIndex + 1);
+      };
+
+      rafId = requestAnimationFrame(tick);
+    };
+
+    waitDot(0);
+
+    return () => {
+      cancelled = true;
+      if (rafId) cancelAnimationFrame(rafId);
+      if (timer) clearTimeout(timer);
+    };
+  }, [effectiveMode, lineAnimationKey, lineChartData.length]);
 
   const testAverage = useMemo(() => {
     if (!filteredOldestToNewest.length) return 0;
@@ -395,19 +534,19 @@ export default function ProgressReport({
   }, [filteredOldestToNewest]);
 
   const lastChange = useMemo(() => {
-    if (chartData.length < 2) return null;
-    const prev = Number(chartData[chartData.length - 2]?.avg) || 0;
-    const last = Number(chartData[chartData.length - 1]?.avg) || 0;
+    if (lineChartData.length < 2) return null;
+    const prev = Number(lineChartData[lineChartData.length - 2]?.avg) || 0;
+    const last = Number(lineChartData[lineChartData.length - 1]?.avg) || 0;
     return Math.round((last - prev) * 10) / 10;
-  }, [chartData]);
+  }, [lineChartData]);
 
   const attemptsShown = filteredOldestToNewest.length;
-  const noData = chartData.length === 0;
+  const noData = lineChartData.length === 0;
   const modeDisplayLabel =
     effectiveMode === "all" ? "All topics" : topicLabel(effectiveMode);
 
   const pxPerPoint = Math.max(60, Math.floor(plotViewportW / VISIBLE_POINTS));
-  const svgWidth = Math.max(chartData.length * pxPerPoint, plotViewportW);
+  const svgWidth = Math.max(lineChartData.length * pxPerPoint, plotViewportW);
 
   // force grid lines at exact tick positions
   const horizontalPoints = useMemo(() => {
@@ -648,7 +787,7 @@ export default function ProgressReport({
                 <LineChart
                   width={svgWidth}
                   height={CHART_H}
-                  data={chartData}
+                  data={lineChartData}
                   margin={MARGIN}
                 >
                   <CartesianGrid
@@ -688,13 +827,19 @@ export default function ProgressReport({
                   />
 
                   <Line
-                    type="monotone"
+                    type="linear"
                     dataKey="avg"
                     connectNulls
                     stroke="#FFC400"
                     strokeWidth={2}
-                    dot={{ r: 2, fill: "#FFC400" }}
-                    activeDot={{ r: 4 }}
+                    shape={(props) => (
+                      <AnimatedProgressLineShape
+                        {...props}
+                        animState={lineAnim}
+                      />
+                    )}
+                    dot={false}
+                    activeDot={false}
                     isAnimationActive={false}
                   />
                 </LineChart>
@@ -750,12 +895,12 @@ export default function ProgressReport({
 
             <div className="mt-2 space-y-3 text-sm text-white/60">
               <p>
-                The score over time graph shows your learning progress as a line
-                graph. You can touch each point on the graph to reveal more
-                information about individual tests you have taken.
+                The score over time graph shows your learning progress over time.
+                You can touch each point on the graph to reveal more information
+                about individual tests you have taken.
               </p>
               <p>
-                Line and dots show your running test average (0–100). Newest
+                Your running test average (0–100) is shown over time. Newest
                 test is on the right. Scroll sideways if there are lots of attempts.
               </p>
             </div>

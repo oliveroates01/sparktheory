@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
 import SparkTheoryLogo from "@/components/Brand/SparkTheoryLogo";
@@ -120,6 +120,212 @@ type ProblemQuestion = {
   question: string;
   legacyIds?: string[];
 };
+
+type DemoPt = { x: number; y: number };
+
+function lerp(a: number, b: number, t: number) {
+  return a + (b - a) * t;
+}
+
+function clamp01(n: number) {
+  return Math.max(0, Math.min(1, n));
+}
+
+function DemoProgressChartSequential({
+  values = [8, 12, 26, 18, 36, 30, 48],
+  stroke = "#FFC400",
+}: {
+  values?: number[];
+  stroke?: string;
+}) {
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const [size, setSize] = useState({ w: 600, h: 220 });
+  const [phase, setPhase] = useState<"dot" | "draw">("dot");
+  const [segmentIndex, setSegmentIndex] = useState(0);
+  const [revealedDots, setRevealedDots] = useState(1);
+  const [segT, setSegT] = useState(0);
+
+  useEffect(() => {
+    if (!wrapRef.current) return;
+    const el = wrapRef.current;
+    const ro = new ResizeObserver(() => {
+      const r = el.getBoundingClientRect();
+      setSize({ w: Math.max(1, r.width), h: Math.max(1, r.height) });
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const { w, h } = size;
+  const padding = 18;
+  const gridTop = 10;
+  const gridBottom = 18;
+
+  const pts: DemoPt[] = useMemo(() => {
+    const n = values.length;
+    if (n === 0) return [];
+    const innerW = w - padding * 2;
+    const innerH = h - (padding + gridBottom + gridTop);
+
+    return values.map((v, i) => {
+      const x = padding + (n === 1 ? innerW / 2 : (innerW * i) / (n - 1));
+      const t = (v - 0) / 100;
+      const y = gridTop + padding + (1 - t) * innerH;
+      return { x, y };
+    });
+  }, [values, w, h]);
+
+  useEffect(() => {
+    let raf = 0;
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+
+    if (pts.length <= 1) {
+      setPhase("dot");
+      setSegmentIndex(0);
+      setRevealedDots(pts.length ? 1 : 0);
+      setSegT(0);
+      return;
+    }
+
+    setPhase("dot");
+    setSegmentIndex(0);
+    setRevealedDots(1);
+    setSegT(0);
+
+    const DOT_PAUSE_MS = 200;
+    const SEG_MS = 1000;
+    const LOOP_PAUSE_MS = 700;
+
+    const animateSegment = (fromIdx: number) => {
+      setPhase("draw");
+      setSegmentIndex(fromIdx);
+      setSegT(0);
+      const start = performance.now();
+
+      const tick = (now: number) => {
+        const raw = clamp01((now - start) / SEG_MS);
+        const t = raw * raw * (3 - 2 * raw);
+        setSegT(t);
+
+        if (t < 1) {
+          raf = requestAnimationFrame(tick);
+          return;
+        }
+
+        setSegT(1);
+        setPhase("dot");
+        setRevealedDots((prev) => Math.max(prev, fromIdx + 2));
+
+        if (fromIdx + 1 >= pts.length - 1) {
+          timeout = setTimeout(() => {
+            setPhase("dot");
+            setSegmentIndex(0);
+            setRevealedDots(1);
+            setSegT(0);
+            timeout = setTimeout(() => animateSegment(0), DOT_PAUSE_MS);
+          }, LOOP_PAUSE_MS);
+          return;
+        }
+
+        timeout = setTimeout(() => {
+          animateSegment(fromIdx + 1);
+        }, DOT_PAUSE_MS);
+      };
+
+      raf = requestAnimationFrame(tick);
+    };
+
+    timeout = setTimeout(() => animateSegment(0), DOT_PAUSE_MS);
+
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [pts.length, values.join(",")]);
+
+  const segments = useMemo(() => {
+    const segs: { a: DemoPt; b: DemoPt; partial?: number }[] = [];
+    if (pts.length < 2) return segs;
+
+    const completedSegmentCount =
+      phase === "dot"
+        ? Math.min(segmentIndex + 1, pts.length - 1)
+        : Math.min(segmentIndex, pts.length - 1);
+
+    for (let i = 0; i < completedSegmentCount; i += 1) {
+      segs.push({ a: pts[i], b: pts[i + 1] });
+    }
+
+    if (phase === "draw" && segmentIndex < pts.length - 1) {
+      segs.push({ a: pts[segmentIndex], b: pts[segmentIndex + 1], partial: segT });
+    }
+
+    return segs;
+  }, [pts, phase, segmentIndex, segT]);
+
+  const visibleDotCount = Math.min(revealedDots, pts.length);
+
+  const gridYs = Array.from({ length: 4 }, (_, i) => {
+    const t = i / 3;
+    return gridTop + padding + (h - (padding + gridBottom + gridTop)) * t;
+  });
+
+  return (
+    <div ref={wrapRef} className="h-full w-full">
+      <svg width="100%" height="100%" viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none">
+        {gridYs.map((y, i) => (
+          <line
+            key={`grid-${i}`}
+            x1={padding}
+            x2={w - padding}
+            y1={y}
+            y2={y}
+            stroke="rgba(255,255,255,0.08)"
+            strokeWidth={1}
+            strokeDasharray="4 6"
+          />
+        ))}
+
+        {[0, 20, 40, 60, 80, 100].map((val) => {
+          const innerH = h - (padding + gridBottom + gridTop);
+          const y = gridTop + padding + (1 - val / 100) * innerH;
+          return (
+            <text key={`y-${val}`} x={4} y={y + 4} fontSize="10" fill="rgba(255,255,255,0.55)">
+              {val}
+            </text>
+          );
+        })}
+
+        {segments.map((s, idx) => {
+          let x2 = s.b.x;
+          let y2 = s.b.y;
+
+          if (typeof s.partial === "number") {
+            x2 = lerp(s.a.x, s.b.x, s.partial);
+            y2 = lerp(s.a.y, s.b.y, s.partial);
+          }
+
+          return (
+            <line
+              key={`seg-${idx}`}
+              x1={s.a.x}
+              y1={s.a.y}
+              x2={x2}
+              y2={y2}
+              stroke={stroke}
+              strokeWidth={2.5}
+              strokeLinecap="round"
+            />
+          );
+        })}
+
+        {pts.slice(0, visibleDotCount).map((p, i) => (
+          <circle key={`dot-${i}`} cx={p.x} cy={p.y} r={4} fill={stroke} />
+        ))}
+      </svg>
+    </div>
+  );
+}
 
 const LEVEL2_PROBLEM_TOPICS: ProblemTopicMeta[] = [
   { slug: "health-safety", title: "Health & Safety", questions: healthSafetyQuestions as unknown[] },
@@ -279,30 +485,7 @@ export default function TopicsPage() {
     setCarouselIndex(0);
   }, [activeTotal]);
 
-  const demoPoints = [0, 6, 22, 14, 35, 28, 48];
-  const chartLeft = 40;
-  const chartRight = 380;
-  const chartBottom = 166;
-  const chartScale = 1.6;
-  const demoCoords = demoPoints.map((value, index) => {
-    const x = chartLeft + index * ((chartRight - chartLeft) / (demoPoints.length - 1));
-    const y = chartBottom - value * chartScale;
-    return { x, y };
-  });
-  const demoSegments = demoCoords.slice(1).map((point, index) => {
-    const prev = demoCoords[index];
-    const dx = point.x - prev.x;
-    const dy = point.y - prev.y;
-    const len = Math.hypot(dx, dy);
-    return { x1: prev.x, y1: prev.y, x2: point.x, y2: point.y, len };
-  });
-
-  const drawMs = 900;
-  const pauseMs = 700;
-  const resetMs = 700;
-  const segmentCount = demoSegments.length;
-  const [progressIndex, setProgressIndex] = useState(0);
-  const [completedCount, setCompletedCount] = useState(0);
+  const demoChartValues = [0, 18, 26, 21, 34, 42, 38, 51, 48, 63];
   const [problemPreview, setProblemPreview] = useState<ProblemPreview | null>(null);
 
   useEffect(() => {
@@ -311,47 +494,6 @@ export default function TopicsPage() {
     });
     return () => unsub();
   }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-    const timeouts: Array<ReturnType<typeof setTimeout>> = [];
-
-    const step = (index: number) => {
-      if (cancelled) return;
-      setProgressIndex(index);
-      timeouts.push(
-        setTimeout(() => {
-          if (cancelled) return;
-          setCompletedCount(index + 1);
-        }, drawMs)
-      );
-      timeouts.push(
-        setTimeout(() => {
-          if (cancelled) return;
-          if (index + 1 >= segmentCount) {
-            timeouts.push(
-              setTimeout(() => {
-                if (cancelled) return;
-                setCompletedCount(0);
-                setProgressIndex(0);
-                step(0);
-              }, resetMs)
-            );
-            return;
-          }
-          step(index + 1);
-        }, drawMs + pauseMs)
-      );
-    };
-
-    setCompletedCount(0);
-    step(0);
-
-    return () => {
-      cancelled = true;
-      timeouts.forEach(clearTimeout);
-    };
-  }, [drawMs, pauseMs, resetMs, segmentCount]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -402,82 +544,8 @@ export default function TopicsPage() {
         <div className="flex items-center justify-between">
         </div>
 
-        <div className="mt-6">
-          <svg viewBox="0 0 400 210" className="h-44 w-full">
-            <defs>
-              <linearGradient id="demoLine" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#FFC400" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#FF9100" stopOpacity="0.9" />
-              </linearGradient>
-            </defs>
-
-            {[0, 40, 80, 120, 160].map((y) => (
-              <line
-                key={y}
-                x1="40"
-                y1={y}
-                x2="380"
-                y2={y}
-                stroke="rgba(255,255,255,0.08)"
-                strokeDasharray="4 6"
-              />
-            ))}
-
-            {[0, 20, 40, 60, 80, 100].map((val) => {
-              const y = chartBottom - val * chartScale;
-              return (
-                <text
-                  key={val}
-                  x="10"
-                  y={y + 4}
-                  fontSize="10"
-                  fill="rgba(255,255,255,0.55)"
-                >
-                  {val}
-                </text>
-              );
-            })}
-
-            {demoSegments.map((seg, index) => {
-              const isComplete = index < completedCount;
-              const isActive = index === progressIndex;
-              if (!isComplete && !isActive) return null;
-              return (
-                <line
-                  key={`${seg.x1}-${seg.x2}`}
-                  x1={seg.x1}
-                  y1={seg.y1}
-                  x2={seg.x2}
-                  y2={seg.y2}
-                  stroke="url(#demoLine)"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  className={isActive ? "demo-active-seg" : undefined}
-                  style={{
-                    strokeDasharray: seg.len,
-                    strokeDashoffset: isActive ? seg.len : 0,
-                    ['--dash' as string]: seg.len,
-                    animationDuration: isActive ? `${drawMs}ms` : undefined,
-                  }}
-                />
-              );
-            })}
-            {demoCoords.map((point, index) => {
-              if (index === 0 || index <= completedCount) {
-                return (
-                  <circle
-                    key={`${point.x}-${point.y}`}
-                    cx={point.x}
-                    cy={point.y}
-                    r="4"
-                    fill="#FFC400"
-                  />
-                );
-              }
-              return null;
-            })}
-
-          </svg>
+        <div className="mt-6 h-44 w-full">
+          <DemoProgressChartSequential values={demoChartValues} stroke="#FFC400" />
         </div>
       </div>
     ),
@@ -527,7 +595,7 @@ export default function TopicsPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-[#1F1F1F] text-white">
+    <main className="min-h-screen flex flex-col justify-start bg-[#1F1F1F] text-white">
       {/* Background glow */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -top-40 left-1/2 h-[520px] w-[920px] -translate-x-1/2 rounded-full bg-gradient-to-r from-[#FFC400]/25 via-[#FF9100]/20 to-[#FFC400]/20 blur-3xl" />
@@ -627,16 +695,16 @@ export default function TopicsPage() {
               Level 3
             </button>
           </div>
-          <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2">
-            <div className="flex flex-col gap-4 lg:self-stretch lg:justify-between lg:gap-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+            <div className="flex flex-col h-full min-h-full gap-6">
               {visibleCards.map((c) => (
                 <div
                   key={`${c.id}-left`}
-                  className="relative min-h-[220px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#2A2A2A]/82 via-[#1F1F1F]/76 to-[#2A2A2A]/82 p-8 ring-1 ring-white/14 shadow-[0_12px_30px_rgba(0,0,0,0.22)]"
+                  className="relative min-h-[180px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#2A2A2A]/82 via-[#1F1F1F]/76 to-[#2A2A2A]/82 p-8 ring-1 ring-white/14 shadow-[0_12px_30px_rgba(0,0,0,0.22)]"
                 >
                   <div className="absolute inset-0 bg-[radial-gradient(220px_140px_at_10%_0%,rgba(255,196,0,0.18),transparent_60%)] opacity-0" />
-                  <div className="relative flex h-full flex-col gap-4">
-                    <div className="flex items-start justify-between gap-4">
+                  <div className="relative flex flex-col gap-3">
+                    <div className="flex items-start gap-4">
                       <svg
                         viewBox="0 0 24 24"
                         aria-hidden="true"
@@ -645,7 +713,6 @@ export default function TopicsPage() {
                       >
                         <path d="M13.1 2 4.8 13.1h5l-1.7 8.9L19.2 9.8h-5.3L13.1 2Z" />
                       </svg>
-                      <div className="flex flex-col items-end gap-2" />
                     </div>
 
                     <div>
@@ -654,14 +721,46 @@ export default function TopicsPage() {
                         {c.description}
                       </p>
                     </div>
-
-                    <div className="mt-auto" />
                   </div>
                 </div>
               ))}
+              <div className="mt-auto">
+                <div className="relative min-h-[180px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#252017]/94 via-[#1B1A17]/92 to-[#211C14]/94 p-8 ring-1 ring-[#FFC400]/30 shadow-[0_14px_34px_rgba(0,0,0,0.24)] spark-plus-glow">
+                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(260px_160px_at_12%_0%,rgba(255,196,0,0.14),transparent_62%)]" />
+                  <div className="relative flex flex-col gap-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <p className="text-base font-semibold leading-tight text-white">Upgrade to Spark Theory+</p>
+                      <span className="rounded-full border border-[#FFC400]/45 bg-[#FFC400]/10 px-2.5 py-1 text-[11px] font-semibold text-[#FFE083]">
+                        Spark Theory+
+                      </span>
+                    </div>
+
+                    <p className="text-sm leading-6 text-white/75">
+                      Unlock full progress tracking, personalised weak-topic analysis, unlimited quizzes, and smart revision paths built around your performance.
+                    </p>
+
+                    <div className="space-y-1 text-xs leading-5 text-white/70">
+                      <p>• Unlimited topic quizzes</p>
+                      <p>• Real performance tracking</p>
+                      <p>• Weak area targeting</p>
+                      <p>• Exam-style mock tests</p>
+                      <p>• Priority support</p>
+                    </div>
+
+                    <div className="pt-2">
+                      <Link
+                        href="/signup"
+                        className="inline-flex items-center justify-center rounded-xl bg-[#FFC400] px-4 py-2.5 text-sm font-semibold text-[#1F1F1F] ring-1 ring-[#FFC400]/60 transition hover:bg-[#FFD54A]"
+                      >
+                        Upgrade Now
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col h-full min-h-full gap-6">
               {dashboardRightCards}
             </div>
           </div>
@@ -739,6 +838,22 @@ export default function TopicsPage() {
           100% {
             opacity: 1;
             transform: scale(1);
+          }
+        }
+
+        .spark-plus-glow {
+          animation: spark-plus-glow 10s ease-in-out infinite;
+        }
+
+        @keyframes spark-plus-glow {
+          0% {
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24), 0 0 0 0 rgba(255, 196, 0, 0.06);
+          }
+          50% {
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24), 0 0 28px 0 rgba(255, 196, 0, 0.12);
+          }
+          100% {
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24), 0 0 0 0 rgba(255, 196, 0, 0.06);
           }
         }
       `}</style>
