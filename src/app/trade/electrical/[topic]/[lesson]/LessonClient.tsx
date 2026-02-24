@@ -218,14 +218,18 @@ function QuickPractice({
   answerVisible: boolean;
   onToggle: () => void;
 }) {
+  const displayQuestion = (section.question || "")
+    .replace(/\s*\(Show formula and final unit\.\)/g, "")
+    .trim();
+
   return (
     <div className="grid gap-3">
-      {section.question ? (
+      {displayQuestion ? (
         <div className="rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10">
           <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/45">
             Practice question
           </div>
-          <p className="mt-2 text-sm leading-6 text-white/80">{section.question}</p>
+          <p className="mt-2 text-sm leading-6 text-white/80">{displayQuestion}</p>
         </div>
       ) : null}
 
