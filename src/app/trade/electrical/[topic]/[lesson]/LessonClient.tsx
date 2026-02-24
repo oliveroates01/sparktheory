@@ -409,10 +409,12 @@ export default function ElectricalLessonPage() {
             <div className="mt-6 grid gap-4">
               {structuredSections.map((section, index) => {
                 const key = `${currentLesson.slug}-${section.type}-${index}`;
+                const displayTitle =
+                  section.type === "realWorld" ? "In UK Installations" : section.title;
 
                 if (section.type === "formula") {
                   return (
-                    <SectionCard key={key} title={section.title} eyebrow="Formulas">
+                    <SectionCard key={key} title={displayTitle} eyebrow="Formulas">
                       {lineArray(section.content).length > 0 ? (
                         <div className="mb-3 text-sm leading-6 text-white/75">
                           {lineArray(section.content).map((line, idx) => (
@@ -436,7 +438,7 @@ export default function ElectricalLessonPage() {
 
                 if (section.type === "workedExample") {
                   return (
-                    <SectionCard key={key} title={section.title} eyebrow="Worked example">
+                    <SectionCard key={key} title={displayTitle} eyebrow="Worked example">
                       <WorkedExample intro={section.content} steps={section.exampleSteps ?? []} />
                     </SectionCard>
                   );
@@ -444,7 +446,7 @@ export default function ElectricalLessonPage() {
 
                 if (section.type === "commonMistakes") {
                   return (
-                    <SectionCard key={key} title={section.title} eyebrow="Exam focus" accent="warning">
+                    <SectionCard key={key} title={displayTitle} eyebrow="Exam focus" accent="warning">
                       {lineArray(section.content).length > 0 ? (
                         <div className="mb-3 text-sm leading-6 text-white/75">
                           {lineArray(section.content).map((line, idx) => (
@@ -462,7 +464,7 @@ export default function ElectricalLessonPage() {
                 if (section.type === "quickPractice") {
                   const answerVisible = Boolean(openPracticeAnswers[key]);
                   return (
-                    <SectionCard key={key} title={section.title} eyebrow="Quick practice" accent="practice">
+                    <SectionCard key={key} title={displayTitle} eyebrow="Quick practice" accent="practice">
                       <QuickPractice
                         section={section}
                         answerVisible={answerVisible}
@@ -484,7 +486,7 @@ export default function ElectricalLessonPage() {
                     : undefined;
 
                 return (
-                  <SectionCard key={key} title={section.title} eyebrow={eyebrow}>
+                  <SectionCard key={key} title={displayTitle} eyebrow={eyebrow}>
                     {renderTextAndBullets(section)}
                   </SectionCard>
                 );
