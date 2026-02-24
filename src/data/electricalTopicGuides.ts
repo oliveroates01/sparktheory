@@ -5,9 +5,35 @@ export type TopicGuideItem = {
   detail: string;
 };
 
+export type LessonSectionType =
+  | "concept"
+  | "realWorld"
+  | "formula"
+  | "workedExample"
+  | "commonMistakes"
+  | "siteApplication"
+  | "quickPractice";
+
+export type LessonExampleStep = {
+  step: string;
+  result?: string;
+};
+
+export type LessonSection = {
+  title: string;
+  type: LessonSectionType;
+  content?: string | string[];
+  bullets?: string[];
+  formulaBlock?: string;
+  exampleSteps?: LessonExampleStep[];
+  question?: string;
+  answer?: string;
+};
+
 export type TopicGuideSection = {
   title: string;
   items: TopicGuideItem[];
+  sections?: LessonSection[];
 };
 
 export type ContentLevelTag = "L2" | "L3";
@@ -87,6 +113,103 @@ export const electricalTopicGuides: TopicGuide[] = [
           { title: "Voltage (V)", detail: "Understand voltage as the electrical push that drives current." },
           { title: "Resistance (Ohms)", detail: "Understand resistance as opposition to current flow." },
           { title: "Power (W)", detail: "Understand power as the rate electrical energy is used." },
+        ],
+        sections: [
+          {
+            title: "Concept Breakdown",
+            type: "concept",
+            content: [
+              "Current (I) is the rate of flow of electric charge. In practical terms, it tells you how much electrical flow is moving through a conductor each second. The unit is the ampere (A).",
+              "Voltage (V) is the potential difference between two points. It is the electrical push that drives current around a circuit when a complete path exists.",
+              "Resistance (R) is the opposition to current flow. It depends on material, length, cross-sectional area and temperature. The unit is ohms (Ω).",
+              "Power (P) is the rate at which electrical energy is transferred or converted. In installations, power is often used to estimate load demand, device selection and heat output. The unit is watts (W).",
+            ],
+            bullets: [
+              "Symbols you must recognise quickly: I, V, R, P",
+              "Units: A, V, Ω, W (plus mA, kW in exam questions)",
+              "A quantity and its unit are both needed for a complete answer (e.g. 6 A, not just 6)",
+            ],
+          },
+          {
+            title: "Real-World UK Context",
+            type: "realWorld",
+            content: [
+              "In UK low-voltage single-phase installations, the nominal supply is typically 230 V AC. Many exam questions use 230 V for simple calculations, especially for sockets, heaters and small appliances.",
+              "A kettle rated around 2 kW to 3 kW on a 230 V supply draws a significant current, which is why load calculations, circuit ratings and protective device selection matter.",
+            ],
+            bullets: [
+              "230 V is the common nominal value used in UK examples",
+              "Current increases when power increases at the same voltage",
+              "Small changes in load can change circuit current enough to matter for design and protection",
+            ],
+          },
+          {
+            title: "Formulas and units you must know",
+            type: "formula",
+            content: "These are the core relationships used repeatedly in Level 2 electrical science and installation calculations.",
+            formulaBlock: [
+              "Ohm's Law: V = I x R",
+              "Current form: I = V / R",
+              "Resistance form: R = V / I",
+              "Power: P = V x I",
+              "",
+              "Unit conversions:",
+              "1 A = 1000 mA",
+              "1 kW = 1000 W",
+              "500 mA = 0.5 A",
+              "2.4 kW = 2400 W",
+            ].join("\n"),
+            bullets: [
+              "Convert units before calculating if values are mixed (e.g. mA with A, kW with W)",
+              "Write the formula first in exams to reduce rearrangement errors",
+            ],
+          },
+          {
+            title: "Worked Example (230 V heater current)",
+            type: "workedExample",
+            content: "A heater is rated at 2.3 kW on a 230 V supply. Find the current drawn.",
+            exampleSteps: [
+              { step: "Write the known values", result: "P = 2.3 kW, V = 230 V" },
+              { step: "Convert power to watts", result: "2.3 kW = 2300 W" },
+              { step: "Choose the formula and rearrange", result: "I = P / V" },
+              { step: "Substitute values", result: "I = 2300 / 230" },
+              { step: "Calculate", result: "I = 10 A" },
+              { step: "State the answer with unit", result: "The heater draws 10 A" },
+            ],
+          },
+          {
+            title: "Common Exam Mistakes",
+            type: "commonMistakes",
+            content: "These errors are common in short calculations and unit-identification questions.",
+            bullets: [
+              "Mixing up quantity symbols (writing V when the question asks for current I)",
+              "Forgetting to convert kW to W before using P = VI",
+              "Giving an answer without a unit (e.g. writing 10 instead of 10 A)",
+              "Rearranging Ohm's Law incorrectly (e.g. using I = R / V)",
+              "Using 240 V out of habit when the question states 230 V",
+            ],
+          },
+          {
+            title: "Site Application",
+            type: "siteApplication",
+            content: [
+              "Electricians use units and quantities constantly when checking ratings, selecting accessories and understanding manufacturer data. For example, current and power ratings help confirm whether a circuit or accessory is suitable for the connected load.",
+              "When fault finding, measured voltage and continuity/resistance readings help identify open circuits, high resistance joints and incorrect connections. Clear understanding of units helps avoid misreading instruments.",
+            ],
+            bullets: [
+              "Compare measured values with expected values from simple calculations",
+              "Check nameplate ratings in W, kW, V and A before installation",
+              "Use the correct range and unit when reading a meter",
+            ],
+          },
+          {
+            title: "Quick Practice",
+            type: "quickPractice",
+            question:
+              "A device uses 920 W from a 230 V supply. What current does it draw? (Show formula and final unit.)",
+            answer:
+              "Use I = P / V. I = 920 / 230 = 4. Therefore the current is 4 A.",
+          },
         ],
       },
       {
