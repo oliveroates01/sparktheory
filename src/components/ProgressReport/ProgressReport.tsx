@@ -21,6 +21,7 @@ type Props = {
   results: StoredResult[];
   topics: string[];
   lockedTopic?: string;
+  variant?: "demo" | "real";
 
   /**
    * If provided, a reset icon appears top-right.
@@ -326,6 +327,7 @@ export default function ProgressReport({
   results,
   topics,
   lockedTopic,
+  variant = "real",
   onResetProgress,
 }: Props) {
   const pathname = usePathname();
@@ -448,6 +450,15 @@ export default function ProgressReport({
   );
 
   useEffect(() => {
+    if (variant !== "demo") {
+      setLineAnim({
+        visibleDots: lineChartData.length,
+        activeSegmentIndex: Math.max(0, lineChartData.length - 2),
+        segmentProgress: 1,
+      });
+      return;
+    }
+
     if (lineChartData.length <= 1) {
       setLineAnim({
         visibleDots: lineChartData.length ? 1 : 0,
@@ -522,7 +533,7 @@ export default function ProgressReport({
       if (rafId) cancelAnimationFrame(rafId);
       if (timer) clearTimeout(timer);
     };
-  }, [effectiveMode, lineAnimationKey, lineChartData.length]);
+  }, [effectiveMode, lineAnimationKey, lineChartData.length, variant]);
 
   const testAverage = useMemo(() => {
     if (!filteredOldestToNewest.length) return 0;
@@ -826,22 +837,35 @@ export default function ProgressReport({
                     wrapperStyle={{ outline: "none" }}
                   />
 
-                  <Line
-                    type="linear"
-                    dataKey="avg"
-                    connectNulls
-                    stroke="#FFC400"
-                    strokeWidth={2}
-                    shape={(props) => (
-                      <AnimatedProgressLineShape
-                        {...props}
-                        animState={lineAnim}
-                      />
-                    )}
-                    dot={false}
-                    activeDot={false}
-                    isAnimationActive={false}
-                  />
+                  {variant === "demo" ? (
+                    <Line
+                      type="linear"
+                      dataKey="avg"
+                      connectNulls
+                      stroke="#FFC400"
+                      strokeWidth={2}
+                      shape={(props) => (
+                        <AnimatedProgressLineShape
+                          {...props}
+                          animState={lineAnim}
+                        />
+                      )}
+                      dot={false}
+                      activeDot={false}
+                      isAnimationActive={false}
+                    />
+                  ) : (
+                    <Line
+                      type="linear"
+                      dataKey="avg"
+                      connectNulls
+                      stroke="#FFC400"
+                      strokeWidth={2}
+                      dot={{ r: 3, fill: "#FFC400", stroke: "#FFC400" }}
+                      activeDot={{ r: 5, fill: "#FFC400", stroke: "#FFC400" }}
+                      isAnimationActive={false}
+                    />
+                  )}
                 </LineChart>
               </div>
             </div>

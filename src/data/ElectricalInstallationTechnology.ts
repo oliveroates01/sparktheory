@@ -128,18 +128,6 @@ export type Question = {
       explanation: "Electrical contractors are part of the construction team.",
     },
     {
-      id: "eit-013",
-      question: "On construction sites there is a duty for workers to wear?",
-      options: [
-        "Head protection",
-        "Hearing protection only",
-        "Respirators only",
-        "No PPE",
-      ],
-      correctIndex: 0,
-      explanation: "Head protection is required on construction sites.",
-    },
-    {
       id: "eit-014",
       question: "A key objective of the Construction (Design and Management) Regulations is to?",
       options: [

@@ -1249,6 +1249,19 @@ export type Question = {
         correctIndex: 0,
         explanation: "Inspectors can enter premises and investigate without notice.",
       },
+      {
+        id: "hs-094",
+        legacyIds: ["eit-013"],
+        question: "On construction sites there is a duty for workers to wear?",
+        options: [
+          "Head protection",
+          "Hearing protection only",
+          "Respirators only",
+          "No PPE",
+        ],
+        correctIndex: 0,
+        explanation: "Head protection is required on construction sites.",
+      },
     
     
   ];
