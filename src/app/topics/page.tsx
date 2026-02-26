@@ -4,9 +4,11 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import SparkTheoryLogo from "@/components/Brand/SparkTheoryLogo";
-import { auth } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
 import { getElectricalLevel3Categories } from "@/data/electricalTopicCategories";
+import { normalizeManualOverride, resolvePlusAccess } from "@/lib/entitlements";
 import { healthSafetyQuestions } from "@/data/healthSafety";
 import { principlesElectricalScienceQuestions } from "@/data/principlesElectricalScience";
 import { electricalInstallationTechnologyQuestions } from "@/data/ElectricalInstallationTechnology";
@@ -443,6 +445,8 @@ function problemPreviewFromStorage(level: "2" | "3", userId?: string | null): Pr
 export default function TopicsPage() {
   const router = useRouter();
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [hasPlusAccess, setHasPlusAccess] = useState(false);
+  const [subscriptionReady, setSubscriptionReady] = useState(false);
   const [activeTrade, setActiveTrade] =
     useState<TradeKey>("electrical");
 
@@ -487,10 +491,43 @@ export default function TopicsPage() {
 
   const demoChartValues = [0, 18, 26, 21, 34, 42, 38, 51, 48, 63];
   const [problemPreview, setProblemPreview] = useState<ProblemPreview | null>(null);
+  const isLoggedIn = Boolean(currentUserId);
+  const showUpgradeLoadingCard = isLoggedIn && !subscriptionReady;
+  const isPlusSubscriber = isLoggedIn && subscriptionReady && hasPlusAccess;
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => {
+    const unsub = onAuthStateChanged(auth, async (user) => {
       setCurrentUserId(user?.uid ?? null);
+      if (!user) {
+        setHasPlusAccess(false);
+        setSubscriptionReady(true);
+        return;
+      }
+
+      setSubscriptionReady(false);
+      try {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        const profile = userDoc.data() as
+          | {
+              hasPlusAccess?: boolean;
+              plan?: string;
+              subscriptionStatus?: string;
+              manualOverride?: string;
+            }
+          | undefined;
+
+        const plus = resolvePlusAccess({
+          hasPlusAccess: Boolean(profile?.hasPlusAccess),
+          plan: String(profile?.plan || "FREE"),
+          subscriptionStatus: String(profile?.subscriptionStatus || "none"),
+          manualOverride: normalizeManualOverride(profile?.manualOverride),
+        });
+        setHasPlusAccess(plus);
+      } catch {
+        setHasPlusAccess(false);
+      } finally {
+        setSubscriptionReady(true);
+      }
     });
     return () => unsub();
   }, []);
@@ -606,24 +643,22 @@ export default function TopicsPage() {
         {/* Header */}
         <header className="flex items-center justify-end">
           <div className="flex items-center gap-2">
-            <Link
-              href="/login"
-              className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-sm text-white/80 hover:bg-white/10"
-            >
-              Log in
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-sm text-white/80 hover:bg-white/10"
-            >
-              Subscribe
-            </Link>
-            <Link
-              href="/account"
-              className="rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/15 hover:bg-white/15"
-            >
-              Account
-            </Link>
+            {!isLoggedIn && (
+              <Link
+                href="/login"
+                className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-sm text-white/80 hover:bg-white/10"
+              >
+                Log in
+              </Link>
+            )}
+            {isLoggedIn && (
+              <Link
+                href="/account"
+                className="rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/15 hover:bg-white/15"
+              >
+                Account
+              </Link>
+            )}
           </div>
         </header>
 
@@ -728,33 +763,68 @@ export default function TopicsPage() {
                 <div className="relative min-h-[180px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#252017]/94 via-[#1B1A17]/92 to-[#211C14]/94 p-8 ring-1 ring-[#FFC400]/30 shadow-[0_14px_34px_rgba(0,0,0,0.24)] spark-plus-glow">
                   <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(260px_160px_at_12%_0%,rgba(255,196,0,0.14),transparent_62%)]" />
                   <div className="relative flex flex-col gap-4">
-                    <div className="flex items-start justify-between gap-3">
-                      <p className="text-base font-semibold leading-tight text-white">Upgrade to Spark Theory+</p>
-                      <span className="rounded-full border border-[#FFC400]/45 bg-[#FFC400]/10 px-2.5 py-1 text-[11px] font-semibold text-[#FFE083]">
-                        Spark Theory+
-                      </span>
-                    </div>
+                    {showUpgradeLoadingCard ? (
+                      <>
+                        <div className="flex items-start justify-between gap-3">
+                          <p className="text-base font-semibold leading-tight text-white">Spark Theory+</p>
+                          <span className="rounded-full border border-[#FFC400]/45 bg-[#FFC400]/10 px-2.5 py-1 text-[11px] font-semibold text-[#FFE083]">
+                            Checking plan
+                          </span>
+                        </div>
+                        <p className="text-sm leading-6 text-white/75">
+                          Checking your subscription status…
+                        </p>
+                      </>
+                    ) : isPlusSubscriber ? (
+                      <>
+                        <div className="flex items-start justify-between gap-3">
+                          <p className="text-base font-semibold leading-tight text-white">You&apos;re on Spark Theory+</p>
+                          <span className="rounded-full border border-[#FFC400]/45 bg-[#FFC400]/10 px-2.5 py-1 text-[11px] font-semibold text-[#FFE083]">
+                            Active
+                          </span>
+                        </div>
+                        <p className="text-sm leading-6 text-white/75">
+                          Your PLUS plan is active. You have access to full progress tracking, personalised revision support, and premium quiz features.
+                        </p>
+                        <div className="space-y-1 text-xs leading-5 text-white/70">
+                          <p>• Unlimited topic quizzes</p>
+                          <p>• Real performance tracking</p>
+                          <p>• Weak area targeting</p>
+                          <p>• Exam-style mock tests</p>
+                          <p>• Priority support</p>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex items-start justify-between gap-3">
+                          <p className="text-base font-semibold leading-tight text-white">Upgrade to Spark Theory+</p>
+                          <span className="rounded-full border border-[#FFC400]/45 bg-[#FFC400]/10 px-2.5 py-1 text-[11px] font-semibold text-[#FFE083]">
+                            Spark Theory+
+                          </span>
+                        </div>
 
-                    <p className="text-sm leading-6 text-white/75">
-                      Unlock full progress tracking, personalised weak-topic analysis, unlimited quizzes, and smart revision paths built around your performance.
-                    </p>
+                        <p className="text-sm leading-6 text-white/75">
+                          Unlock full progress tracking, personalised weak-topic analysis, unlimited quizzes, and smart revision paths built around your performance.
+                        </p>
 
-                    <div className="space-y-1 text-xs leading-5 text-white/70">
-                      <p>• Unlimited topic quizzes</p>
-                      <p>• Real performance tracking</p>
-                      <p>• Weak area targeting</p>
-                      <p>• Exam-style mock tests</p>
-                      <p>• Priority support</p>
-                    </div>
+                        <div className="space-y-1 text-xs leading-5 text-white/70">
+                          <p>• Unlimited topic quizzes</p>
+                          <p>• Real performance tracking</p>
+                          <p>• Weak area targeting</p>
+                          <p>• Exam-style mock tests</p>
+                          <p>• Priority support</p>
+                        </div>
 
-                    <div className="pt-2">
-                      <Link
-                        href="/signup"
-                        className="inline-flex items-center justify-center rounded-xl bg-[#FFC400] px-4 py-2.5 text-sm font-semibold text-[#1F1F1F] ring-1 ring-[#FFC400]/60 transition hover:bg-[#FFD54A]"
-                      >
-                        Upgrade Now
-                      </Link>
-                    </div>
+                        <div className="pt-2">
+                          <Link
+                            href="/signup"
+                            className="inline-flex items-center justify-center rounded-xl bg-[#FFC400] px-4 py-2.5 text-sm font-semibold text-[#1F1F1F] ring-1 ring-[#FFC400]/60 transition hover:bg-[#FFD54A]"
+                          >
+                            Upgrade Now
+                          </Link>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
