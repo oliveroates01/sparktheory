@@ -21,7 +21,6 @@ type Props = {
   results: StoredResult[];
   topics: string[];
   lockedTopic?: string;
-  variant?: "demo" | "real";
 
   /**
    * If provided, a reset icon appears top-right.
@@ -40,12 +39,11 @@ const STICKY_AXIS_W = 56;
 const SCROLL_TO_END_DELAY_MS = 450;
 const SCROLL_ANIM_MS = 900;
 
-const MARGIN = { top: 12, right: 16, bottom: 18, left: 10 };
+const MARGIN = { top: 12, right: 8, bottom: 18, left: 4 };
 const Y_TICKS = [0, 20, 40, 60, 80, 100] as const;
 const X_AXIS_H = 36;
-const LINE_SEGMENT_MS = 250;
-const LINE_DOT_MS = 120;
-const LINE_LOOP_PAUSE_MS = 700;
+const SCROLL_POINT_THRESHOLD = 8;
+const SCROLL_POINT_WIDTH = 120;
 
 function safeTime(d?: string) {
   if (!d) return 0;
@@ -110,105 +108,6 @@ function formatDateDDMMYYYY(iso?: string) {
   const mm = String(d.getMonth() + 1).padStart(2, "0");
   const yyyy = d.getFullYear();
   return `${dd}/${mm}/${yyyy}`;
-}
-
-type LineAnimState = {
-  visibleDots: number;
-  activeSegmentIndex: number;
-  segmentProgress: number;
-};
-
-type ShapePoint = {
-  x?: number | null;
-  y?: number | null;
-};
-
-type AnimatedLineShapeProps = {
-  points?: readonly ShapePoint[];
-  stroke?: string;
-  strokeWidth?: number | string;
-  animState: LineAnimState;
-};
-
-function AnimatedProgressLineShape({
-  points = [],
-  stroke = "#FFC400",
-  strokeWidth = 2,
-  animState,
-}: AnimatedLineShapeProps) {
-  const validPoints = points.filter(
-    (p): p is { x: number; y: number } =>
-      typeof p?.x === "number" && Number.isFinite(p.x) && typeof p?.y === "number" && Number.isFinite(p.y)
-  );
-
-  if (!validPoints.length) return null;
-
-  if (validPoints.length === 1) {
-    const p = validPoints[0];
-    return (
-      <g>
-        <circle cx={p.x} cy={p.y} r={4} fill={stroke} stroke={stroke} />
-      </g>
-    );
-  }
-
-  const d = validPoints
-    .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
-    .join(" ");
-
-  const segLens: number[] = [];
-  let totalLen = 0;
-  for (let i = 1; i < validPoints.length; i += 1) {
-    const a = validPoints[i - 1];
-    const b = validPoints[i];
-    const len = Math.hypot(b.x - a.x, b.y - a.y);
-    segLens.push(len);
-    totalLen += len;
-  }
-
-  const maxSegIdx = Math.max(0, segLens.length - 1);
-  const segIdx = Math.min(Math.max(animState.activeSegmentIndex, 0), maxSegIdx);
-  const segProgress = Math.min(Math.max(animState.segmentProgress, 0), 1);
-  const visibleDots = Math.min(
-    Math.max(animState.visibleDots, 0),
-    validPoints.length
-  );
-
-  let drawnLen = 0;
-  for (let i = 0; i < segIdx; i += 1) drawnLen += segLens[i] ?? 0;
-  drawnLen += (segLens[segIdx] ?? 0) * segProgress;
-  drawnLen = Math.min(Math.max(drawnLen, 0), totalLen);
-
-  const dashArray = totalLen > 0 ? totalLen : 1;
-  const dashOffset = totalLen > 0 ? Math.max(totalLen - drawnLen, 0) : 0;
-
-  return (
-    <g>
-      <path
-        d={d}
-        fill="none"
-        stroke={stroke}
-        strokeWidth={Number(strokeWidth) || 2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeDasharray={dashArray}
-        strokeDashoffset={dashOffset}
-      />
-      {validPoints.map((p, idx) => {
-        if (idx >= visibleDots) return null;
-        return (
-          <circle
-            key={`${p.x}-${p.y}-${idx}`}
-            cx={p.x}
-            cy={p.y}
-            r={4}
-            fill={stroke}
-            stroke={stroke}
-          />
-        );
-      })}
-    </g>
-  );
 }
 
 /**
@@ -327,7 +226,6 @@ export default function ProgressReport({
   results,
   topics,
   lockedTopic,
-  variant = "real",
   onResetProgress,
 }: Props) {
   const pathname = usePathname();
@@ -349,12 +247,6 @@ export default function ProgressReport({
   // ✅ info modal (Help)
   const [infoOpen, setInfoOpen] = useState(false);
   const [modalPath, setModalPath] = useState(pathname);
-  const [lineAnim, setLineAnim] = useState<LineAnimState>({
-    visibleDots: 1,
-    activeSegmentIndex: 0,
-    segmentProgress: 0,
-  });
-
   // measure viewport width (responsive)
   useEffect(() => {
     const el = viewportRef.current;
@@ -395,13 +287,10 @@ export default function ProgressReport({
 
   const chartData = useMemo(() => {
     let total = 0;
-
     return filteredOldestToNewest.map((r, idx) => {
       const score = clampScore(r.score);
       total += score;
-
       const runningAvg = total / (idx + 1);
-
       const attempt = attemptLabel(r, idx);
 
       return {
@@ -411,7 +300,7 @@ export default function ProgressReport({
         label: toLabel(r, idx),
         attempt,
         avg: Math.round(runningAvg),
-        score,
+        score: Math.round(score),
         topic: (r.topic || "").toLowerCase(),
         date: r.date,
         correct: r.correct,
@@ -435,6 +324,8 @@ export default function ProgressReport({
         xKey: String(point.xKey),
         xTime: Number.isFinite(Number(point.xTime)) ? Number(point.xTime) : 0,
         xOrder: Number.isFinite(Number(point.xOrder)) ? Number(point.xOrder) : 0,
+        x: Number.isFinite(Number(point.xOrder)) ? Number(point.xOrder) : 0,
+        xLabel: String(point.attempt || ""),
         avg: Number(point.avg),
       }))
       .sort((a, b) => {
@@ -443,97 +334,6 @@ export default function ProgressReport({
         return a.xOrder - b.xOrder;
       });
   }, [chartData]);
-
-  const lineAnimationKey = useMemo(
-    () => lineChartData.map((p) => `${p.xKey}:${p.avg}`).join("|"),
-    [lineChartData]
-  );
-
-  useEffect(() => {
-    if (variant !== "demo") {
-      setLineAnim({
-        visibleDots: lineChartData.length,
-        activeSegmentIndex: Math.max(0, lineChartData.length - 2),
-        segmentProgress: 1,
-      });
-      return;
-    }
-
-    if (lineChartData.length <= 1) {
-      setLineAnim({
-        visibleDots: lineChartData.length ? 1 : 0,
-        activeSegmentIndex: 0,
-        segmentProgress: 0,
-      });
-      return;
-    }
-
-    let cancelled = false;
-    let rafId: number | null = null;
-    let timer: ReturnType<typeof setTimeout> | null = null;
-
-    const totalSegments = lineChartData.length - 1;
-
-    const waitDot = (dotIndex: number) => {
-      if (cancelled) return;
-      setLineAnim({
-        visibleDots: Math.min(dotIndex + 1, lineChartData.length),
-        activeSegmentIndex: Math.min(dotIndex, totalSegments - 1),
-        segmentProgress: 0,
-      });
-
-      if (dotIndex >= lineChartData.length - 1) {
-        timer = setTimeout(() => {
-          if (cancelled) return;
-          waitDot(0);
-        }, LINE_LOOP_PAUSE_MS);
-        return;
-      }
-
-      timer = setTimeout(() => {
-        if (cancelled) return;
-        animateSegment(dotIndex);
-      }, LINE_DOT_MS);
-    };
-
-    const animateSegment = (segmentIndex: number) => {
-      if (cancelled) return;
-      const start = performance.now();
-      setLineAnim({
-        visibleDots: segmentIndex + 1,
-        activeSegmentIndex: segmentIndex,
-        segmentProgress: 0,
-      });
-
-      const tick = (now: number) => {
-        if (cancelled) return;
-        const t = Math.min(1, (now - start) / LINE_SEGMENT_MS);
-        const eased = easeInOutCubic(t);
-        setLineAnim({
-          visibleDots: segmentIndex + 1,
-          activeSegmentIndex: segmentIndex,
-          segmentProgress: eased,
-        });
-
-        if (t < 1) {
-          rafId = requestAnimationFrame(tick);
-          return;
-        }
-
-        waitDot(segmentIndex + 1);
-      };
-
-      rafId = requestAnimationFrame(tick);
-    };
-
-    waitDot(0);
-
-    return () => {
-      cancelled = true;
-      if (rafId) cancelAnimationFrame(rafId);
-      if (timer) clearTimeout(timer);
-    };
-  }, [effectiveMode, lineAnimationKey, lineChartData.length, variant]);
 
   const testAverage = useMemo(() => {
     if (!filteredOldestToNewest.length) return 0;
@@ -556,8 +356,10 @@ export default function ProgressReport({
   const modeDisplayLabel =
     effectiveMode === "all" ? "All topics" : topicLabel(effectiveMode);
 
-  const pxPerPoint = Math.max(60, Math.floor(plotViewportW / VISIBLE_POINTS));
-  const svgWidth = Math.max(lineChartData.length * pxPerPoint, plotViewportW);
+  const svgWidth =
+    lineChartData.length > SCROLL_POINT_THRESHOLD
+      ? Math.max(plotViewportW, lineChartData.length * SCROLL_POINT_WIDTH)
+      : plotViewportW;
 
   // force grid lines at exact tick positions
   const horizontalPoints = useMemo(() => {
@@ -636,7 +438,7 @@ export default function ProgressReport({
         rafRef.current = null;
       }
     };
-  }, [effectiveMode, attemptsShown, pxPerPoint, svgWidth]);
+  }, [effectiveMode, attemptsShown, svgWidth]);
 
   const canReset = Boolean(onResetProgress) && !lockedTopic;
 
@@ -809,14 +611,20 @@ export default function ProgressReport({
                   />
 
                   <XAxis
-                    dataKey="xKey"
+                    type="number"
+                    dataKey="x"
                     axisLine={false}
                     tickLine={false}
                     tickMargin={10}
                     height={X_AXIS_H}
+                    padding={{ left: 0, right: 0 }}
+                    domain={[0, Math.max(0, lineChartData.length - 1)]}
+                    allowDecimals={false}
+                    ticks={lineChartData.map((point) => point.x)}
                     tickFormatter={(value) => {
-                      const text = String(value || "");
-                      return text.split("__")[0] || text;
+                      const n = Number(value);
+                      if (!Number.isFinite(n)) return "";
+                      return lineChartData[Math.round(n)]?.xLabel || "";
                     }}
                     tick={{ fill: "#94a3b8", fontSize: 12 }}
                   />
@@ -837,35 +645,16 @@ export default function ProgressReport({
                     wrapperStyle={{ outline: "none" }}
                   />
 
-                  {variant === "demo" ? (
-                    <Line
-                      type="linear"
-                      dataKey="avg"
-                      connectNulls
-                      stroke="#FFC400"
-                      strokeWidth={2}
-                      shape={(props) => (
-                        <AnimatedProgressLineShape
-                          {...props}
-                          animState={lineAnim}
-                        />
-                      )}
-                      dot={false}
-                      activeDot={false}
-                      isAnimationActive={false}
-                    />
-                  ) : (
-                    <Line
-                      type="linear"
-                      dataKey="avg"
-                      connectNulls
-                      stroke="#FFC400"
-                      strokeWidth={2}
-                      dot={{ r: 3, fill: "#FFC400", stroke: "#FFC400" }}
-                      activeDot={{ r: 5, fill: "#FFC400", stroke: "#FFC400" }}
-                      isAnimationActive={false}
-                    />
-                  )}
+                  <Line
+                    type="linear"
+                    dataKey="avg"
+                    connectNulls
+                    stroke="#FFC400"
+                    strokeWidth={2}
+                    dot={{ r: 3, fill: "#FFC400", stroke: "#FFC400" }}
+                    activeDot={{ r: 5, fill: "#FFC400", stroke: "#FFC400" }}
+                    isAnimationActive={false}
+                  />
                 </LineChart>
               </div>
             </div>
