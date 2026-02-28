@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 export type StoredResult = {
   label: string;
@@ -355,6 +355,10 @@ export default function ProgressReport({
   const noData = lineChartData.length === 0;
   const modeDisplayLabel =
     effectiveMode === "all" ? "All topics" : topicLabel(effectiveMode);
+  const chartHeight =
+    plotViewportW < 640
+      ? Math.max(140, Math.floor(plotViewportW / 2.1))
+      : CHART_H;
 
   const svgWidth =
     lineChartData.length > SCROLL_POINT_THRESHOLD
@@ -363,9 +367,9 @@ export default function ProgressReport({
 
   // force grid lines at exact tick positions
   const horizontalPoints = useMemo(() => {
-    const innerH = CHART_H - MARGIN.top - MARGIN.bottom;
+    const innerH = chartHeight - MARGIN.top - MARGIN.bottom;
     return Y_TICKS.map((v) => MARGIN.top + (1 - v / 100) * innerH);
-  }, []);
+  }, [chartHeight]);
 
   const animateScrollTo = (
     el: HTMLDivElement,
@@ -463,7 +467,7 @@ export default function ProgressReport({
   };
 
   return (
-    <div className="rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+    <div className="flex flex-col min-h-0 rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
@@ -541,9 +545,9 @@ export default function ProgressReport({
       </div>
 
       {/* Chart */}
-      <div className="mt-4">
+      <div className="mt-4 flex flex-col min-h-0">
         {noData ? (
-          <div className="grid h-[260px] place-items-center rounded-2xl bg-white/5 ring-1 ring-white/10">
+          <div className="grid h-[220px] sm:h-[260px] place-items-center rounded-2xl bg-white/5 ring-1 ring-white/10">
             <div className="text-center">
               <p className="text-sm font-semibold text-white">No results yet</p>
               <p className="mt-1 text-xs text-white/60">
@@ -564,7 +568,7 @@ export default function ProgressReport({
                   .map((v) => {
                     const top = MARGIN.top;
                     const bottom = MARGIN.bottom + X_AXIS_H;
-                    const usable = CHART_H - top - bottom;
+                    const usable = chartHeight - top - bottom;
                     const y = top + ((100 - v) / 100) * usable;
 
                     return (
@@ -597,65 +601,129 @@ export default function ProgressReport({
                 className="w-full overflow-x-auto scrollbar-dark"
                 style={{ WebkitOverflowScrolling: "touch" }}
               >
-                <LineChart
-                  width={svgWidth}
-                  height={CHART_H}
-                  data={lineChartData}
-                  margin={MARGIN}
-                >
-                  <CartesianGrid
-                    vertical={false}
-                    horizontalPoints={horizontalPoints}
-                    stroke="rgba(255,255,255,0.22)"
-                    strokeDasharray="3 6"
-                  />
+                <div className="w-full shrink-0 overflow-hidden sm:hidden">
+                  <ResponsiveContainer width="100%" aspect={2.1}>
+                    <LineChart
+                      data={lineChartData}
+                      margin={MARGIN}
+                    >
+                      <CartesianGrid
+                        vertical={false}
+                        horizontalPoints={horizontalPoints}
+                        stroke="rgba(255,255,255,0.22)"
+                        strokeDasharray="3 6"
+                      />
 
-                  <XAxis
-                    type="number"
-                    dataKey="x"
-                    axisLine={false}
-                    tickLine={false}
-                    tickMargin={10}
-                    height={X_AXIS_H}
-                    padding={{ left: 0, right: 0 }}
-                    domain={[0, Math.max(0, lineChartData.length - 1)]}
-                    allowDecimals={false}
-                    ticks={lineChartData.map((point) => point.x)}
-                    tickFormatter={(value) => {
-                      const n = Number(value);
-                      if (!Number.isFinite(n)) return "";
-                      return lineChartData[Math.round(n)]?.xLabel || "";
-                    }}
-                    tick={{ fill: "#94a3b8", fontSize: 12 }}
-                  />
+                      <XAxis
+                        type="number"
+                        dataKey="x"
+                        axisLine={false}
+                        tickLine={false}
+                        tickMargin={10}
+                        height={X_AXIS_H}
+                        padding={{ left: 0, right: 0 }}
+                        domain={[0, Math.max(0, lineChartData.length - 1)]}
+                        allowDecimals={false}
+                        ticks={lineChartData.map((point) => point.x)}
+                        tickFormatter={(value) => {
+                          const n = Number(value);
+                          if (!Number.isFinite(n)) return "";
+                          return lineChartData[Math.round(n)]?.xLabel || "";
+                        }}
+                        tick={{ fill: "#94a3b8", fontSize: 12 }}
+                      />
 
-                  <YAxis
-                    domain={[0, 100]}
-                    ticks={[...Y_TICKS]}
-                    axisLine={false}
-                    tickLine={false}
-                    width={0}
-                    tick={false}
-                  />
+                      <YAxis
+                        domain={[0, 100]}
+                        ticks={[...Y_TICKS]}
+                        axisLine={false}
+                        tickLine={false}
+                        width={0}
+                        tick={false}
+                      />
 
-                  {/* ✅ Pill tooltip */}
-                  <Tooltip
-                    cursor={{ stroke: "rgba(255,255,255,0.35)" }}
-                    content={<StampTooltip />}
-                    wrapperStyle={{ outline: "none" }}
-                  />
+                      {/* ✅ Pill tooltip */}
+                      <Tooltip
+                        cursor={{ stroke: "rgba(255,255,255,0.35)" }}
+                        content={<StampTooltip />}
+                        wrapperStyle={{ outline: "none" }}
+                      />
 
-                  <Line
-                    type="linear"
-                    dataKey="avg"
-                    connectNulls
-                    stroke="#FFC400"
-                    strokeWidth={2}
-                    dot={{ r: 3, fill: "#FFC400", stroke: "#FFC400" }}
-                    activeDot={{ r: 5, fill: "#FFC400", stroke: "#FFC400" }}
-                    isAnimationActive={false}
-                  />
-                </LineChart>
+                      <Line
+                        type="linear"
+                        dataKey="avg"
+                        connectNulls
+                        stroke="#FFC400"
+                        strokeWidth={2}
+                        dot={{ r: 3, fill: "#FFC400", stroke: "#FFC400" }}
+                        activeDot={{ r: 5, fill: "#FFC400", stroke: "#FFC400" }}
+                        isAnimationActive={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="hidden sm:block w-full shrink-0 h-[260px]" style={{ width: svgWidth }}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={lineChartData}
+                      margin={MARGIN}
+                    >
+                      <CartesianGrid
+                        vertical={false}
+                        horizontalPoints={horizontalPoints}
+                        stroke="rgba(255,255,255,0.22)"
+                        strokeDasharray="3 6"
+                      />
+
+                      <XAxis
+                        type="number"
+                        dataKey="x"
+                        axisLine={false}
+                        tickLine={false}
+                        tickMargin={10}
+                        height={X_AXIS_H}
+                        padding={{ left: 0, right: 0 }}
+                        domain={[0, Math.max(0, lineChartData.length - 1)]}
+                        allowDecimals={false}
+                        ticks={lineChartData.map((point) => point.x)}
+                        tickFormatter={(value) => {
+                          const n = Number(value);
+                          if (!Number.isFinite(n)) return "";
+                          return lineChartData[Math.round(n)]?.xLabel || "";
+                        }}
+                        tick={{ fill: "#94a3b8", fontSize: 12 }}
+                      />
+
+                      <YAxis
+                        domain={[0, 100]}
+                        ticks={[...Y_TICKS]}
+                        axisLine={false}
+                        tickLine={false}
+                        width={0}
+                        tick={false}
+                      />
+
+                      {/* ✅ Pill tooltip */}
+                      <Tooltip
+                        cursor={{ stroke: "rgba(255,255,255,0.35)" }}
+                        content={<StampTooltip />}
+                        wrapperStyle={{ outline: "none" }}
+                      />
+
+                      <Line
+                        type="linear"
+                        dataKey="avg"
+                        connectNulls
+                        stroke="#FFC400"
+                        strokeWidth={2}
+                        dot={{ r: 3, fill: "#FFC400", stroke: "#FFC400" }}
+                        activeDot={{ r: 5, fill: "#FFC400", stroke: "#FFC400" }}
+                        isAnimationActive={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
             </div>
           </div>
