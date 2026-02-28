@@ -253,10 +253,13 @@ export default function ElectricalPage() {
           body: JSON.stringify({ email: user.email, uid: user.uid }),
         });
         const result = (await response.json().catch(() => ({}))) as {
+          isSubscribed?: boolean;
           hasPlusAccess?: boolean;
           hasSubscription?: boolean;
         };
-        plusFromStripe = Boolean(result.hasPlusAccess ?? result.hasSubscription);
+        plusFromStripe = Boolean(
+          result.isSubscribed ?? result.hasPlusAccess ?? result.hasSubscription
+        );
       } catch {
         // Keep cached/previous value on transient errors.
       }

@@ -10,6 +10,7 @@ export async function POST(request: Request) {
   try {
     const payload = (await request.json().catch(() => ({}))) as CheckoutPayload;
     const priceId = process.env.STRIPE_PRICE_ID;
+    const uid = (payload.uid || "").trim();
 
     if (!priceId) {
       return NextResponse.json(
@@ -18,11 +19,18 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!uid) {
+      return NextResponse.json(
+        { error: "Missing uid for checkout session mapping" },
+        { status: 400 },
+      );
+    }
+
     const baseUrl = getBaseUrl(request.url);
     const session = await createCheckoutSession({
       priceId,
       email: payload.email,
-      uid: payload.uid,
+      uid,
       successUrl: `${baseUrl}/account?checkout=success`,
       cancelUrl: `${baseUrl}/account?checkout=cancelled`,
     });

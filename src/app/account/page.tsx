@@ -216,6 +216,7 @@ export default function AccountPage() {
 
         const result = (await response.json().catch(() => ({}))) as {
           error?: string;
+          isSubscribed?: boolean;
           hasSubscription?: boolean;
           cancelAtPeriodEnd?: boolean;
           status?: string;
@@ -230,7 +231,7 @@ export default function AccountPage() {
 
         if (!cancelled) {
           const hasSubscription = Boolean(
-            result.hasPlusAccess ?? result.hasSubscription
+            result.isSubscribed ?? result.hasPlusAccess ?? result.hasSubscription
           );
           const nextStatus = result.subscriptionStatus || result.status || "none";
           const nextSubscription = {

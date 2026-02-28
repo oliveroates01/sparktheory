@@ -1,9 +1,4 @@
 import { NextResponse } from "next/server";
-import {
-  findCustomerByEmail,
-  listSubscriptions,
-  pickCurrentSubscription,
-} from "@/lib/stripe";
 import { getAdminServicesOrNull } from "@/lib/firebaseAdmin";
 import { normalizeManualOverride, resolvePlusAccess } from "@/lib/entitlements";
 
@@ -13,10 +8,17 @@ function getBearerToken(request: Request): string {
   return authHeader.slice(7).trim();
 }
 
+function normalizePlan(plan: unknown, isSubscribed: boolean): "plus" | "free" {
+  const normalized = String(plan || "").toLowerCase();
+  if (normalized === "plus" || normalized === "free") return normalized;
+  return isSubscribed ? "plus" : "free";
+}
+
 export async function POST(request: Request) {
   try {
     const services = getAdminServicesOrNull();
     if (!services) {
+      console.error("stripe.subscription-status.error", "Missing Firebase admin environment variables");
       return NextResponse.json(
         { error: "Missing Firebase admin environment variables" },
         { status: 500 }
@@ -28,61 +30,40 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Missing bearer token" }, { status: 401 });
     }
 
-    const decoded = await services.auth
-      .verifyIdToken(token)
-      .catch(() => null);
+    const decoded = await services.auth.verifyIdToken(token).catch(() => null);
     if (!decoded) {
       return NextResponse.json({ error: "Invalid bearer token" }, { status: 401 });
     }
 
     const uid = decoded.uid;
-    const email = decoded.email || "";
-
-    let userDocData: Record<string, unknown> = {};
     const userRef = services.db.collection("users").doc(uid);
     const snapshot = await userRef.get();
-    if (snapshot.exists) {
-      userDocData = snapshot.data() || {};
-    }
+    const data = (snapshot.exists ? snapshot.data() : {}) as Record<string, unknown>;
 
-    let current:
-      | {
-          status: string;
-          cancel_at_period_end: boolean;
-          current_period_end?: number;
-        }
-      | undefined;
-    if (email) {
-      const customer = await findCustomerByEmail(email);
-      if (customer) {
-        const subscriptions = await listSubscriptions(customer.id);
-        current = pickCurrentSubscription(subscriptions);
-      }
-    }
+    const explicitIsSubscribed =
+      typeof data.isSubscribed === "boolean" ? data.isSubscribed : null;
 
-    const plan = String(userDocData.plan || "FREE");
-    const subscriptionStatus = String(userDocData.subscriptionStatus || "none");
-    const manualOverride = normalizeManualOverride(userDocData.manualOverride);
-    const storedHasPlusAccess = Boolean(userDocData.hasPlusAccess);
-    const hasPlusAccess = resolvePlusAccess({
-      hasPlusAccess: storedHasPlusAccess,
-      plan,
-      subscriptionStatus,
-      manualOverride,
+    const fallbackHasPlusAccess = resolvePlusAccess({
+      hasPlusAccess: Boolean(data.hasPlusAccess),
+      plan: String(data.plan || "FREE"),
+      subscriptionStatus: String(data.subscriptionStatus || "none"),
+      manualOverride: normalizeManualOverride(data.manualOverride),
     });
 
+    const isSubscribed = explicitIsSubscribed ?? fallbackHasPlusAccess;
+    const plan = normalizePlan(data.plan, isSubscribed);
+    const subscriptionStatus = String(data.subscriptionStatus || (isSubscribed ? "active" : "none"));
+
     return NextResponse.json({
-      hasSubscription: hasPlusAccess,
-      hasPlusAccess,
+      isSubscribed,
       plan,
+      hasSubscription: isSubscribed,
+      hasPlusAccess: isSubscribed,
       subscriptionStatus,
-      manualOverride,
-      status: current?.status || subscriptionStatus,
-      cancelAtPeriodEnd: current?.cancel_at_period_end ?? false,
-      currentPeriodEnd: current?.current_period_end ?? null,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to fetch subscription status";
+    console.error("stripe.subscription-status.error", message);
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
