@@ -467,18 +467,18 @@ export default function ProgressReport({
   };
 
   return (
-    <div className="flex flex-col min-h-0 rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+    <div className="w-full max-w-[335px] mx-auto flex flex-col min-h-0 rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2 className="text-xl font-bold">Progress reports</h2>
 
-          <p className="mt-1 text-sm text-white/60">
+          <p className="mt-2 sm:mt-1 text-sm text-white/60">
             Test average –{" "}
             <span className="text-white font-semibold">{testAverage}%</span>
           </p>
 
-          <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-white/40">
+          <div className="mt-2 sm:mt-1 flex flex-wrap items-center gap-2 text-xs text-white/40">
             <span>
               {attemptsShown === 0
                 ? "No results yet"
@@ -598,7 +598,7 @@ export default function ProgressReport({
               {/* scroll area */}
               <div
                 ref={scrollRef}
-                className="w-full overflow-x-auto scrollbar-dark"
+                className="w-full overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                 style={{ WebkitOverflowScrolling: "touch" }}
               >
                 <div className="w-full shrink-0 overflow-hidden sm:hidden">
@@ -732,33 +732,35 @@ export default function ProgressReport({
 
       {/* Topic pills */}
       {!lockedTopic && (
-        <div className="mt-4 flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => setMode("all")}
-            className={`rounded-full px-3 py-1 text-xs font-semibold ring-1 ${
-              effectiveMode === "all"
-                ? "bg-[#FFC400] text-black ring-[#FF9100]/40"
-                : "bg-white/10 text-white/70 ring-white/10 hover:bg-white/15"
-            }`}
-          >
-            All
-          </button>
-
-          {topics.map((t) => (
+        <div className="mt-4">
+          <div className="flex flex-nowrap gap-2 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <button
-              key={t}
               type="button"
-              onClick={() => setMode(t)}
-              className={`rounded-full px-3 py-1 text-xs font-semibold ring-1 ${
-                effectiveMode === t
+              onClick={() => setMode("all")}
+              className={`shrink-0 whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold ring-1 ${
+                effectiveMode === "all"
                   ? "bg-[#FFC400] text-black ring-[#FF9100]/40"
                   : "bg-white/10 text-white/70 ring-white/10 hover:bg-white/15"
               }`}
             >
-              {t}
+              All
             </button>
-          ))}
+
+            {topics.map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setMode(t)}
+                className={`shrink-0 whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold ring-1 ${
+                  effectiveMode === t
+                    ? "bg-[#FFC400] text-black ring-[#FF9100]/40"
+                    : "bg-white/10 text-white/70 ring-white/10 hover:bg-white/15"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
