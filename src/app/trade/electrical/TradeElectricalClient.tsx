@@ -833,7 +833,7 @@ export default function ElectricalPage() {
           onClick={closeProgress}
         >
           <div
-            className="w-full max-w-5xl rounded-2xl bg-[#1F1F1F] p-4 ring-1 ring-[#FF9100]/20 sm:p-6"
+            className="w-full max-w-[calc(100vw-1rem)] sm:max-w-5xl rounded-2xl bg-[#1F1F1F] p-4 ring-1 ring-[#FF9100]/20 sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between">

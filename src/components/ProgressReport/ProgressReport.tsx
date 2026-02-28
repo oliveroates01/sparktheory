@@ -35,7 +35,8 @@ const MAX_POINTS = 50;
 const CHART_H = 260;
 const VISIBLE_POINTS = 6;
 
-const STICKY_AXIS_W = 56;
+const STICKY_AXIS_W_DESKTOP = 56;
+const STICKY_AXIS_W_MOBILE = 8;
 const SCROLL_TO_END_DELAY_MS = 450;
 const SCROLL_ANIM_MS = 900;
 
@@ -254,7 +255,7 @@ export default function ProgressReport({
 
     const update = () => {
       const w = el.clientWidth;
-      setPlotViewportW(Math.max(520, w));
+      setPlotViewportW(Math.max(1, w));
     };
 
     update();
@@ -359,6 +360,7 @@ export default function ProgressReport({
     plotViewportW < 640
       ? Math.max(140, Math.floor(plotViewportW / 2.1))
       : CHART_H;
+  const stickyAxisW = plotViewportW < 640 ? STICKY_AXIS_W_MOBILE : STICKY_AXIS_W_DESKTOP;
 
   const svgWidth =
     lineChartData.length > SCROLL_POINT_THRESHOLD
@@ -467,7 +469,7 @@ export default function ProgressReport({
   };
 
   return (
-    <div className="w-full max-w-[335px] mx-auto flex flex-col min-h-0 rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
+    <div className="w-full max-w-[340px] min-w-0 mx-auto sm:max-w-none flex flex-col min-h-0 rounded-3xl bg-white/5 p-6 ring-1 ring-white/10">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
@@ -560,7 +562,7 @@ export default function ProgressReport({
             {/* Sticky Y-axis overlay */}
             <div
               className="pointer-events-none absolute left-0 top-0 z-20 h-full"
-              style={{ width: STICKY_AXIS_W, background: "transparent" }}
+              style={{ width: stickyAxisW, background: "transparent" }}
             >
               <div className="relative h-full">
                 {Y_TICKS.slice()
@@ -593,7 +595,7 @@ export default function ProgressReport({
             <div
               ref={viewportRef}
               className="w-full overflow-hidden rounded-2xl"
-              style={{ paddingLeft: STICKY_AXIS_W }}
+              style={{ paddingLeft: stickyAxisW }}
             >
               {/* scroll area */}
               <div
@@ -621,7 +623,7 @@ export default function ProgressReport({
                         tickLine={false}
                         tickMargin={10}
                         height={X_AXIS_H}
-                        padding={{ left: 0, right: 0 }}
+                        padding={{ left: 12, right: 0 }}
                         domain={[0, Math.max(0, lineChartData.length - 1)]}
                         allowDecimals={false}
                         ticks={lineChartData.map((point) => point.x)}
@@ -733,11 +735,11 @@ export default function ProgressReport({
       {/* Topic pills */}
       {!lockedTopic && (
         <div className="mt-4">
-          <div className="flex flex-nowrap gap-2 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex flex-wrap gap-2">
             <button
               type="button"
               onClick={() => setMode("all")}
-              className={`shrink-0 whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold ring-1 ${
+              className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1 ${
                 effectiveMode === "all"
                   ? "bg-[#FFC400] text-black ring-[#FF9100]/40"
                   : "bg-white/10 text-white/70 ring-white/10 hover:bg-white/15"
@@ -751,7 +753,7 @@ export default function ProgressReport({
                 key={t}
                 type="button"
                 onClick={() => setMode(t)}
-                className={`shrink-0 whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold ring-1 ${
+                className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1 ${
                   effectiveMode === t
                     ? "bg-[#FFC400] text-black ring-[#FF9100]/40"
                     : "bg-white/10 text-white/70 ring-white/10 hover:bg-white/15"
