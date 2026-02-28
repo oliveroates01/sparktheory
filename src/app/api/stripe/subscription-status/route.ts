@@ -14,6 +14,12 @@ function normalizePlan(plan: unknown, isSubscribed: boolean): "plus" | "free" {
   return isSubscribed ? "plus" : "free";
 }
 
+function normalizeStatus(value: unknown, isSubscribed: boolean): string {
+  const raw = String(value || "").trim().toLowerCase();
+  if (raw) return raw;
+  return isSubscribed ? "active" : "none";
+}
+
 export async function POST(request: Request) {
   try {
     const services = getAdminServicesOrNull();
@@ -21,7 +27,7 @@ export async function POST(request: Request) {
       console.error("stripe.subscription-status.error", "Missing Firebase admin environment variables");
       return NextResponse.json(
         { error: "Missing Firebase admin environment variables" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -52,14 +58,22 @@ export async function POST(request: Request) {
 
     const isSubscribed = explicitIsSubscribed ?? fallbackHasPlusAccess;
     const plan = normalizePlan(data.plan, isSubscribed);
-    const subscriptionStatus = String(data.subscriptionStatus || (isSubscribed ? "active" : "none"));
+    const status = normalizeStatus(data.subscriptionStatus, isSubscribed);
+    const cancelAtPeriodEnd = Boolean(data.cancelAtPeriodEnd);
+    const currentPeriodEnd =
+      typeof data.currentPeriodEnd === "number" && Number.isFinite(data.currentPeriodEnd)
+        ? data.currentPeriodEnd
+        : null;
 
     return NextResponse.json({
       isSubscribed,
       plan,
+      status,
+      cancelAtPeriodEnd,
+      currentPeriodEnd,
       hasSubscription: isSubscribed,
       hasPlusAccess: isSubscribed,
-      subscriptionStatus,
+      subscriptionStatus: status,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to fetch subscription status";

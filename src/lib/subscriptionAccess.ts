@@ -12,6 +12,8 @@ type UpsertSubscriptionInput = ResolveUserRefInput & {
   isSubscribed: boolean;
   plan?: string;
   subscriptionStatus?: string;
+  cancelAtPeriodEnd?: boolean;
+  currentPeriodEnd?: number | null;
 };
 
 function toNonEmptyString(value: unknown): string {
@@ -93,6 +95,16 @@ export async function upsertUserSubscription(input: UpsertSubscriptionInput) {
     subscriptionStatus: subscriptionStatus || (isSubscribed ? "active" : "canceled"),
     updatedAt: FieldValue.serverTimestamp(),
   };
+
+  if (typeof input.cancelAtPeriodEnd === "boolean") {
+    updatePayload.cancelAtPeriodEnd = input.cancelAtPeriodEnd;
+  }
+
+  if (typeof input.currentPeriodEnd === "number") {
+    updatePayload.currentPeriodEnd = input.currentPeriodEnd;
+  } else if (input.currentPeriodEnd === null) {
+    updatePayload.currentPeriodEnd = null;
+  }
 
   if (stripeCustomerId) updatePayload.stripeCustomerId = stripeCustomerId;
   if (stripeSubscriptionId) updatePayload.stripeSubscriptionId = stripeSubscriptionId;

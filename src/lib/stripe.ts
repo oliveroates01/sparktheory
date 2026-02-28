@@ -142,13 +142,21 @@ export async function listSubscriptions(customerId: string) {
 
 export function pickCurrentSubscription(subscriptions: StripeSubscription[]) {
   return subscriptions.find((subscription) =>
-    ["active"].includes(subscription.status),
+    ["active", "trialing", "past_due"].includes(subscription.status),
   );
 }
 
-export async function cancelSubscriptionAtPeriodEnd(subscriptionId: string) {
+async function updateSubscriptionCancelAtPeriodEnd(subscriptionId: string, cancelAtPeriodEnd: boolean) {
   const params = new URLSearchParams();
-  params.set("cancel_at_period_end", "true");
+  params.set("cancel_at_period_end", cancelAtPeriodEnd ? "true" : "false");
 
   return stripePost<StripeSubscription>(`subscriptions/${subscriptionId}`, params);
+}
+
+export async function cancelSubscriptionAtPeriodEnd(subscriptionId: string) {
+  return updateSubscriptionCancelAtPeriodEnd(subscriptionId, true);
+}
+
+export async function resumeSubscriptionAtPeriodEnd(subscriptionId: string) {
+  return updateSubscriptionCancelAtPeriodEnd(subscriptionId, false);
 }

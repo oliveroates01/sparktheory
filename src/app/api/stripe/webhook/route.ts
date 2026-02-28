@@ -29,6 +29,14 @@ function getObjectId(value: unknown): string {
   return "";
 }
 
+function getOptionalNumber(value: unknown): number | null {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function getOptionalBoolean(value: unknown): boolean | null {
+  return typeof value === "boolean" ? value : null;
+}
+
 function parseSignatureHeader(signatureHeader: string) {
   const parts = signatureHeader.split(",").map((part) => part.trim());
   const timestamp = toNonEmptyString(parts.find((part) => part.startsWith("t="))?.slice(2));
@@ -120,6 +128,7 @@ export async function POST(request: Request) {
           isSubscribed: true,
           plan: "plus",
           subscriptionStatus: "active",
+          cancelAtPeriodEnd: false,
         });
 
         console.log("stripe.webhook", event.type, {
@@ -144,6 +153,8 @@ export async function POST(request: Request) {
         const email = toNonEmptyString(metadata.email);
         const stripeCustomerId = getObjectId(object.customer);
         const stripeSubscriptionId = getObjectId(object.id);
+        const cancelAtPeriodEnd = getOptionalBoolean(object.cancel_at_period_end);
+        const currentPeriodEnd = getOptionalNumber(object.current_period_end);
 
         const result = await upsertUserSubscription({
           uid: userId,
@@ -153,6 +164,8 @@ export async function POST(request: Request) {
           isSubscribed,
           plan: isSubscribed ? "plus" : "free",
           subscriptionStatus: status || (isSubscribed ? "active" : "canceled"),
+          cancelAtPeriodEnd: cancelAtPeriodEnd ?? undefined,
+          currentPeriodEnd,
         });
 
         console.log("stripe.webhook", event.type, {
@@ -162,6 +175,8 @@ export async function POST(request: Request) {
           stripeSubscriptionId,
           status,
           isSubscribed,
+          cancelAtPeriodEnd,
+          currentPeriodEnd,
           updated: result.updated,
           reason: "reason" in result ? result.reason : undefined,
         });

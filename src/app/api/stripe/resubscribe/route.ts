@@ -1,20 +1,20 @@
 import { NextResponse } from "next/server";
 import {
-  cancelSubscriptionAtPeriodEnd,
   findCustomerByEmail,
   listSubscriptions,
   pickCurrentSubscription,
+  resumeSubscriptionAtPeriodEnd,
 } from "@/lib/stripe";
 import { upsertUserSubscription } from "@/lib/subscriptionAccess";
 
-type CancelPayload = {
+type ResubscribePayload = {
   email?: string;
   uid?: string;
 };
 
 export async function POST(request: Request) {
   try {
-    const payload = (await request.json().catch(() => ({}))) as CancelPayload;
+    const payload = (await request.json().catch(() => ({}))) as ResubscribePayload;
 
     if (!payload.email) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
@@ -34,8 +34,8 @@ export async function POST(request: Request) {
     }
 
     const updated = current.cancel_at_period_end
-      ? current
-      : await cancelSubscriptionAtPeriodEnd(current.id);
+      ? await resumeSubscriptionAtPeriodEnd(current.id)
+      : current;
 
     await upsertUserSubscription({
       uid: payload.uid,
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
       currentPeriodEnd: updated.current_period_end ?? null,
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Cancellation failed";
+    const message = error instanceof Error ? error.message : "Resubscribe failed";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

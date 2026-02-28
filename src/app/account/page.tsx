@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged, signOut, type User } from "firebase/auth";
@@ -19,7 +19,7 @@ type AccountData = {
   memberSince: string;
 };
 
-type StripeEndpoint = "checkout" | "portal" | "cancel";
+type StripeEndpoint = "checkout" | "portal" | "cancel" | "resubscribe";
 
 type SubscriptionState = {
   hasSubscription: boolean;
@@ -179,96 +179,85 @@ export default function AccountPage() {
     return () => unsub();
   }, []);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    async function loadSubscription() {
-      if (!user?.email) {
-        setSubscription((prev) => {
-          if (
-            !prev.hasSubscription &&
-            !prev.cancelAtPeriodEnd &&
-            prev.status === "none" &&
-            prev.currentPeriodEnd === null
-          ) {
-            return prev;
-          }
-          return {
-            hasSubscription: false,
-            cancelAtPeriodEnd: false,
-            status: "none",
-            currentPeriodEnd: null,
-          };
-        });
-        return;
-      }
-
-      try {
-        const token = await user.getIdToken();
-        const response = await fetch("/api/stripe/subscription-status", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ email: user.email, uid: user.uid }),
-        });
-
-        const result = (await response.json().catch(() => ({}))) as {
-          error?: string;
-          isSubscribed?: boolean;
-          hasSubscription?: boolean;
-          cancelAtPeriodEnd?: boolean;
-          status?: string;
-          subscriptionStatus?: string;
-          hasPlusAccess?: boolean;
-          currentPeriodEnd?: number | null;
+  const fetchSubscriptionStatus = useCallback(async () => {
+    if (!user?.email) {
+      setSubscription((prev) => {
+        if (
+          !prev.hasSubscription &&
+          !prev.cancelAtPeriodEnd &&
+          prev.status === "none" &&
+          prev.currentPeriodEnd === null
+        ) {
+          return prev;
+        }
+        return {
+          hasSubscription: false,
+          cancelAtPeriodEnd: false,
+          status: "none",
+          currentPeriodEnd: null,
         };
-
-        if (!response.ok) {
-          throw new Error(result.error || "Failed to load subscription status");
-        }
-
-        if (!cancelled) {
-          const hasSubscription = Boolean(
-            result.isSubscribed ?? result.hasPlusAccess ?? result.hasSubscription
-          );
-          const nextStatus = result.subscriptionStatus || result.status || "none";
-          const nextSubscription = {
-            hasSubscription,
-            cancelAtPeriodEnd: Boolean(result.cancelAtPeriodEnd),
-            status: nextStatus,
-            currentPeriodEnd:
-              typeof result.currentPeriodEnd === "number" ? result.currentPeriodEnd : null,
-          };
-
-          setSubscription((prev) => {
-            if (
-              prev.hasSubscription === nextSubscription.hasSubscription &&
-              prev.cancelAtPeriodEnd === nextSubscription.cancelAtPeriodEnd &&
-              prev.status === nextSubscription.status &&
-              prev.currentPeriodEnd === nextSubscription.currentPeriodEnd
-            ) {
-              return prev;
-            }
-            return nextSubscription;
-          });
-
-        }
-      } catch (error) {
-        if (!cancelled) {
-          const message = error instanceof Error ? error.message : "Failed to load subscription status";
-          setBillingError(message);
-        }
-      }
+      });
+      return;
     }
 
-    void loadSubscription();
+    try {
+      const token = await user.getIdToken();
+      const response = await fetch("/api/stripe/subscription-status", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ email: user.email, uid: user.uid }),
+      });
 
-    return () => {
-      cancelled = true;
-    };
+      const result = (await response.json().catch(() => ({}))) as {
+        error?: string;
+        isSubscribed?: boolean;
+        hasSubscription?: boolean;
+        cancelAtPeriodEnd?: boolean;
+        status?: string;
+        subscriptionStatus?: string;
+        hasPlusAccess?: boolean;
+        currentPeriodEnd?: number | null;
+      };
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to load subscription status");
+      }
+
+      const hasSubscription = Boolean(
+        result.isSubscribed ?? result.hasPlusAccess ?? result.hasSubscription
+      );
+      const nextStatus = (result.status || result.subscriptionStatus || "none").toLowerCase();
+      const nextSubscription = {
+        hasSubscription,
+        cancelAtPeriodEnd: Boolean(result.cancelAtPeriodEnd),
+        status: nextStatus,
+        currentPeriodEnd:
+          typeof result.currentPeriodEnd === "number" ? result.currentPeriodEnd : null,
+      };
+
+      setSubscription((prev) => {
+        if (
+          prev.hasSubscription === nextSubscription.hasSubscription &&
+          prev.cancelAtPeriodEnd === nextSubscription.cancelAtPeriodEnd &&
+          prev.status === nextSubscription.status &&
+          prev.currentPeriodEnd === nextSubscription.currentPeriodEnd
+        ) {
+          return prev;
+        }
+        return nextSubscription;
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to load subscription status";
+      setBillingError(message);
+    }
   }, [user]);
+
+  useEffect(() => {
+    void fetchSubscriptionStatus();
+  }, [fetchSubscriptionStatus]);
 
   const data: AccountData = useMemo(() => {
     const email = user?.email || "";
@@ -311,7 +300,7 @@ export default function AccountPage() {
     };
   }, [subscription, user]);
 
-  async function redirectToStripe(endpoint: Exclude<StripeEndpoint, "cancel">) {
+  async function redirectToStripe(endpoint: Exclude<StripeEndpoint, "cancel" | "resubscribe">) {
     if (!user?.email) {
       setBillingError("Please sign in before using billing.");
       return;
@@ -371,7 +360,7 @@ export default function AccountPage() {
       const response = await fetch("/api/stripe/cancel", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user.email }),
+        body: JSON.stringify({ email: user.email, uid: user.uid }),
       });
 
       const result = (await response.json().catch(() => ({}))) as {
@@ -384,25 +373,54 @@ export default function AccountPage() {
         throw new Error(result.error || "Unable to cancel subscription");
       }
 
+      await fetchSubscriptionStatus();
+
       const periodEnd =
         typeof result.currentPeriodEnd === "number" ? result.currentPeriodEnd : subscription.currentPeriodEnd;
-
-      setSubscription((prev) => ({
-        ...prev,
-        hasSubscription: true,
-        status: "active",
-        cancelAtPeriodEnd: Boolean(result.cancelAtPeriodEnd),
-        currentPeriodEnd: typeof result.currentPeriodEnd === "number" ? result.currentPeriodEnd : prev.currentPeriodEnd,
-      }));
-
       const periodEndText = formatPeriodEnd(periodEnd);
       setBillingNotice(
         periodEndText
-          ? `Subscription cancelled. You will keep access until ${periodEndText}.`
-          : "Subscription cancelled. You will keep access until the end of your current billing period.",
+          ? `Subscription will cancel on ${periodEndText}.`
+          : "Subscription will cancel at the end of your current billing period.",
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : "Cancellation request failed";
+      setBillingError(message);
+    } finally {
+      setBillingLoading(null);
+    }
+  }
+
+
+  async function resubscribe() {
+    if (!user?.email) {
+      setBillingError("Please sign in before resubscribing.");
+      return;
+    }
+
+    setBillingError("");
+    setBillingNotice("");
+    setBillingLoading("resubscribe");
+
+    try {
+      const response = await fetch("/api/stripe/resubscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: user.email, uid: user.uid }),
+      });
+
+      const result = (await response.json().catch(() => ({}))) as {
+        error?: string;
+      };
+
+      if (!response.ok) {
+        throw new Error(result.error || "Unable to resubscribe");
+      }
+
+      await fetchSubscriptionStatus();
+      setBillingNotice("Subscription renewed. Auto-renew is active.");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Resubscribe request failed";
       setBillingError(message);
     } finally {
       setBillingLoading(null);
@@ -550,7 +568,7 @@ export default function AccountPage() {
                   {billingLoading === "portal" ? "Opening..." : "Manage billing"}
                 </button>
 
-                {subscription.hasSubscription && !subscription.cancelAtPeriodEnd ? (
+                {subscription.status === "active" && !subscription.cancelAtPeriodEnd ? (
                   <button
                     type="button"
                     disabled={!user || billingLoading !== null}
@@ -558,6 +576,17 @@ export default function AccountPage() {
                     onClick={() => void cancelSubscription()}
                   >
                     {billingLoading === "cancel" ? "Cancelling..." : "Cancel subscription"}
+                  </button>
+                ) : null}
+
+                {subscription.cancelAtPeriodEnd ? (
+                  <button
+                    type="button"
+                    disabled={!user || billingLoading !== null}
+                    className="rounded-xl border border-emerald-300/40 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-100 hover:bg-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+                    onClick={() => void resubscribe()}
+                  >
+                    {billingLoading === "resubscribe" ? "Resubscribing..." : "Resubscribe"}
                   </button>
                 ) : null}
               </div>
