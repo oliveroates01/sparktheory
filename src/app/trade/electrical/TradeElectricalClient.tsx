@@ -246,6 +246,7 @@ export default function ElectricalPage() {
         const token = await user.getIdToken();
         const response = await fetch("/api/stripe/subscription-status", {
           method: "POST",
+          cache: "no-store",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,

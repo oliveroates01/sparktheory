@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { getAdminServicesOrNull } from "@/lib/firebaseAdmin";
 import { normalizeManualOverride, resolvePlusAccess } from "@/lib/entitlements";
 
+export const dynamic = "force-dynamic";
+
 function getBearerToken(request: Request): string {
   const authHeader = request.headers.get("authorization") || "";
   if (!authHeader.toLowerCase().startsWith("bearer ")) return "";

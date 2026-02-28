@@ -18,13 +18,16 @@ export const metadata: Metadata = {
   description: "Quiz website",
 };
 
+const buildSha = process.env.NEXT_PUBLIC_GIT_SHA || process.env.VERCEL_GIT_COMMIT_SHA || "dev";
+const buildTime = process.env.NEXT_PUBLIC_BUILD_TIME || "unknown";
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" data-build-sha={buildSha} data-build-time={buildTime}>
       <head>
         <Script
           id="ms-clarity"
@@ -37,6 +40,13 @@ export default function RootLayout({
                   y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
               })(window, document, "clarity", "script", "vo6b8Oy5yf");
             `,
+          }}
+        />
+        <Script
+          id="build-label"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `console.info("[build] sha=${buildSha} time=${buildTime}");`,
           }}
         />
       </head>

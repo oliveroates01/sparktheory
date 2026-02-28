@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import TopicClient from "./TopicClient";
 
+export const dynamic = "force-dynamic";
+
 type TopicPageProps = {
   params: { topic?: string };
   searchParams?: Record<string, string | string[] | undefined>;

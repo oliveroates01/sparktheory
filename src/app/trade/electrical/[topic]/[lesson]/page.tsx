@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import LessonClient from "./LessonClient";
 
+export const dynamic = "force-dynamic";
+
 type LessonPageProps = {
   params: { topic?: string; lesson?: string };
   searchParams?: Record<string, string | string[] | undefined>;
