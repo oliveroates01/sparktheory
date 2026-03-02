@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ProgressReport, { type StoredResult } from "@/components/ProgressReport";
 import SparkTheoryLogo from "@/components/Brand/SparkTheoryLogo";
@@ -42,7 +42,11 @@ const LOCKED_LEVEL3_TOPICS = new Set([
 const STORAGE_KEY_LEVEL2 = "qm_results_v1";
 const STORAGE_KEY_LEVEL3 = "qm_results_v1_level3";
 const SCROLL_RESTORE_KEY = "qm_scroll_trade_electrical";
+const ELECTRICAL_SCROLL_Y_KEY = "electrical_scroll_y";
+const ELECTRICAL_LEVEL_KEY = "electrical_level";
+const INTRO_PLAYED_KEY = "electrical_intro_played";
 const PLUS_ACCESS_CACHE_PREFIX = "qm_plus_access_";
+const LEVEL_SWITCH_FADE_MS = 180;
 const QUESTION_ID_MIGRATION_MAP: Record<string, string> = {
   "hs-051": "hs-071",
   "hs-052": "hs-072",
@@ -212,8 +216,10 @@ const CATEGORIES: Category[] = ELECTRICAL_LEVEL2_CATEGORIES;
 const LEVEL3_CATEGORIES: Category[] = ELECTRICAL_LEVEL3_CATEGORIES;
 
 export default function ElectricalPage() {
-  const [level, setLevel] = useState<"2" | "3">("2");
   const searchParams = useSearchParams();
+  const initialLevel = searchParams.get("level") === "3" ? "3" : "2";
+  const [level, setLevel] = useState<"2" | "3">(initialLevel);
+  const [displayLevel, setDisplayLevel] = useState<"2" | "3">(initialLevel);
   const router = useRouter();
   const pathname = usePathname();
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -228,6 +234,7 @@ export default function ElectricalPage() {
   const [selectedQuizSize, setSelectedQuizSize] = useState<number | null>(null);
   const [progressOpen, setProgressOpen] = useState(false);
   const [isSwitchingLevel, setIsSwitchingLevel] = useState(false);
+  const [introState, setIntroState] = useState<"pending" | "play" | "done">("pending");
   const [unseenCount, setUnseenCount] = useState<number | null>(null);
   const [totalCount, setTotalCount] = useState<number | null>(null);
 
@@ -322,24 +329,11 @@ export default function ElectricalPage() {
   }, []);
 
   useEffect(() => {
-    const initialLevel = (searchParams.get("level") || "").trim();
-    if (initialLevel === "2" || initialLevel === "3") {
-      setLevel((prev) =>
-        prev === initialLevel ? prev : (initialLevel as "2" | "3")
-      );
-    }
-  }, [searchParams]);
-
-  useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
-    if (level === "3") {
-      params.set("level", "3");
-    } else {
-      params.delete("level");
-    }
+    params.set("level", level);
     const qs = params.toString();
     const next = qs ? `${pathname}?${qs}` : pathname;
-    router.replace(next);
+    router.replace(next, { scroll: false });
   }, [level, pathname, router, searchParams]);
 
   useEffect(() => {
@@ -377,7 +371,26 @@ export default function ElectricalPage() {
   }, [searchParams]);
 
   useEffect(() => {
+    if (displayLevel === level) return;
+    setIsSwitchingLevel(true);
+    const t = window.setTimeout(() => {
+      setDisplayLevel(level);
+      setIsSwitchingLevel(false);
+    }, LEVEL_SWITCH_FADE_MS);
+    return () => window.clearTimeout(t);
+  }, [displayLevel, level]);
+
+  useEffect(() => {
     if (typeof window === "undefined") return;
+    const savedFromProgress = sessionStorage.getItem(ELECTRICAL_SCROLL_Y_KEY);
+    if (savedFromProgress) {
+      const y = Number(savedFromProgress);
+      if (Number.isFinite(y)) {
+        requestAnimationFrame(() => window.scrollTo({ top: y, behavior: "auto" }));
+      }
+      sessionStorage.removeItem(ELECTRICAL_SCROLL_Y_KEY);
+      return;
+    }
     const saved = sessionStorage.getItem(SCROLL_RESTORE_KEY);
     if (!saved) return;
     const y = Number(saved);
@@ -396,8 +409,8 @@ export default function ElectricalPage() {
   }, [results]);
 
   const visibleCategories = useMemo(
-    () => (level === "3" ? LEVEL3_CATEGORIES : CATEGORIES),
-    [level]
+    () => (displayLevel === "3" ? LEVEL3_CATEGORIES : CATEGORIES),
+    [displayLevel]
   );
   const displayCategories = useMemo<(Category | null)[]>(() => {
     const targetCount = Math.max(CATEGORIES.length, LEVEL3_CATEGORIES.length);
@@ -413,11 +426,18 @@ export default function ElectricalPage() {
     [visibleCategories]
   );
 
-  useEffect(() => {
-    setIsSwitchingLevel(true);
-    const t = setTimeout(() => setIsSwitchingLevel(false), 200);
-    return () => clearTimeout(t);
-  }, [level]);
+  useLayoutEffect(() => {
+    if (typeof window === "undefined") return;
+    const introPlayed = sessionStorage.getItem(INTRO_PLAYED_KEY) === "1";
+    if (introPlayed) {
+      setIntroState("done");
+      return;
+    }
+    setIntroState("play");
+    sessionStorage.setItem(INTRO_PLAYED_KEY, "1");
+    const t = window.setTimeout(() => setIntroState("done"), 420);
+    return () => window.clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     if (!pickerOpen || !pickedHref) {
@@ -508,6 +528,11 @@ export default function ElectricalPage() {
     setResults([]); // immediately updates UI
   };
 
+  const handleLevelChange = (nextLevel: "2" | "3") => {
+    if (nextLevel === level) return;
+    setLevel(nextLevel);
+  };
+
   return (
     <main className="min-h-screen bg-[#1F1F1F] text-white page-transition">
       {/* Background glow */}
@@ -543,56 +568,55 @@ export default function ElectricalPage() {
           <div className="mx-auto grid w-full max-w-2xl grid-cols-1 gap-2 sm:grid-cols-2">
             <button
               type="button"
-              onClick={() => setLevel("2")}
+              onClick={() => handleLevelChange("2")}
               className={`rounded-md px-3 py-2 text-left ring-1 transition ${
                 level === "2"
                   ? "bg-white/10 ring-[#FFC400]/50 shadow-[0_0_0_1px_rgba(255,196,0,0.28),0_10px_24px_rgba(255,145,0,0.18)]"
                   : "bg-white/5 ring-white/10 hover:bg-white/10 hover:ring-[#FFC400]/40"
               }`}
             >
-              <div className="text-[9px] text-white/60">Level 2</div>
               <div className="mt-0.5 text-[13px] font-semibold text-white">
                 Level 2 Electrical
-              </div>
-              <div className="mt-0.5 text-[9px] text-white/60">
-                Core foundations and safety principles.
               </div>
             </button>
 
             <button
               type="button"
-              onClick={() => setLevel("3")}
+              onClick={() => handleLevelChange("3")}
               className={`rounded-md px-3 py-2 text-left ring-1 transition ${
                 level === "3"
                   ? "bg-white/10 ring-[#FFC400]/50 shadow-[0_0_0_1px_rgba(255,196,0,0.28),0_10px_24px_rgba(255,145,0,0.18)]"
                   : "bg-white/5 ring-white/10 hover:bg-white/10 hover:ring-[#FFC400]/40"
               }`}
             >
-              <div className="text-[9px] text-white/60">Level 3</div>
               <div className="mt-0.5 text-[13px] font-semibold text-white">
                 Level 3 Electrical
-              </div>
-              <div className="mt-0.5 text-[9px] text-white/60">
-                Advanced concepts and exam readiness.
               </div>
             </button>
           </div>
           <div className="mx-auto mt-3 w-full max-w-2xl">
-            <button
-              type="button"
-              onClick={openProgress}
+            <Link
+              href={`/trade/electrical/progress?level=${level}`}
+              onClick={(e) => {
+                e.preventDefault();
+                if (typeof window !== "undefined") {
+                  sessionStorage.setItem(ELECTRICAL_SCROLL_Y_KEY, String(window.scrollY));
+                  sessionStorage.setItem(ELECTRICAL_LEVEL_KEY, level);
+                }
+                router.push(`/trade/electrical/progress?level=${level}`, { scroll: false });
+              }}
               className="block w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-center text-xs font-semibold text-white/80 transition hover:bg-white/10"
             >
               Show progress
-            </button>
+            </Link>
           </div>
         </section>
 
         {/* Cards */}
-        <section className="mt-8 mx-auto max-w-6xl">
+        <section className="mt-8 mx-auto max-w-6xl min-h-[560px] sm:min-h-[720px]">
           <div
-            className={`grid grid-cols-1 items-stretch gap-6 transition-all duration-200 md:grid-cols-2 xl:grid-cols-3 ${
-              isSwitchingLevel ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
+            className={`grid grid-cols-1 items-stretch gap-6 transition-opacity duration-200 ease-out md:grid-cols-2 xl:grid-cols-3 ${
+              isSwitchingLevel ? "pointer-events-none opacity-0" : "opacity-100"
             }`}
           >
             {displayCategories.map((c, index) => {
@@ -609,7 +633,7 @@ export default function ElectricalPage() {
                 displayCategories.length % 3 === 1 &&
                 index === displayCategories.length - 1;
               const topic = getTopicFromHref(c.href);
-              const requiresPlus = requiresPlusTopic(level, topic);
+              const requiresPlus = requiresPlusTopic(displayLevel, topic);
               const accessState = getTopicAccessState(
                 requiresPlus,
                 authReady,
@@ -619,12 +643,20 @@ export default function ElectricalPage() {
               );
               const isLocked = accessState === "locked";
               const isCheckingAccess = accessState === "loading";
+              const shouldRunIntro = introState === "play";
+              const cardVisibilityClass =
+                introState === "pending" || introState === "play"
+                  ? "opacity-0 translate-y-2"
+                  : "opacity-100 translate-y-0";
               return (
               <div
                 key={c.id}
-                className={`flex h-full flex-col rounded-2xl bg-white/5 p-6 ring-1 ring-white/10 transition hover:bg-white/10 hover:ring-white/15 ${
+                className={`flex h-full flex-col rounded-2xl bg-white/5 p-6 ring-1 ring-white/10 transition-[opacity,transform,background-color,box-shadow,ring-color] duration-200 hover:bg-white/10 hover:ring-white/15 ${cardVisibilityClass} ${
+                  shouldRunIntro ? "electrical-card-intro" : ""
+                } ${
                   shouldSpanFull ? "xl:col-span-3" : ""
                 }`}
+                style={shouldRunIntro ? { animationDelay: `${index * 45}ms` } : undefined}
               >
                 <div className="flex items-start justify-between gap-4">
                   <h3 className="text-lg font-bold leading-snug">{c.title}</h3>

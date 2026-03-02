@@ -21,6 +21,10 @@ type Props = {
   results: StoredResult[];
   topics: string[];
   lockedTopic?: string;
+  headerStats?: {
+    quizzesTaken: number;
+    bestScore: number;
+  };
 
   /**
    * If provided, a reset icon appears top-right.
@@ -35,8 +39,8 @@ const MAX_POINTS = 50;
 const CHART_H = 260;
 const VISIBLE_POINTS = 6;
 
-const STICKY_AXIS_W_DESKTOP = 56;
-const STICKY_AXIS_W_MOBILE = 8;
+const Y_AXIS_COL_W_DESKTOP = 56;
+const Y_AXIS_COL_W_MOBILE = 40;
 const SCROLL_TO_END_DELAY_MS = 450;
 const SCROLL_ANIM_MS = 900;
 
@@ -58,7 +62,7 @@ function clampScore(n: unknown): number {
   return Math.max(0, Math.min(100, v));
 }
 
-function topicLabel(topic?: string) {
+function formatTopicLabel(topic?: string) {
   const t = (topic || "").toLowerCase();
   if (!t) return "";
   if (t === "health-safety") return "Health & Safety";
@@ -68,13 +72,13 @@ function topicLabel(topic?: string) {
   if (t === "communication-within-building-services-engineering") return "Comms";
   if (t === "electrical-technology") return "Electrical Tech";
   if (t === "inspection-testing-commissioning") return "Inspection & Testing";
-  if (t === "all-level-2") return "All Level 2";
-  if (t === "all-level-3") return "All Level 3";
+  if (t === "all-level-2") return "Level 2 Mixed";
+  if (t === "all-level-3") return "Level 3 Mixed";
   return t.replace(/-/g, " ");
 }
 
 function toLabel(r: StoredResult, idx: number) {
-  const byTopic = topicLabel(r.topic);
+  const byTopic = formatTopicLabel(r.topic);
   if (byTopic) return byTopic;
   const raw = (r.label || "").trim();
   return raw ? raw : `T${idx + 1}`;
@@ -154,26 +158,26 @@ function StampTooltip({ active, payload }: StampTooltipProps) {
   return (
     <div
       className="
-        rounded-full bg-white/95 px-4 py-2
-        text-[13px] text-slate-700
+        rounded-2xl sm:rounded-full bg-white/95 px-2.5 py-1 sm:px-4 sm:py-2
+        text-[11px] sm:text-[13px] text-slate-700
         shadow-xl ring-1 ring-black/10
         backdrop-blur
       "
     >
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
         <div className="flex items-center gap-2">
           <span className="text-slate-500">Answers:</span>
           <span className="font-semibold">{answers}</span>
         </div>
 
-        <div className="h-4 w-px bg-slate-200/80" />
+        <div className="h-3 sm:h-4 w-px bg-slate-200/80" />
 
         <div className="flex items-center gap-2">
           <span className="text-slate-500">Time:</span>
           <span className="font-semibold">{timeTaken}</span>
         </div>
 
-        <div className="h-4 w-px bg-slate-200/80" />
+        <div className="h-3 sm:h-4 w-px bg-slate-200/80" />
 
         <div className="flex items-center gap-2">
           <span className="text-slate-500">Date:</span>
@@ -227,6 +231,7 @@ export default function ProgressReport({
   results,
   topics,
   lockedTopic,
+  headerStats,
   onResetProgress,
 }: Props) {
   const pathname = usePathname();
@@ -355,12 +360,12 @@ export default function ProgressReport({
   const attemptsShown = filteredOldestToNewest.length;
   const noData = lineChartData.length === 0;
   const modeDisplayLabel =
-    effectiveMode === "all" ? "All topics" : topicLabel(effectiveMode);
+    effectiveMode === "all" ? "All topics" : formatTopicLabel(effectiveMode);
   const chartHeight =
     plotViewportW < 640
-      ? Math.max(140, Math.floor(plotViewportW / 2.1))
+      ? Math.max(200, Math.floor(plotViewportW / 1.55))
       : CHART_H;
-  const stickyAxisW = plotViewportW < 640 ? STICKY_AXIS_W_MOBILE : STICKY_AXIS_W_DESKTOP;
+  const yAxisColW = plotViewportW < 640 ? Y_AXIS_COL_W_MOBILE : Y_AXIS_COL_W_DESKTOP;
 
   const svgWidth =
     lineChartData.length > SCROLL_POINT_THRESHOLD
@@ -475,10 +480,28 @@ export default function ProgressReport({
         <div>
           <h2 className="text-xl font-bold">Progress reports</h2>
 
-          <p className="mt-2 sm:mt-1 text-sm text-white/60">
-            Test average –{" "}
-            <span className="text-white font-semibold">{testAverage}%</span>
-          </p>
+          <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
+            <p className="text-sm text-white/60">
+              Test average{" "}
+              <span className="text-base font-semibold text-white">{testAverage}%</span>
+            </p>
+            {headerStats && (
+              <>
+                <p className="text-sm text-white/60">
+                  Best score{" "}
+                  <span className="text-base font-semibold text-white">
+                    {headerStats.bestScore}%
+                  </span>
+                </p>
+                <p className="text-sm text-white/60">
+                  Quizzes taken{" "}
+                  <span className="text-base font-semibold text-white">
+                    {headerStats.quizzesTaken}
+                  </span>
+                </p>
+              </>
+            )}
+          </div>
 
           <div className="mt-2 sm:mt-1 flex flex-wrap items-center gap-2 text-xs text-white/40">
             <span>
@@ -547,7 +570,7 @@ export default function ProgressReport({
       </div>
 
       {/* Chart */}
-      <div className="mt-4 flex flex-col min-h-0">
+      <div className="mt-5 sm:mt-4 flex flex-col min-h-0">
         {noData ? (
           <div className="grid h-[220px] sm:h-[260px] place-items-center rounded-2xl bg-white/5 ring-1 ring-white/10">
             <div className="text-center">
@@ -558,53 +581,42 @@ export default function ProgressReport({
             </div>
           </div>
         ) : (
-          <div className="relative">
-            {/* Sticky Y-axis overlay */}
-            <div
-              className="pointer-events-none absolute left-0 top-0 z-20 h-full"
-              style={{ width: stickyAxisW, background: "transparent" }}
-            >
-              <div className="relative h-full">
-                {Y_TICKS.slice()
-                  .reverse()
-                  .map((v) => {
-                    const top = MARGIN.top;
-                    const bottom = MARGIN.bottom + X_AXIS_H;
-                    const usable = chartHeight - top - bottom;
-                    const y = top + ((100 - v) / 100) * usable;
-
-                    return (
-                      <div
-                        key={v}
-                        className="absolute left-0 w-full text-right text-[12px]"
-                        style={{
-                          top: y - 8,
-                          paddingRight: 10,
-                          color: "#94a3b8",
-                          textShadow: "0 1px 2px rgba(0,0,0,0.65)",
-                        }}
-                      >
-                        {v}
-                      </div>
-                    );
-                  })}
-              </div>
+          <div
+            className="relative grid items-stretch overflow-hidden rounded-2xl"
+            style={{ gridTemplateColumns: `${yAxisColW}px minmax(0, 1fr)` }}
+          >
+            <div className="pointer-events-none relative overflow-hidden" style={{ height: chartHeight }}>
+              {Y_TICKS.slice()
+                .reverse()
+                .map((v, i) => {
+                  const y = horizontalPoints[Y_TICKS.length - 1 - i] ?? 0;
+                  return (
+                    <div
+                      key={v}
+                      className="absolute left-0 w-full text-right text-[12px]"
+                      style={{
+                        top: y - 8,
+                        paddingRight: 10,
+                        color: "#94a3b8",
+                        textShadow: "0 1px 2px rgba(0,0,0,0.65)",
+                      }}
+                    >
+                      {v}
+                    </div>
+                  );
+                })}
             </div>
 
             {/* viewport */}
-            <div
-              ref={viewportRef}
-              className="w-full overflow-hidden rounded-2xl"
-              style={{ paddingLeft: stickyAxisW }}
-            >
+            <div ref={viewportRef} className="w-full overflow-hidden rounded-2xl">
               {/* scroll area */}
               <div
                 ref={scrollRef}
                 className="w-full overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                 style={{ WebkitOverflowScrolling: "touch" }}
               >
-                <div className="w-full shrink-0 overflow-hidden sm:hidden">
-                  <ResponsiveContainer width="100%" aspect={2.1}>
+                <div className="w-full shrink-0 overflow-hidden sm:hidden" style={{ height: chartHeight }}>
+                  <ResponsiveContainer width="100%" height="100%">
                     <LineChart
                       data={lineChartData}
                       margin={MARGIN}
@@ -734,7 +746,7 @@ export default function ProgressReport({
 
       {/* Topic pills */}
       {!lockedTopic && (
-        <div className="mt-4">
+        <div className="mt-6">
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
@@ -759,7 +771,7 @@ export default function ProgressReport({
                     : "bg-white/10 text-white/70 ring-white/10 hover:bg-white/15"
                 }`}
               >
-                {t}
+                {formatTopicLabel(t)}
               </button>
             ))}
           </div>
