@@ -10,6 +10,7 @@ import {
   ELECTRICAL_LEVEL3_CATEGORIES,
 } from "@/data/electricalTopicCategories";
 import { auth } from "@/lib/firebase";
+import { getPassProbability } from "@/lib/progress/attempts";
 
 function storageKeyForLevel(level: "2" | "3") {
   return level === "3" ? "qm_results_v1_level3" : "qm_results_v1";
@@ -44,6 +45,7 @@ export default function ElectricalProgressClient() {
   const router = useRouter();
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [results, setResults] = useState<StoredResult[]>([]);
+  const [passProbability, setPassProbability] = useState<number | null>(null);
 
   const level = searchParams.get("level") === "3" ? "3" : "2";
   const storageKey = useMemo(
@@ -85,6 +87,16 @@ export default function ElectricalProgressClient() {
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [storageKey]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const stats = getPassProbability({
+      trade: "electrical",
+      level,
+      userId: currentUserId,
+    });
+    setPassProbability(stats?.probability ?? 0);
+  }, [level, currentUserId, results.length]);
 
   const resetProgress = () => {
     try {
@@ -174,7 +186,11 @@ export default function ElectricalProgressClient() {
               key={`${level}-progress-page`}
               results={resultsOldestToNewest}
               topics={topics}
-              headerStats={{ quizzesTaken, bestScore }}
+              headerStats={{
+                quizzesTaken,
+                bestScore,
+                passProbability: passProbability ?? 0,
+              }}
               onResetProgress={resetProgress}
             />
           </div>

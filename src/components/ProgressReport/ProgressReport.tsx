@@ -24,6 +24,7 @@ type Props = {
   headerStats?: {
     quizzesTaken: number;
     bestScore: number;
+    passProbability?: number;
   };
 
   /**
@@ -487,6 +488,14 @@ export default function ProgressReport({
             </p>
             {headerStats && (
               <>
+                {typeof headerStats.passProbability === "number" && (
+                  <p className="text-sm text-white/60">
+                    Pass probability{" "}
+                    <span className="text-base font-semibold text-white">
+                      {headerStats.passProbability}%
+                    </span>
+                  </p>
+                )}
                 <p className="text-sm text-white/60">
                   Best score{" "}
                   <span className="text-base font-semibold text-white">
@@ -496,7 +505,7 @@ export default function ProgressReport({
                 <p className="text-sm text-white/60">
                   Quizzes taken{" "}
                   <span className="text-base font-semibold text-white">
-                    {headerStats.quizzesTaken}
+                    {attemptsShown}
                   </span>
                 </p>
               </>

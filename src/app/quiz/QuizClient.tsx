@@ -8,8 +8,16 @@ import { addDoc, collection, doc, getDoc, serverTimestamp } from "firebase/fires
 import { auth } from "@/lib/firebase";
 import { db } from "@/lib/firebase";
 import { normalizeManualOverride, resolvePlusAccess } from "@/lib/entitlements";
+import {
+  appendAttempt,
+  createAttemptId,
+  getAttemptsKey,
+  getWeakTopics,
+  loadAttempts,
+} from "@/lib/progress/attempts";
+import { recordMissedQuestions } from "@/lib/progress/missed";
 
-import ProgressReport, { type StoredResult } from "@/components/ProgressReport";
+import { type StoredResult } from "@/components/ProgressReport";
 
 import { healthSafetyQuestions } from "@/data/healthSafety";
 import { principlesElectricalScienceQuestions } from "@/data/principlesElectricalScience";
@@ -19,6 +27,10 @@ import { installationWiringQuestions } from "@/data/installationWiring";
 import { communicationWithinBSEQuestions } from "@/data/communicationWithinBSE";
 import { electricalTechnologyLevel3Questions } from "@/data/electricalTechnologyLevel3";
 import { inspectionTestingCommissioningLevel3Questions } from "@/data/inspectionTestingCommissioningLevel3";
+import {
+  ELECTRICAL_LEVEL2_CATEGORIES,
+  ELECTRICAL_LEVEL3_CATEGORIES,
+} from "@/data/electricalTopicCategories";
 
 type Question = {
   id: string;
@@ -33,6 +45,12 @@ type Question = {
 type ProblemStat = {
   wrong: number;
   total: number;
+  lastPickedOptionIndex?: number;
+  questionText?: string;
+  selectedOptionId?: string;
+  selectedOptionText?: string;
+  correctOptionId?: string;
+  missedCount?: number;
 };
 
 type ProblemStats = Record<string, ProblemStat>;
@@ -40,10 +58,12 @@ type QuestionTopicMeta = {
   slug: string;
   title: string;
 };
+type FlashcardTopicOption = { key: string; label: string; level: "2" | "3" };
 
 const STORAGE_KEY_LEVEL2 = "qm_results_v1";
 const STORAGE_KEY_LEVEL3 = "qm_results_v1_level3";
 const DEFAULT_QUIZ_SIZE = 4;
+const WEAK_COUNT = 5;
 const PLUS_ACCESS_CACHE_PREFIX = "qm_plus_access_";
 const QUESTION_ID_MIGRATION_MAP: Record<string, string> = {
   "hs-051": "hs-071",
@@ -131,18 +151,40 @@ function loadProblemStats(key: string): ProblemStats {
   try {
     const raw = JSON.parse(localStorage.getItem(key) || "{}");
     if (!raw || typeof raw !== "object") return {};
-    const migrated: ProblemStats = {};
-    for (const [id, stat] of Object.entries(raw as Record<string, unknown>)) {
-      if (!stat || typeof stat !== "object") continue;
-      const typed = stat as Partial<ProblemStat>;
-      const nextId = canonicalQuestionId(id);
+      const migrated: ProblemStats = {};
+      for (const [id, stat] of Object.entries(raw as Record<string, unknown>)) {
+        if (!stat || typeof stat !== "object") continue;
+        const typed = stat as Partial<ProblemStat>;
+        const nextId = canonicalQuestionId(id);
       const existing = migrated[nextId] || { wrong: 0, total: 0 };
-      migrated[nextId] = {
-        wrong: existing.wrong + (Number.isFinite(typed.wrong) ? Number(typed.wrong) : 0),
-        total: existing.total + (Number.isFinite(typed.total) ? Number(typed.total) : 0),
-      };
-    }
-    return migrated;
+        migrated[nextId] = {
+          wrong: existing.wrong + (Number.isFinite(typed.wrong) ? Number(typed.wrong) : 0),
+          total: existing.total + (Number.isFinite(typed.total) ? Number(typed.total) : 0),
+          lastPickedOptionIndex: Number.isFinite(typed.lastPickedOptionIndex)
+            ? Number(typed.lastPickedOptionIndex)
+            : existing.lastPickedOptionIndex,
+          questionText:
+            typeof typed.questionText === "string" && typed.questionText.trim()
+              ? typed.questionText
+              : existing.questionText,
+          selectedOptionId:
+            typeof typed.selectedOptionId === "string" && typed.selectedOptionId.trim()
+              ? typed.selectedOptionId
+              : existing.selectedOptionId,
+          selectedOptionText:
+            typeof typed.selectedOptionText === "string" && typed.selectedOptionText.trim()
+              ? typed.selectedOptionText
+              : existing.selectedOptionText,
+          correctOptionId:
+            typeof typed.correctOptionId === "string" && typed.correctOptionId.trim()
+              ? typed.correctOptionId
+              : existing.correctOptionId,
+          missedCount: Number.isFinite(typed.missedCount)
+            ? Number(typed.missedCount)
+            : existing.missedCount,
+        };
+      }
+      return migrated;
   } catch {
     return {};
   }
@@ -187,6 +229,11 @@ function shuffle<T>(arr: T[]) {
     [copy[i], copy[j]] = [copy[j], copy[i]];
   }
   return copy;
+}
+
+function pickRandom<T>(arr: T[], count: number): T[] {
+  if (count <= 0 || arr.length === 0) return [];
+  return shuffle(arr).slice(0, Math.min(count, arr.length));
 }
 
 function toNumber(v: unknown): number | null {
@@ -362,6 +409,30 @@ function topicCatalogForLevel(level: string): QuestionTopicMeta[] {
   ];
 }
 
+function topicFromHref(href?: string) {
+  if (!href) return "";
+  const query = href.split("?")[1] || "";
+  const params = new URLSearchParams(query);
+  return (params.get("topic") || "").trim().toLowerCase();
+}
+
+function flashcardOptionsFromCategories(
+  categories: Array<{ href?: string; title: string }>,
+  level: "2" | "3"
+): FlashcardTopicOption[] {
+  return categories
+    .map((category) => ({
+      key: topicFromHref(category.href),
+      label: category.title.includes("Mixed")
+        ? level === "3"
+          ? "Level 3 Mixed"
+          : "Level 2 Mixed"
+        : category.title,
+      level,
+    }))
+    .filter((option) => Boolean(option.key));
+}
+
 function rawBankForTopic(topic: string, level: string): unknown[] {
   if (topic === "all-level-2") {
     return [
@@ -419,6 +490,8 @@ export default function QuizPage() {
   const [entitlementsLoading, setEntitlementsLoading] = useState(true);
 
   const topic = (searchParams.get("topic") ?? "").trim().toLowerCase();
+  const trade = (searchParams.get("trade") ?? "electrical").trim().toLowerCase() || "electrical";
+  const modeParam = (searchParams.get("mode") ?? "").trim().toLowerCase();
 
   useEffect(() => {
     const loadSubscription = async (user: User) => {
@@ -512,19 +585,80 @@ export default function QuizPage() {
     return () => unsub();
   }, []);
   const level = (searchParams.get("level") ?? "").trim();
-  const problemsOnly = (searchParams.get("problems") ?? "").trim() === "1";
+  const normalizedLevel: "2" | "3" = level === "3" ? "3" : "2";
+  const currentTopicKey = topic || `all-level-${normalizedLevel}`;
+  const quizMode: "practice" | "weak" | "flashcards" =
+    modeParam === "weak"
+      ? "weak"
+      : modeParam === "flashcards"
+      ? "flashcards"
+      : "practice";
+  const weakTopics = useMemo(
+    () =>
+      (searchParams.get("topics") ?? "")
+        .split(",")
+        .map((t) => t.trim().toLowerCase())
+        .filter(Boolean),
+    [searchParams]
+  );
+  const problemsOnly = false;
   const storageKey = storageKeyForLevel(level, currentUserId);
+  const flashcardsCountRaw = (searchParams.get("count") ?? "").trim();
+  const hasFlashcardsCountParam = searchParams.has("count");
+  const flashcardsCount = flashcardsCountRaw === "10" ? 10 : 5;
   const nRaw = (searchParams.get("n") ?? "").trim();
   const quizSize =
     Number.isFinite(Number(nRaw)) && Number(nRaw) > 0
       ? Number(nRaw)
       : DEFAULT_QUIZ_SIZE;
 
-  const quizTitle = topicTitle(topic);
+  const quizTitle =
+    quizMode === "weak"
+      ? "Weak Areas Quiz"
+      : quizMode === "flashcards"
+      ? "Flashcards"
+      : topicTitle(topic);
+  const flashcardLevel2Options = useMemo(
+    () => flashcardOptionsFromCategories(ELECTRICAL_LEVEL2_CATEGORIES, "2"),
+    []
+  );
+  const flashcardLevel3Options = useMemo(
+    () => flashcardOptionsFromCategories(ELECTRICAL_LEVEL3_CATEGORIES, "3"),
+    []
+  );
+  const flashcardTopicOptions = useMemo(
+    () => [...flashcardLevel2Options, ...flashcardLevel3Options],
+    [flashcardLevel2Options, flashcardLevel3Options]
+  );
+  const flashcardTopicKeys = useMemo(
+    () => new Set(flashcardTopicOptions.map((option) => option.key)),
+    [flashcardTopicOptions]
+  );
+  const flashcardLevel3Keys = useMemo(
+    () => new Set(flashcardLevel3Options.map((option) => option.key)),
+    [flashcardLevel3Options]
+  );
+  const hasValidFlashTopic = topic ? flashcardTopicKeys.has(topic) : false;
+  const flashcardsNeedsSetup =
+    quizMode === "flashcards" &&
+    (!hasValidFlashTopic || !hasFlashcardsCountParam);
+  const [setupSelectedLevel, setSetupSelectedLevel] = useState<"2" | "3">("2");
+  const [setupSelectedTopicKey, setSetupSelectedTopicKey] = useState("all-level-2");
+  const [setupSelectedCount, setSetupSelectedCount] = useState<5 | 10>(5);
   const topicsHref =
     level === "3" ? "/trade/electrical?level=3" : "/trade/electrical";
+  const backToFlashcardsHref = `/quiz?trade=${trade}&mode=flashcards&level=${normalizedLevel}`;
   const unseenOnly = (searchParams.get("unseen") ?? "").trim() === "1";
+  const weakRequiresPlus =
+    quizMode === "weak" &&
+    weakTopics.some((weakTopic) =>
+      level === "3"
+        ? LOCKED_LEVEL3_TOPICS.has(weakTopic)
+        : LOCKED_LEVEL2_TOPICS.has(weakTopic)
+    );
   const requiresPlusTopic =
+    quizMode === "flashcards" ||
+    weakRequiresPlus ||
     (level === "3" && LOCKED_LEVEL3_TOPICS.has(topic)) ||
     (level !== "3" && LOCKED_LEVEL2_TOPICS.has(topic));
   const accessLoading =
@@ -601,6 +735,54 @@ export default function QuizPage() {
         return enforceTopicSlug(normalized, topicSlug);
       })();
 
+    if (quizMode === "weak") {
+      const resolvedWeakTopics =
+        weakTopics.length > 0
+          ? weakTopics
+          : getWeakTopics({
+              trade: "electrical",
+              level: level === "3" ? "3" : "2",
+              userId: currentUserId,
+              count: 2,
+            });
+
+      const weakBank = dedupeQuestionsById(
+        resolvedWeakTopics.flatMap((weakTopic) => normalizedByTopic(weakTopic))
+      );
+      const missedPriority = resolvedWeakTopics
+        .flatMap((weakTopic) => {
+          const statsByTopic = loadProblemStats(
+            problemKeyForTopic(level, weakTopic, currentUserId)
+          );
+          return normalizedByTopic(weakTopic)
+            .map((question) => ({
+              question,
+              wrong: mergedProblemStat(statsByTopic, question).wrong,
+            }))
+            .filter((entry) => entry.wrong > 0);
+        })
+        .sort((a, b) => b.wrong - a.wrong)
+        .map((entry) => entry.question);
+
+      const seenIds = new Set<string>();
+      const prioritized: Question[] = [];
+      for (const q of [...missedPriority, ...weakBank]) {
+        if (seenIds.has(q.id)) continue;
+        seenIds.add(q.id);
+        prioritized.push(q);
+      }
+
+      const selected = pickRandom(prioritized, WEAK_COUNT);
+      if (selected.length >= WEAK_COUNT) return selected;
+
+      const mixedTopicKey = level === "3" ? "all-level-3" : "all-level-2";
+      const mixedPool = normalizedByTopic(mixedTopicKey).filter(
+        (q) => !selected.some((picked) => picked.id === q.id)
+      );
+      const fillers = pickRandom(mixedPool, WEAK_COUNT - selected.length);
+      return [...selected, ...fillers];
+    }
+
     const normalized = normalizedByTopic(topic);
 
     if (typeof window === "undefined") return normalized;
@@ -648,7 +830,7 @@ export default function QuizPage() {
 
     const unseen = normalized.filter((q) => !hasSeenQuestion(seen, q));
     return unseen.length > 0 ? unseen : normalized;
-  }, [topic, level, unseenOnly, problemsOnly, currentUserId]);
+  }, [topic, level, unseenOnly, problemsOnly, currentUserId, quizMode, weakTopics]);
 
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -669,9 +851,6 @@ export default function QuizPage() {
 
   // prevent saving twice
   const [hasSaved, setHasSaved] = useState(false);
-
-  // end-of-exam chart: only this topic results
-  const [topicResults, setTopicResults] = useState<StoredResult[]>([]);
 
   // ✅ track quiz start time so we can save "time taken"
   const startedAtMsRef = useRef<number>(Date.now());
@@ -758,8 +937,10 @@ export default function QuizPage() {
 
   const buildNewQuiz = () => {
     const source = problemsOnly ? problemQuizBank : bank;
+    const targetSize =
+      quizMode === "flashcards" ? flashcardsCount : quizMode === "weak" ? WEAK_COUNT : quizSize;
     const picked = shuffle(source)
-      .slice(0, Math.min(quizSize, source.length))
+      .slice(0, Math.min(targetSize, source.length))
       .map(shuffleQuestionOptions);
 
     startedAtMsRef.current = Date.now(); // ✅ reset timer
@@ -788,6 +969,38 @@ export default function QuizPage() {
   };
 
   useEffect(() => {
+    if (quizMode !== "flashcards" || !flashcardsNeedsSetup) return;
+    const defaultLevel: "2" | "3" = hasValidFlashTopic
+      ? flashcardLevel3Keys.has(topic)
+        ? "3"
+        : "2"
+      : "2";
+    const defaultTopic =
+      hasValidFlashTopic && topic ? topic : defaultLevel === "3" ? "all-level-3" : "all-level-2";
+    setSetupSelectedLevel(defaultLevel);
+    setSetupSelectedTopicKey(defaultTopic);
+    setSetupSelectedCount(flashcardsCountRaw === "10" ? 10 : 5);
+  }, [
+    quizMode,
+    flashcardsNeedsSetup,
+    hasValidFlashTopic,
+    topic,
+    flashcardLevel3Keys,
+    flashcardsCountRaw,
+  ]);
+
+  useEffect(() => {
+    if (flashcardsNeedsSetup) {
+      setQuestions([]);
+      setCurrentIndex(0);
+      setSelected(null);
+      setAnswers([]);
+      setScore(0);
+      setFinished(false);
+      setHasSaved(false);
+      setRevealed(false);
+      return;
+    }
     const source = problemsOnly ? problemQuizBank : bank;
     if (source.length === 0) {
       setQuestions([]);
@@ -797,13 +1010,12 @@ export default function QuizPage() {
       setScore(0);
       setFinished(false);
       setHasSaved(false);
-      setTopicResults([]);
       setRevealed(false);
       return;
     }
     if (!showProblemsList) buildNewQuiz();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topic, bank.length, problemQuizBank.length, problemsOnly, quizSize, showProblemsList]);
+  }, [topic, bank.length, problemQuizBank.length, problemsOnly, quizSize, showProblemsList, flashcardsNeedsSetup, flashcardsCount, quizMode]);
 
   useEffect(() => {
     if (!finished || !topic || questions.length === 0) return;
@@ -829,6 +1041,18 @@ export default function QuizPage() {
   };
 
   const onNext = () => {
+    if (quizMode === "flashcards") {
+      if (!revealed) return;
+      const next = currentIndex + 1;
+      if (next >= questions.length) {
+        setFinished(true);
+        return;
+      }
+      setCurrentIndex(next);
+      setRevealed(false);
+      return;
+    }
+
     if (selected === null) return;
 
     if (!revealed && current) {
@@ -840,6 +1064,14 @@ export default function QuizPage() {
         stats[current.id] = {
           wrong: existing.wrong + wrong,
           total: existing.total + 1,
+          lastPickedOptionIndex: wrong > 0 ? selected : existing.lastPickedOptionIndex,
+          questionText: current.question,
+          selectedOptionId:
+            wrong > 0 && selected !== null ? String(selected) : existing.selectedOptionId,
+          selectedOptionText:
+            wrong > 0 && selected !== null ? current.options[selected] : existing.selectedOptionText,
+          correctOptionId: String(current.correctIndex),
+          missedCount: existing.wrong + wrong,
         };
         current.legacyIds?.forEach((legacyId) => delete stats[legacyId]);
         saveProblemStats(pKey, stats);
@@ -904,45 +1136,130 @@ export default function QuizPage() {
     if (hasSaved) return;
     if (questions.length === 0) return;
 
-    const percent = Math.round((score / questions.length) * 100);
+    const percent =
+      quizMode === "flashcards" ? 0 : Math.round((score / questions.length) * 100);
     const secondsTaken = Math.max(
       0,
       Math.round((Date.now() - startedAtMsRef.current) / 1000)
     );
+    const createdAt = new Date().toISOString();
+    const shouldAffectProgress = quizMode === "practice";
+    if (shouldAffectProgress) {
+      saveQuizResult(storageKey, {
+        label: `T${Date.now().toString().slice(-4)}`,
+        score: percent,
+        type: "practice",
+        date: createdAt,
+        topic: currentTopicKey,
 
-    saveQuizResult(storageKey, {
-      label: `T${Date.now().toString().slice(-4)}`,
-      score: percent,
-      type: "practice",
-      date: new Date().toISOString(),
-      topic,
+        // ✅ these make the tooltip show real values
+        correct: score,
+        total: questions.length,
+        secondsTaken,
+      });
 
-      // ✅ these make the tooltip show real values
-      correct: score,
-      total: questions.length,
-      secondsTaken,
+    }
+    if (quizMode === "practice" || quizMode === "weak") {
+      const misses: Array<{
+        questionId: string;
+        lastSelectedOptionId?: string;
+        lastSelectedOptionText?: string;
+      }> = [];
+      for (let idx = 0; idx < questions.length; idx += 1) {
+        const q = questions[idx];
+        const picked = answers[idx];
+        const isCorrect = picked === q.correctIndex;
+        if (isCorrect || !q.id) continue;
+        const selectedOptionId =
+          typeof picked === "number" && picked >= 0 ? String(picked) : undefined;
+        const selectedOptionText =
+          typeof picked === "number" && picked >= 0 && picked < q.options.length
+            ? q.options[picked]
+            : undefined;
+        misses.push({
+          questionId: q.id,
+          lastSelectedOptionId: selectedOptionId,
+          lastSelectedOptionText: selectedOptionText,
+        });
+      }
+      if (misses.length > 0) {
+        recordMissedQuestions({
+          trade: "electrical",
+          level: normalizedLevel,
+          userId: currentUserId,
+          misses,
+        });
+      }
+    }
+
+    const attemptsKey = getAttemptsKey("electrical", normalizedLevel, currentUserId);
+    const attempts = appendAttempt(attemptsKey, {
+      id: createAttemptId(),
+      createdAt,
+      trade: "electrical",
+      level: normalizedLevel,
+      mode: quizMode,
+      topicKey:
+        quizMode === "weak"
+          ? `all-level-${normalizedLevel}`
+          : currentTopicKey,
+      scorePercent: percent,
+      totalQuestions: quizMode === "flashcards" ? flashcardsCount : questions.length,
+      correctCount: quizMode === "flashcards" ? 0 : score,
+      durationSec: secondsTaken,
     });
+    if (process.env.NODE_ENV !== "production") {
+      console.debug("[attempts] saved", {
+        key: attemptsKey,
+        count: attempts.length,
+      });
+    }
 
     setHasSaved(true);
-  }, [finished, hasSaved, questions.length, score, topic, storageKey]);
+  }, [finished, hasSaved, questions.length, score, topic, currentTopicKey, storageKey, level, currentUserId, quizMode, flashcardsCount, normalizedLevel, questions, answers]);
 
-  // Load topic-only results for end-of-exam chart
-  useEffect(() => {
-    if (!finished) return;
-
-    const all = loadAllResults(storageKey);
-    const onlyThisTopic = all.filter(
-      (r) => (r.topic || "").toLowerCase() === topic.toLowerCase()
+  const resultTopicKey = useMemo(
+    () =>
+      (quizMode === "weak"
+        ? `all-level-${level === "3" ? "3" : "2"}`
+        : currentTopicKey
+      ).toLowerCase(),
+    [quizMode, level, currentTopicKey]
+  );
+  const topicAttemptHistory = useMemo(() => {
+    if (!finished || quizMode === "flashcards") return [];
+    const attemptsKey = getAttemptsKey("electrical", normalizedLevel, currentUserId);
+    const all = loadAttempts(attemptsKey);
+    return all
+      .filter(
+        (attempt) =>
+          attempt.trade === "electrical" &&
+          attempt.level === normalizedLevel &&
+          attempt.topicKey.toLowerCase() === resultTopicKey &&
+          attempt.mode !== "flashcards"
+      )
+      .sort((a, b) => {
+        const ta = new Date(a.createdAt || "").getTime();
+        const tb = new Date(b.createdAt || "").getTime();
+        return ta - tb;
+      });
+  }, [finished, quizMode, normalizedLevel, currentUserId, resultTopicKey, hasSaved]);
+  const topicTestAverage = useMemo(() => {
+    if (topicAttemptHistory.length === 0) return null;
+    const sum = topicAttemptHistory.reduce(
+      (acc, item) => acc + (Number(item.scorePercent) || 0),
+      0
     );
-
-    const sorted = [...onlyThisTopic].sort((a, b) => {
-      const ta = new Date(a.date || "").getTime();
-      const tb = new Date(b.date || "").getTime();
-      return ta - tb;
-    });
-
-    setTopicResults(sorted);
-  }, [finished, topic, hasSaved, storageKey]);
+    return Math.round(sum / topicAttemptHistory.length);
+  }, [topicAttemptHistory]);
+  const sinceLastTestDelta = useMemo(() => {
+    if (quizMode === "flashcards") return null;
+    if (topicAttemptHistory.length < 2) return null;
+    const previous = Number(topicAttemptHistory[topicAttemptHistory.length - 2]?.scorePercent);
+    const latest = Number(topicAttemptHistory[topicAttemptHistory.length - 1]?.scorePercent);
+    if (!Number.isFinite(previous) || !Number.isFinite(latest)) return null;
+    return Math.round((latest - previous) * 10) / 10;
+  }, [quizMode, topicAttemptHistory]);
 
   const optionClass = (idx: number) => {
     const base =
@@ -991,7 +1308,7 @@ export default function QuizPage() {
           </div>
         </header>
 
-        {bank.length === 0 && (
+        {bank.length === 0 && !flashcardsNeedsSetup && (
           <div className="bg-white/5 p-6 rounded-xl ring-1 ring-white/10">
             <p className="text-sm text-white/70">
               {problemsOnly
@@ -1003,6 +1320,122 @@ export default function QuizPage() {
             <p className="mt-2 text-xs text-white/50">
               Topic in URL: <b>{topic || "(none)"}</b>
             </p>
+          </div>
+        )}
+
+        {quizMode === "flashcards" && flashcardsNeedsSetup && (
+          <div>
+            <button
+              type="button"
+              onClick={() => router.push(backToFlashcardsHref, { scroll: false })}
+              className="mb-3 inline-flex rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/80 transition hover:bg-white/10"
+            >
+              Back to Flashcards
+            </button>
+            <div className="bg-white/5 p-6 rounded-xl ring-1 ring-white/10">
+              <h2 className="text-xl font-bold">Flashcards setup</h2>
+              <p className="mt-2 text-sm text-white/60">
+                Choose a topic and card count to start your flashcards session.
+              </p>
+
+              <div className="mt-5">
+                <p className="text-xs font-semibold text-white/70">Topic</p>
+                <div className="mt-2 grid grid-cols-1 gap-3 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <div className="text-xs font-semibold text-white/75">Level 2</div>
+                    {flashcardLevel2Options.map((option) => {
+                      const isSelected =
+                        setupSelectedLevel === "2" && setupSelectedTopicKey === option.key;
+                      return (
+                        <button
+                          key={option.key}
+                          type="button"
+                          onClick={() => {
+                            setSetupSelectedLevel("2");
+                            setSetupSelectedTopicKey(option.key);
+                          }}
+                          className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold ring-1 transition ${
+                            isSelected
+                              ? "bg-[#FFC400]/15 text-[#FFC400] ring-[#FFC400]/70"
+                              : "bg-white/10 text-white ring-white/15 hover:bg-white/15"
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="space-y-2">
+                    <div className="text-xs font-semibold text-white/75">Level 3</div>
+                    {flashcardLevel3Options.map((option) => {
+                      const isSelected =
+                        setupSelectedLevel === "3" && setupSelectedTopicKey === option.key;
+                      return (
+                        <button
+                          key={option.key}
+                          type="button"
+                          onClick={() => {
+                            setSetupSelectedLevel("3");
+                            setSetupSelectedTopicKey(option.key);
+                          }}
+                          className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold ring-1 transition ${
+                            isSelected
+                              ? "bg-[#FFC400]/15 text-[#FFC400] ring-[#FFC400]/70"
+                              : "bg-white/10 text-white ring-white/15 hover:bg-white/15"
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5">
+                <p className="text-xs font-semibold text-white/70">Card count</p>
+                <div className="mt-2 grid grid-cols-2 gap-3">
+                  {[5, 10].map((count) => {
+                    const isSelected = setupSelectedCount === count;
+                    return (
+                      <button
+                        key={count}
+                        type="button"
+                        onClick={() => setSetupSelectedCount(count as 5 | 10)}
+                        className={`rounded-xl px-4 py-3 text-center text-sm font-semibold ring-1 transition ${
+                          isSelected
+                            ? "bg-[#FFC400]/15 text-[#FFC400] ring-[#FFC400]/70"
+                            : "bg-white/10 text-white ring-white/15 hover:bg-white/15"
+                        }`}
+                      >
+                        {count} cards
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="mt-5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const params = new URLSearchParams(searchParams.toString());
+                    params.set("mode", "flashcards");
+                    params.set("trade", "electrical");
+                    params.set("level", setupSelectedLevel);
+                    params.set("topic", setupSelectedTopicKey);
+                    params.set("count", String(setupSelectedCount));
+                    params.delete("n");
+                    params.delete("problems");
+                    params.delete("unseen");
+                    router.replace(`/quiz?${params.toString()}`, { scroll: false });
+                  }}
+                  className="rounded-xl bg-[#FFC400] px-4 py-3 text-sm font-semibold text-black ring-1 ring-[#FF9100]/40 hover:bg-[#FF9100]"
+                >
+                  Start flashcards
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
@@ -1075,58 +1508,106 @@ export default function QuizPage() {
           </div>
         )}
 
-        {!finished && current && !showProblemsList && (
+        {!finished && current && !showProblemsList && !flashcardsNeedsSetup && (
           <div className="bg-white/5 p-6 rounded-xl ring-1 ring-white/10">
-            <p className="mb-3 text-sm text-white/70">
-              Question {currentIndex + 1} of {questions.length} — Score: {score}
-            </p>
+            {quizMode === "flashcards" ? (
+              <>
+                <p className="mb-3 text-sm text-white/70">
+                  Card {currentIndex + 1} of {questions.length}
+                </p>
+                <div className="flashcard-scene">
+                  <button
+                    type="button"
+                    aria-label={revealed ? "Flashcard back side" : "Flashcard front side"}
+                    aria-pressed={revealed}
+                    onClick={() => setRevealed((prev) => !prev)}
+                    className={`flashcard-card ${revealed ? "is-flipped" : ""}`}
+                  >
+                    <span className="flashcard-face flashcard-front rounded-xl border border-white/10 bg-white/[0.04] px-4 py-6 text-left">
+                      <h2 className="text-lg font-semibold">{current.question}</h2>
+                      <div className="mt-4 text-sm text-white/60">Tap to flip</div>
+                    </span>
+                    <span className="flashcard-face flashcard-back rounded-xl border border-emerald-300/50 bg-emerald-300/10 px-4 py-6 text-left">
+                      <div className="text-xs font-semibold uppercase tracking-wide text-emerald-200/80">
+                        Answer
+                      </div>
+                      <div className="mt-1 text-base font-semibold text-emerald-50">
+                        {current.options[current.correctIndex]}
+                      </div>
+                      <div className="mt-4 text-xs text-emerald-100/70">Tap to flip back</div>
+                      <div className="mt-3 rounded-lg bg-black/15 px-3 py-2 text-xs text-emerald-50/85 ring-1 ring-emerald-200/20">
+                        {current.explanation}
+                      </div>
+                    </span>
+                  </button>
+                </div>
 
-            <h2 className="text-lg font-semibold mb-4">{current.question}</h2>
+                {revealed && (
+                  <div className="mt-6 text-right">
+                    <button
+                      type="button"
+                      onClick={onNext}
+                      className="bg-white/10 px-4 py-2 rounded-lg"
+                    >
+                      {currentIndex + 1 === questions.length ? "Finish" : "Next"}
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                <p className="mb-3 text-sm text-white/70">
+                  Question {currentIndex + 1} of {questions.length} — Score: {score}
+                </p>
 
-            <div className="grid gap-3">
-              {current.options.map((opt, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => onPick(idx)}
-                  className={optionClass(idx)}
-                >
-                  {opt}
-                </button>
-              ))}
-            </div>
+                <h2 className="text-lg font-semibold mb-4">{current.question}</h2>
 
-            <div className="mt-4">
-              <button
-                type="button"
-                onClick={() => setReportOpen(true)}
-                className="rounded-lg border border-rose-400/50 px-3 py-2 text-sm font-semibold text-rose-200 hover:bg-rose-500/10"
-              >
-                Report Question
-              </button>
-            </div>
+                <div className="grid gap-3">
+                  {current.options.map((opt, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => onPick(idx)}
+                      className={optionClass(idx)}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
 
-            {selected !== null && revealed && (
-              <div className="mt-4 rounded-xl border border-amber-300/50 bg-amber-300/15 px-4 py-3 text-sm text-amber-100 ">
-                <div className="text-xs font-semibold uppercase tracking-wide text-amber-200/80">Explanation</div>
-                <div className="mt-1 text-amber-50">{current.explanation}</div>
-              </div>
+                <div className="mt-4">
+                  <button
+                    type="button"
+                    onClick={() => setReportOpen(true)}
+                    className="rounded-lg border border-rose-400/50 px-3 py-2 text-sm font-semibold text-rose-200 hover:bg-rose-500/10"
+                  >
+                    Report Question
+                  </button>
+                </div>
+
+                {selected !== null && revealed && (
+                  <div className="mt-4 rounded-xl border border-amber-300/50 bg-amber-300/15 px-4 py-3 text-sm text-amber-100 ">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-amber-200/80">Explanation</div>
+                    <div className="mt-1 text-amber-50">{current.explanation}</div>
+                  </div>
+                )}
+
+                <div className="mt-6 text-right">
+                  <button
+                    type="button"
+                    onClick={onNext}
+                    disabled={selected === null}
+                    className="bg-white/10 px-4 py-2 rounded-lg disabled:opacity-50"
+                  >
+                    {!revealed
+                      ? "Check answer"
+                      : currentIndex + 1 === questions.length
+                      ? "Finish"
+                      : "Next"}
+                  </button>
+                </div>
+              </>
             )}
-
-            <div className="mt-6 text-right">
-              <button
-                type="button"
-                onClick={onNext}
-                disabled={selected === null}
-                className="bg-white/10 px-4 py-2 rounded-lg disabled:opacity-50"
-              >
-                {!revealed
-                  ? "Check answer"
-                  : currentIndex + 1 === questions.length
-                    ? "Finish"
-                    : "Next"}
-              </button>
-            </div>
           </div>
         )}
 
@@ -1134,9 +1615,46 @@ export default function QuizPage() {
           <>
             <div className="bg-white/5 p-6 rounded-xl ring-1 ring-white/10">
               <h2 className="text-xl font-bold">Finished</h2>
-              <p className="mt-2 text-white/80">
-                Score: {score} / {questions.length}
-              </p>
+              {quizMode === "flashcards" ? (
+                <p className="mt-2 text-white/80">
+                  Cards reviewed: {questions.length}
+                </p>
+              ) : (
+                <>
+                  <p className="mt-2 text-white/80">
+                    Score: {score} / {questions.length}
+                  </p>
+                  {quizMode === "practice" ? (
+                    <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+                      <span className="text-white/70">
+                        Test average{" "}
+                        <span className="font-semibold text-white">
+                          {topicTestAverage !== null ? `${topicTestAverage}%` : "—"}
+                        </span>
+                      </span>
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-[11px] ring-1 ${
+                          sinceLastTestDelta === null
+                            ? "bg-white/10 text-white/70 ring-white/15"
+                            : sinceLastTestDelta > 0
+                            ? "bg-emerald-500/15 text-emerald-200 ring-emerald-400/30"
+                            : sinceLastTestDelta < 0
+                            ? "bg-rose-500/15 text-rose-200 ring-rose-400/30"
+                            : "bg-white/10 text-white/70 ring-white/15"
+                        }`}
+                      >
+                        {sinceLastTestDelta === null
+                          ? "— since last test"
+                          : sinceLastTestDelta > 0
+                          ? `↑ ${Math.abs(Math.round(sinceLastTestDelta))}% since last test`
+                          : sinceLastTestDelta < 0
+                          ? `↓ ${Math.abs(Math.round(sinceLastTestDelta))}% since last test`
+                          : "→ 0% since last test"}
+                      </span>
+                    </div>
+                  ) : null}
+                </>
+              )}
 
               <p className="mt-2 text-xs text-white/60">
                 Saved to progress: {hasSaved ? "Yes" : "Saving..."}
@@ -1148,7 +1666,11 @@ export default function QuizPage() {
                   onClick={restartSameQuiz}
                   className="rounded-lg bg-white/10 px-4 py-2 ring-1 ring-white/15 hover:bg-white/15"
                 >
-                  Restart (same {questions.length})
+                  {quizMode === "flashcards"
+                    ? `Restart (same ${flashcardsCount} Flashcards)`
+                    : quizMode === "weak"
+                    ? `Restart (same ${WEAK_COUNT})`
+                    : `Restart (same ${questions.length})`}
                 </button>
 
                 <button
@@ -1156,7 +1678,11 @@ export default function QuizPage() {
                   onClick={buildNewQuiz}
                   className="rounded-lg bg-white/10 px-4 py-2 ring-1 ring-white/15 hover:bg-white/15"
                 >
-                  New {quizSize} Questions
+                  {quizMode === "flashcards"
+                    ? `New ${flashcardsCount} Flashcards`
+                    : quizMode === "weak"
+                    ? `New ${WEAK_COUNT} Questions`
+                    : `New ${quizSize} Questions`}
                 </button>
 
                 <Link
@@ -1169,6 +1695,7 @@ export default function QuizPage() {
             </div>
 
             {/* Results breakdown */}
+            {quizMode !== "flashcards" && (
             <div className="mt-6">
               <h3 className="mb-3 text-lg font-semibold">Results Breakdown</h3>
               <div className="grid gap-4">
@@ -1206,10 +1733,12 @@ export default function QuizPage() {
                             </span>
                           </div>
 
-                          <div className="mt-1 text-sm text-white/70">
-                            <span className="text-white/60">Correct answer: </span>
-                            <span className="text-emerald-200">{correctText}</span>
-                          </div>
+                          {!isCorrect ? (
+                            <div className="mt-1 text-sm text-white/70">
+                              <span className="text-white/60">Correct answer: </span>
+                              <span className="text-emerald-200">{correctText}</span>
+                            </div>
+                          ) : null}
 
                           <div className="mt-3 rounded-xl border border-[#FFC400]/40 bg-[#FFC400]/10 px-4 py-3 text-sm text-[#FFF3C4]">
                             <div className="text-xs font-semibold uppercase tracking-wide text-[#FFC400]/90">
@@ -1226,15 +1755,8 @@ export default function QuizPage() {
                 })}
               </div>
             </div>
+            )}
 
-            {/* ✅ Topic-only chart at end of THIS exam */}
-            <div className="mt-6">
-              <ProgressReport
-                results={topicResults}
-                topics={[topic]}
-                lockedTopic={topic}
-              />
-            </div>
           </>
         )}
       </div>

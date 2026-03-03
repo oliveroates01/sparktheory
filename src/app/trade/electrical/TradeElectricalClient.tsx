@@ -23,6 +23,11 @@ import {
   ELECTRICAL_LEVEL3_CATEGORIES,
 } from "@/data/electricalTopicCategories";
 import { normalizeManualOverride, resolvePlusAccess } from "@/lib/entitlements";
+import {
+  getMasteryByTopic,
+  getPassProbability,
+  getStreakDays,
+} from "@/lib/progress/attempts";
 
 type Category = ElectricalCategory;
 
@@ -235,6 +240,9 @@ export default function ElectricalPage() {
   const [progressOpen, setProgressOpen] = useState(false);
   const [isSwitchingLevel, setIsSwitchingLevel] = useState(false);
   const [introState, setIntroState] = useState<"pending" | "play" | "done">("pending");
+  const [masteryByTopic, setMasteryByTopic] = useState<Record<string, number>>({});
+  const [streakDays, setStreakDays] = useState(0);
+  const [passProbability, setPassProbability] = useState<number | null>(null);
   const [unseenCount, setUnseenCount] = useState<number | null>(null);
   const [totalCount, setTotalCount] = useState<number | null>(null);
 
@@ -440,6 +448,30 @@ export default function ElectricalPage() {
   }, []);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    const normalizedLevel: "2" | "3" = level === "3" ? "3" : "2";
+    const mastery = getMasteryByTopic({
+      trade: "electrical",
+      level: normalizedLevel,
+      userId: currentUserId,
+    });
+    setMasteryByTopic(mastery);
+    setStreakDays(
+      getStreakDays({
+        trade: "electrical",
+        level: normalizedLevel,
+        userId: currentUserId,
+      })
+    );
+    const passStats = getPassProbability({
+      trade: "electrical",
+      level: normalizedLevel,
+      userId: currentUserId,
+    });
+    setPassProbability(passStats?.probability ?? null);
+  }, [level, currentUserId]);
+
+  useEffect(() => {
     if (!pickerOpen || !pickedHref) {
       setUnseenCount(null);
       setTotalCount(null);
@@ -507,6 +539,36 @@ export default function ElectricalPage() {
 
   const openProgress = () => setProgressOpen(true);
   const closeProgress = () => setProgressOpen(false);
+  const isPlus = hasPlusAccess;
+  const goToUpgradeFlow = () => {
+    router.push(userLoggedIn ? "/account" : "/login");
+  };
+  const startWeakAreasQuiz = () => {
+    if (!isPlus) {
+      goToUpgradeFlow();
+      return;
+    }
+    const normalizedLevel: "2" | "3" = level === "3" ? "3" : "2";
+    router.push(`/trade/electrical/weak?level=${normalizedLevel}`);
+  };
+  const startExamMode = () => {
+    if (!isPlus) {
+      goToUpgradeFlow();
+      return;
+    }
+    const normalizedLevel: "2" | "3" = level === "3" ? "3" : "2";
+    router.push(`/trade/electrical/exam?level=${normalizedLevel}`);
+  };
+  const startFlashcardsMode = () => {
+    if (!isPlus) {
+      goToUpgradeFlow();
+      return;
+    }
+    const normalizedLevel: "2" | "3" = level === "3" ? "3" : "2";
+    router.push(
+      `/quiz?trade=electrical&mode=flashcards&level=${normalizedLevel}&topic=all-level-${normalizedLevel}`
+    );
+  };
 
   const noUnseenQuestionsAvailable =
     typeof unseenCount === "number" && unseenCount === 0;
@@ -609,6 +671,107 @@ export default function ElectricalPage() {
             >
               Show progress
             </Link>
+          </div>
+          <div className="mx-auto mt-2 w-full max-w-2xl text-xs text-white/70">
+            Streak: <span className="font-semibold text-white">{streakDays}</span>{" "}
+            {streakDays === 1 ? "day" : "days"}
+          </div>
+          <div className="mx-auto mt-1 w-full max-w-2xl text-xs text-white/70">
+            Pass probability:{" "}
+            <span className="font-semibold text-white">
+              {typeof passProbability === "number" ? `${passProbability}%` : "—"}
+            </span>
+          </div>
+          <div className="mx-auto mt-3 w-full max-w-2xl">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+              <button
+                type="button"
+                onClick={startWeakAreasQuiz}
+                className="block w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-center text-xs font-semibold text-white/80 transition hover:bg-white/10"
+              >
+                <span className="inline-flex items-center gap-1.5">
+                  Focus on weak areas
+                  {!isPlus ? (
+                    <>
+                      <svg
+                        aria-hidden="true"
+                        viewBox="0 0 24 24"
+                        className="h-3.5 w-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect x="5" y="11" width="14" height="10" rx="2" />
+                        <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+                      </svg>
+                      <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold ring-1 ring-white/20">
+                        Plus
+                      </span>
+                    </>
+                  ) : null}
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={startExamMode}
+                className="block w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-center text-xs font-semibold text-white/80 transition hover:bg-white/10"
+              >
+                <span className="inline-flex items-center gap-1.5">
+                  Exam mode
+                  {!isPlus ? (
+                    <>
+                      <svg
+                        aria-hidden="true"
+                        viewBox="0 0 24 24"
+                        className="h-3.5 w-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect x="5" y="11" width="14" height="10" rx="2" />
+                        <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+                      </svg>
+                      <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold ring-1 ring-white/20">
+                        Plus
+                      </span>
+                    </>
+                  ) : null}
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={startFlashcardsMode}
+                className="block w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-center text-xs font-semibold text-white/80 transition hover:bg-white/10"
+              >
+                <span className="inline-flex items-center gap-1.5">
+                  Flashcards
+                  {!isPlus ? (
+                    <>
+                      <svg
+                        aria-hidden="true"
+                        viewBox="0 0 24 24"
+                        className="h-3.5 w-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect x="5" y="11" width="14" height="10" rx="2" />
+                        <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+                      </svg>
+                      <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold ring-1 ring-white/20">
+                        Plus
+                      </span>
+                    </>
+                  ) : null}
+                </span>
+              </button>
+            </div>
           </div>
         </section>
 
@@ -824,13 +987,6 @@ export default function ElectricalPage() {
               >
                 Unseen questions
               </button>
-              <Link
-                href={`${pickedHref}&problems=1`}
-                className="block w-full rounded-xl bg-[#FFC400] px-4 py-3 text-center text-sm font-semibold text-black ring-1 ring-[#FF9100]/40 hover:bg-[#FF9100]"
-                onClick={closePicker}
-              >
-                My problem questions
-              </Link>
             </div>
             {noUnseenQuestionsAvailable && (
               <div className="mt-2 space-y-2">
@@ -882,6 +1038,14 @@ export default function ElectricalPage() {
               key={`${level}-modal`}
               results={resultsOldestToNewest ?? []}
               topics={topics ?? []}
+              headerStats={{
+                quizzesTaken: results.length,
+                bestScore:
+                  results.length > 0
+                    ? Math.max(...results.map((item) => Number(item.score) || 0))
+                    : 0,
+                passProbability: passProbability ?? undefined,
+              }}
               onResetProgress={resetProgress}
             />
           </div>

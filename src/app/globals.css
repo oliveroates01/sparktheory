@@ -60,12 +60,42 @@ button:disabled,
   animation: fadeUp 220ms ease-out both;
 }
 
+.flashcard-scene {
+  perspective: 1000px;
+}
+
+.flashcard-card {
+  position: relative;
+  width: 100%;
+  min-height: 260px;
+  transform-style: preserve-3d;
+  transition: transform 360ms ease-out;
+}
+
+.flashcard-card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .page-transition {
     animation: none;
   }
   .electrical-card-intro {
     animation: none;
+  }
+  .flashcard-card {
+    transition: none;
   }
 }
 
