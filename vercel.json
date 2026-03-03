@@ -1,9 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/api/cron/subscription-reconcile",
-      "schedule": "0 * * * *"
-    }
-  ]
-}
-
