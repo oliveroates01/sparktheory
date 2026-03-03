@@ -1,4 +1,4 @@
-import { FieldValue } from "firebase-admin/firestore";
+import { FieldValue, Timestamp } from "firebase-admin/firestore";
 import { getAdminServicesOrNull } from "@/lib/firebaseAdmin";
 
 type ResolveUserRefInput = {
@@ -100,10 +100,9 @@ export async function upsertUserSubscription(input: UpsertSubscriptionInput) {
     updatePayload.cancelAtPeriodEnd = input.cancelAtPeriodEnd;
   }
 
-  if (typeof input.currentPeriodEnd === "number") {
-    updatePayload.currentPeriodEnd = input.currentPeriodEnd;
-  } else if (input.currentPeriodEnd === null) {
-    updatePayload.currentPeriodEnd = null;
+  if (typeof input.currentPeriodEnd === "number" && Number.isFinite(input.currentPeriodEnd)) {
+    // Stripe provides seconds; persist Firestore Timestamp for consistent server-side date semantics.
+    updatePayload.currentPeriodEnd = Timestamp.fromMillis(Math.floor(input.currentPeriodEnd * 1000));
   }
 
   if (stripeCustomerId) updatePayload.stripeCustomerId = stripeCustomerId;

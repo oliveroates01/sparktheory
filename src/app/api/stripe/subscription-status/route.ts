@@ -62,9 +62,20 @@ export async function POST(request: Request) {
     const plan = normalizePlan(data.plan, isSubscribed);
     const status = normalizeStatus(data.subscriptionStatus, isSubscribed);
     const cancelAtPeriodEnd = Boolean(data.cancelAtPeriodEnd);
+    const rawPeriodEnd = data.currentPeriodEnd as
+      | number
+      | { toMillis?: () => number; seconds?: number; _seconds?: number }
+      | null
+      | undefined;
     const currentPeriodEnd =
-      typeof data.currentPeriodEnd === "number" && Number.isFinite(data.currentPeriodEnd)
-        ? data.currentPeriodEnd
+      typeof rawPeriodEnd === "number" && Number.isFinite(rawPeriodEnd)
+        ? rawPeriodEnd
+        : rawPeriodEnd && typeof rawPeriodEnd === "object" && typeof rawPeriodEnd.toMillis === "function"
+        ? Math.floor(rawPeriodEnd.toMillis() / 1000)
+        : rawPeriodEnd && typeof rawPeriodEnd === "object" && typeof rawPeriodEnd.seconds === "number"
+        ? Math.floor(rawPeriodEnd.seconds)
+        : rawPeriodEnd && typeof rawPeriodEnd === "object" && typeof rawPeriodEnd._seconds === "number"
+        ? Math.floor(rawPeriodEnd._seconds)
         : null;
 
     return NextResponse.json({
