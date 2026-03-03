@@ -37,6 +37,22 @@ function getOptionalBoolean(value: unknown): boolean | null {
   return typeof value === "boolean" ? value : null;
 }
 
+function getSubscriptionPeriodEndSeconds(object: Record<string, unknown>): number | null {
+  const topLevel = getOptionalNumber(object.current_period_end);
+  if (topLevel !== null) return topLevel;
+
+  const cancelAt = getOptionalNumber(object.cancel_at);
+  if (cancelAt !== null) return cancelAt;
+
+  const items = object.items;
+  if (!items || typeof items !== "object") return null;
+  const data = (items as { data?: unknown }).data;
+  if (!Array.isArray(data) || data.length === 0) return null;
+  const first = data[0];
+  if (!first || typeof first !== "object") return null;
+  return getOptionalNumber((first as { current_period_end?: unknown }).current_period_end);
+}
+
 function parseSignatureHeader(signatureHeader: string) {
   const parts = signatureHeader.split(",").map((part) => part.trim());
   const timestamp = toNonEmptyString(parts.find((part) => part.startsWith("t="))?.slice(2));
@@ -155,7 +171,7 @@ export async function POST(request: Request) {
         const stripeCustomerId = getObjectId(object.customer);
         const stripeSubscriptionId = getObjectId(object.id);
         const cancelAtPeriodEnd = getOptionalBoolean(object.cancel_at_period_end);
-        const currentPeriodEnd = getOptionalNumber(object.current_period_end);
+        const currentPeriodEnd = getSubscriptionPeriodEndSeconds(object);
 
         const result = await upsertUserSubscription({
           uid: userId,
