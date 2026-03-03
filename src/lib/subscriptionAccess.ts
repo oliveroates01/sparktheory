@@ -26,6 +26,45 @@ function normalizePlan(plan: string, isSubscribed: boolean): "plus" | "free" {
   return isSubscribed ? "plus" : "free";
 }
 
+function toUnixSeconds(value: unknown): number | null {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (value && typeof value === "object") {
+    const maybe = value as { toMillis?: () => number; seconds?: number; _seconds?: number };
+    if (typeof maybe.toMillis === "function") {
+      const ms = maybe.toMillis();
+      if (Number.isFinite(ms)) return Math.floor(ms / 1000);
+    }
+    if (typeof maybe.seconds === "number" && Number.isFinite(maybe.seconds)) {
+      return Math.floor(maybe.seconds);
+    }
+    if (typeof maybe._seconds === "number" && Number.isFinite(maybe._seconds)) {
+      return Math.floor(maybe._seconds);
+    }
+  }
+  return null;
+}
+
+export function computeHasPlusAccessFromStripeState(params: {
+  subscriptionStatus?: string;
+  cancelAtPeriodEnd?: boolean;
+  currentPeriodEnd?: number | null;
+  nowSeconds?: number;
+}) {
+  const status = toNonEmptyString(params.subscriptionStatus).toLowerCase();
+  const cancelAtPeriodEnd = Boolean(params.cancelAtPeriodEnd);
+  const currentPeriodEnd = typeof params.currentPeriodEnd === "number" ? params.currentPeriodEnd : null;
+  const now = params.nowSeconds ?? Math.floor(Date.now() / 1000);
+
+  if (status === "active" || status === "trialing") {
+    if (!cancelAtPeriodEnd) return true;
+    if (!currentPeriodEnd) return true;
+    return now < currentPeriodEnd;
+  }
+  if (status === "canceled") return false;
+  if (status === "past_due" || status === "unpaid") return false;
+  return false;
+}
+
 async function findUserRef(input: ResolveUserRefInput) {
   const services = getAdminServicesOrNull();
   if (!services) return null;
@@ -81,18 +120,36 @@ export async function upsertUserSubscription(input: UpsertSubscriptionInput) {
   if (!userRef) {
     return { updated: false, reason: "user_not_found" as const };
   }
+  const currentSnap = await userRef.get();
+  const existing = (currentSnap.exists ? currentSnap.data() : {}) as Record<string, unknown>;
 
   const stripeCustomerId = toNonEmptyString(input.stripeCustomerId);
   const stripeSubscriptionId = toNonEmptyString(input.stripeSubscriptionId);
-  const subscriptionStatus = toNonEmptyString(input.subscriptionStatus);
-  const isSubscribed = Boolean(input.isSubscribed);
-  const plan = normalizePlan(toNonEmptyString(input.plan), isSubscribed);
+  const subscriptionStatus =
+    toNonEmptyString(input.subscriptionStatus) ||
+    toNonEmptyString(existing.subscriptionStatus) ||
+    (Boolean(input.isSubscribed) ? "active" : "canceled");
+  const effectiveCancelAtPeriodEnd =
+    typeof input.cancelAtPeriodEnd === "boolean"
+      ? input.cancelAtPeriodEnd
+      : Boolean(existing.cancelAtPeriodEnd);
+  const effectiveCurrentPeriodEnd =
+    typeof input.currentPeriodEnd === "number" && Number.isFinite(input.currentPeriodEnd)
+      ? input.currentPeriodEnd
+      : toUnixSeconds(existing.currentPeriodEnd);
+  const hasPlusAccess = computeHasPlusAccessFromStripeState({
+    subscriptionStatus,
+    cancelAtPeriodEnd: effectiveCancelAtPeriodEnd,
+    currentPeriodEnd: effectiveCurrentPeriodEnd,
+  });
+  const isSubscribed = hasPlusAccess;
+  const plan = normalizePlan(toNonEmptyString(input.plan), hasPlusAccess);
 
   const updatePayload: Record<string, unknown> = {
     isSubscribed,
-    hasPlusAccess: isSubscribed,
+    hasPlusAccess,
     plan,
-    subscriptionStatus: subscriptionStatus || (isSubscribed ? "active" : "canceled"),
+    subscriptionStatus,
     updatedAt: FieldValue.serverTimestamp(),
   };
 

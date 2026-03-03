@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAdminServicesOrNull } from "@/lib/firebaseAdmin";
 import { normalizeManualOverride, resolvePlusAccess } from "@/lib/entitlements";
+import { computeHasPlusAccessFromStripeState } from "@/lib/subscriptionAccess";
 
 export const dynamic = "force-dynamic";
 
@@ -48,9 +49,6 @@ export async function POST(request: Request) {
     const snapshot = await userRef.get();
     const data = (snapshot.exists ? snapshot.data() : {}) as Record<string, unknown>;
 
-    const explicitIsSubscribed =
-      typeof data.isSubscribed === "boolean" ? data.isSubscribed : null;
-
     const fallbackHasPlusAccess = resolvePlusAccess({
       hasPlusAccess: Boolean(data.hasPlusAccess),
       plan: String(data.plan || "FREE"),
@@ -58,9 +56,7 @@ export async function POST(request: Request) {
       manualOverride: normalizeManualOverride(data.manualOverride),
     });
 
-    const isSubscribed = explicitIsSubscribed ?? fallbackHasPlusAccess;
-    const plan = normalizePlan(data.plan, isSubscribed);
-    const status = normalizeStatus(data.subscriptionStatus, isSubscribed);
+    const status = normalizeStatus(data.subscriptionStatus, fallbackHasPlusAccess);
     const cancelAtPeriodEnd = Boolean(data.cancelAtPeriodEnd);
     const rawPeriodEnd = data.currentPeriodEnd as
       | number
@@ -78,6 +74,15 @@ export async function POST(request: Request) {
         ? Math.floor(rawPeriodEnd._seconds)
         : null;
 
+    const derivedHasPlusAccess = computeHasPlusAccessFromStripeState({
+      subscriptionStatus: status,
+      cancelAtPeriodEnd,
+      currentPeriodEnd,
+    });
+    const hasPlusAccess = derivedHasPlusAccess || fallbackHasPlusAccess;
+    const isSubscribed = hasPlusAccess;
+    const plan = normalizePlan(data.plan, hasPlusAccess);
+
     return NextResponse.json({
       isSubscribed,
       plan,
@@ -85,7 +90,7 @@ export async function POST(request: Request) {
       cancelAtPeriodEnd,
       currentPeriodEnd,
       hasSubscription: isSubscribed,
-      hasPlusAccess: isSubscribed,
+      hasPlusAccess,
       subscriptionStatus: status,
     });
   } catch (error) {
