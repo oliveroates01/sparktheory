@@ -647,7 +647,7 @@ export default function QuizPage() {
   const [setupSelectedCount, setSetupSelectedCount] = useState<5 | 10>(5);
   const topicsHref =
     level === "3" ? "/trade/electrical?level=3" : "/trade/electrical";
-  const backToFlashcardsHref = `/quiz?trade=${trade}&mode=flashcards&level=${normalizedLevel}`;
+  const backToFlashcardsHref = `/quiz?trade=${trade}&mode=flashcards&level=${normalizedLevel}&topic=${currentTopicKey}&count=${flashcardsCount}`;
   const unseenOnly = (searchParams.get("unseen") ?? "").trim() === "1";
   const weakRequiresPlus =
     quizMode === "weak" &&
@@ -1324,117 +1324,108 @@ export default function QuizPage() {
         )}
 
         {quizMode === "flashcards" && flashcardsNeedsSetup && (
-          <div>
-            <button
-              type="button"
-              onClick={() => router.push(backToFlashcardsHref, { scroll: false })}
-              className="mb-3 inline-flex rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/80 transition hover:bg-white/10"
-            >
-              Back to Flashcards
-            </button>
-            <div className="bg-white/5 p-6 rounded-xl ring-1 ring-white/10">
-              <h2 className="text-xl font-bold">Flashcards setup</h2>
-              <p className="mt-2 text-sm text-white/60">
-                Choose a topic and card count to start your flashcards session.
-              </p>
+          <div className="bg-white/5 p-6 rounded-xl ring-1 ring-white/10">
+            <h2 className="text-xl font-bold">Flashcards setup</h2>
+            <p className="mt-2 text-sm text-white/60">
+              Choose a topic and card count to start your flashcards session.
+            </p>
 
-              <div className="mt-5">
-                <p className="text-xs font-semibold text-white/70">Topic</p>
-                <div className="mt-2 grid grid-cols-1 gap-3 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <div className="text-xs font-semibold text-white/75">Level 2</div>
-                    {flashcardLevel2Options.map((option) => {
-                      const isSelected =
-                        setupSelectedLevel === "2" && setupSelectedTopicKey === option.key;
-                      return (
-                        <button
-                          key={option.key}
-                          type="button"
-                          onClick={() => {
-                            setSetupSelectedLevel("2");
-                            setSetupSelectedTopicKey(option.key);
-                          }}
-                          className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold ring-1 transition ${
-                            isSelected
-                              ? "bg-[#FFC400]/15 text-[#FFC400] ring-[#FFC400]/70"
-                              : "bg-white/10 text-white ring-white/15 hover:bg-white/15"
-                          }`}
-                        >
-                          {option.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-xs font-semibold text-white/75">Level 3</div>
-                    {flashcardLevel3Options.map((option) => {
-                      const isSelected =
-                        setupSelectedLevel === "3" && setupSelectedTopicKey === option.key;
-                      return (
-                        <button
-                          key={option.key}
-                          type="button"
-                          onClick={() => {
-                            setSetupSelectedLevel("3");
-                            setSetupSelectedTopicKey(option.key);
-                          }}
-                          className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold ring-1 transition ${
-                            isSelected
-                              ? "bg-[#FFC400]/15 text-[#FFC400] ring-[#FFC400]/70"
-                              : "bg-white/10 text-white ring-white/15 hover:bg-white/15"
-                          }`}
-                        >
-                          {option.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-5">
-                <p className="text-xs font-semibold text-white/70">Card count</p>
-                <div className="mt-2 grid grid-cols-2 gap-3">
-                  {[5, 10].map((count) => {
-                    const isSelected = setupSelectedCount === count;
+            <div className="mt-5">
+              <p className="text-xs font-semibold text-white/70">Topic</p>
+              <div className="mt-2 grid grid-cols-1 gap-3 md:grid-cols-2">
+                <div className="space-y-2">
+                  <div className="text-xs font-semibold text-white/75">Level 2</div>
+                  {flashcardLevel2Options.map((option) => {
+                    const isSelected =
+                      setupSelectedLevel === "2" && setupSelectedTopicKey === option.key;
                     return (
                       <button
-                        key={count}
+                        key={option.key}
                         type="button"
-                        onClick={() => setSetupSelectedCount(count as 5 | 10)}
-                        className={`rounded-xl px-4 py-3 text-center text-sm font-semibold ring-1 transition ${
+                        onClick={() => {
+                          setSetupSelectedLevel("2");
+                          setSetupSelectedTopicKey(option.key);
+                        }}
+                        className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold ring-1 transition ${
                           isSelected
                             ? "bg-[#FFC400]/15 text-[#FFC400] ring-[#FFC400]/70"
                             : "bg-white/10 text-white ring-white/15 hover:bg-white/15"
                         }`}
                       >
-                        {count} cards
+                        {option.label}
+                      </button>
+                    );
+                  })}
+                </div>
+                <div className="space-y-2">
+                  <div className="text-xs font-semibold text-white/75">Level 3</div>
+                  {flashcardLevel3Options.map((option) => {
+                    const isSelected =
+                      setupSelectedLevel === "3" && setupSelectedTopicKey === option.key;
+                    return (
+                      <button
+                        key={option.key}
+                        type="button"
+                        onClick={() => {
+                          setSetupSelectedLevel("3");
+                          setSetupSelectedTopicKey(option.key);
+                        }}
+                        className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold ring-1 transition ${
+                          isSelected
+                            ? "bg-[#FFC400]/15 text-[#FFC400] ring-[#FFC400]/70"
+                            : "bg-white/10 text-white ring-white/15 hover:bg-white/15"
+                        }`}
+                      >
+                        {option.label}
                       </button>
                     );
                   })}
                 </div>
               </div>
+            </div>
 
-              <div className="mt-5">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const params = new URLSearchParams(searchParams.toString());
-                    params.set("mode", "flashcards");
-                    params.set("trade", "electrical");
-                    params.set("level", setupSelectedLevel);
-                    params.set("topic", setupSelectedTopicKey);
-                    params.set("count", String(setupSelectedCount));
-                    params.delete("n");
-                    params.delete("problems");
-                    params.delete("unseen");
-                    router.replace(`/quiz?${params.toString()}`, { scroll: false });
-                  }}
-                  className="rounded-xl bg-[#FFC400] px-4 py-3 text-sm font-semibold text-black ring-1 ring-[#FF9100]/40 hover:bg-[#FF9100]"
-                >
-                  Start flashcards
-                </button>
+            <div className="mt-5">
+              <p className="text-xs font-semibold text-white/70">Card count</p>
+              <div className="mt-2 grid grid-cols-2 gap-3">
+                {[5, 10].map((count) => {
+                  const isSelected = setupSelectedCount === count;
+                  return (
+                    <button
+                      key={count}
+                      type="button"
+                      onClick={() => setSetupSelectedCount(count as 5 | 10)}
+                      className={`rounded-xl px-4 py-3 text-center text-sm font-semibold ring-1 transition ${
+                        isSelected
+                          ? "bg-[#FFC400]/15 text-[#FFC400] ring-[#FFC400]/70"
+                          : "bg-white/10 text-white ring-white/15 hover:bg-white/15"
+                      }`}
+                    >
+                      {count} cards
+                    </button>
+                  );
+                })}
               </div>
+            </div>
+
+            <div className="mt-5">
+              <button
+                type="button"
+                onClick={() => {
+                  const params = new URLSearchParams(searchParams.toString());
+                  params.set("mode", "flashcards");
+                  params.set("trade", "electrical");
+                  params.set("level", setupSelectedLevel);
+                  params.set("topic", setupSelectedTopicKey);
+                  params.set("count", String(setupSelectedCount));
+                  params.delete("n");
+                  params.delete("problems");
+                  params.delete("unseen");
+                  router.replace(`/quiz?${params.toString()}`, { scroll: false });
+                }}
+                className="rounded-xl bg-[#FFC400] px-4 py-3 text-sm font-semibold text-black ring-1 ring-[#FF9100]/40 hover:bg-[#FF9100]"
+              >
+                Start flashcards
+              </button>
             </div>
           </div>
         )}
@@ -1685,6 +1676,18 @@ export default function QuizPage() {
                     : `New ${quizSize} Questions`}
                 </button>
 
+                {quizMode === "flashcards" ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      router.replace(backToFlashcardsHref, { scroll: false });
+                      restartSameQuiz();
+                    }}
+                    className="rounded-lg bg-white/10 px-4 py-2 ring-1 ring-white/15 hover:bg-white/15"
+                  >
+                    Back to Flashcards
+                  </button>
+                ) : null}
                 <Link
                   href={topicsHref}
                   className="rounded-lg bg-white/10 px-4 py-2 ring-1 ring-white/15 hover:bg-white/15"
