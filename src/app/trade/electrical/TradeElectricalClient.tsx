@@ -711,7 +711,7 @@ export default function ElectricalPage() {
                     <path d="M8 11V8a4 4 0 0 1 8 0v3" />
                   </svg>
                 ) : null}
-                <span className="inline-flex items-center whitespace-nowrap">Focus on weak areas</span>
+                <span className="inline-flex items-center whitespace-nowrap">My problem questions</span>
               </button>
               <button
                 type="button"

@@ -562,16 +562,123 @@ export default function TopicsPage() {
     setActiveTrade(key);
   };
 
-  const dashboardRightCards = [
-    (
-      <div
-        key="revision-support"
-        className="rounded-3xl bg-gradient-to-br from-[#2A2A2A]/82 via-[#1F1F1F]/76 to-[#2A2A2A]/82 p-7 text-sm text-white/70 ring-1 ring-white/14 shadow-[0_12px_30px_rgba(0,0,0,0.22)]"
-      >
-        <div className="text-base font-semibold leading-tight text-white/85">Revision support (Level 2 & 3)</div>
-        <p className="mt-3 leading-6">Use revision support to review key topics, spot weaker areas, and plan what to study next. The progress chart shows a sample learning path so you can see how results shift over time as you revisit topics and improve your scores.</p>
+  const revisionSupportCard = (
+    <div
+      key="revision-support"
+      className="rounded-3xl bg-gradient-to-br from-[#2A2A2A]/82 via-[#1F1F1F]/76 to-[#2A2A2A]/82 p-7 text-sm text-white/70 ring-1 ring-white/14 shadow-[0_12px_30px_rgba(0,0,0,0.22)]"
+    >
+      <div className="text-base font-semibold leading-tight text-white/85">Revision support (Level 2 & 3)</div>
+      <p className="mt-3 leading-6">Use revision support to review key topics, spot weaker areas, and plan what to study next. The progress chart shows a sample learning path so you can see how results shift over time as you revisit topics and improve your scores.</p>
+    </div>
+  );
+
+  const electricalToolBoxCard = (
+    <div
+      key="electrical-tool-box"
+      className="rounded-3xl bg-gradient-to-br from-[#2A2A2A]/82 via-[#1F1F1F]/76 to-[#2A2A2A]/82 p-7 ring-1 ring-white/14 shadow-[0_12px_30px_rgba(0,0,0,0.22)]"
+    >
+      <div className="text-base font-semibold leading-tight text-white/85">Tool Box</div>
+      <p className="mt-3 text-sm leading-6 text-white/70">
+        Useful electrical calculators to help with installations, exam revision, and quick checks.
+      </p>
+      <div className="mt-3 space-y-1">
+        <p className="truncate text-xs text-white/65" title="Voltage drop calculator">
+          • Voltage drop calculator
+        </p>
+        <p className="truncate text-xs text-white/65" title="Cable size calculator">
+          • Cable size calculator
+        </p>
+        <p className="truncate text-xs text-white/65" title="Earth fault loop (Zs) calculator">
+          • Earth fault loop (Zs) calculator
+        </p>
+        <p className="truncate text-xs text-white/65" title="Conduit fill calculator">
+          • Conduit fill calculator
+        </p>
+        <p className="truncate text-xs text-white/65" title="RCD test checker">
+          • RCD checker
+        </p>
       </div>
-    ),
+      <p className="mt-4 text-xs text-white/50">Tool preview</p>
+    </div>
+  );
+
+  const sparkTheoryPlusCard = (
+    <div className="relative min-h-[180px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#252017]/94 via-[#1B1A17]/92 to-[#211C14]/94 p-8 ring-1 ring-[#FFC400]/30 shadow-[0_14px_34px_rgba(0,0,0,0.24)] spark-plus-glow">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(260px_160px_at_12%_0%,rgba(255,196,0,0.14),transparent_62%)]" />
+      <div className="relative flex flex-col gap-4">
+        {showUpgradeLoadingCard ? (
+          <>
+            <div className="flex items-start justify-between gap-3">
+              <p className="text-base font-semibold leading-tight text-white">Spark Theory+</p>
+              <span className="rounded-full border border-[#FFC400]/45 bg-[#FFC400]/10 px-2.5 py-1 text-[11px] font-semibold text-[#FFE083]">
+                Checking plan
+              </span>
+            </div>
+            <p className="text-sm leading-6 text-white/75">
+              Checking your subscription status…
+            </p>
+          </>
+        ) : isPlusSubscriber ? (
+          <>
+            <div className="flex items-start justify-between gap-3">
+              <p className="text-base font-semibold leading-tight text-white">You&apos;re on Spark Theory+</p>
+              <span className="rounded-full border border-[#FFC400]/45 bg-[#FFC400]/10 px-2.5 py-1 text-[11px] font-semibold text-[#FFE083]">
+                Active
+              </span>
+            </div>
+            <p className="text-sm leading-6 text-white/75">
+              Your PLUS plan is active. You have access to full progress tracking, personalised revision support, and premium quiz features.
+            </p>
+            <div className="space-y-1 text-xs leading-5 text-white/70">
+              <p>• Unlimited topic quizzes</p>
+              <p>• My problem questions – automatically practise the questions you struggle with most</p>
+              <p>• Exam mode – realistic timed mock exams like the real electrical exams</p>
+              <p>• Flashcards – quick revision for key electrical terms and concepts</p>
+              <p>• Tool Box – built-in electrical calculators (voltage drop, cable size, Zs, conduit fill, RCD testing)</p>
+              <p>• Real performance tracking</p>
+              <p>• Weak topic targeting</p>
+              <p>• Exam-style mock tests</p>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex items-start justify-between gap-3">
+              <p className="text-base font-semibold leading-tight text-white">Upgrade to Spark Theory+</p>
+              <span className="rounded-full border border-[#FFC400]/45 bg-[#FFC400]/10 px-2.5 py-1 text-[11px] font-semibold text-[#FFE083]">
+                Spark Theory+
+              </span>
+            </div>
+
+            <p className="text-sm leading-6 text-white/75">
+              Unlock full progress tracking, personalised weak-topic analysis, unlimited quizzes, and smart revision paths built around your performance.
+            </p>
+
+            <div className="space-y-1 text-xs leading-5 text-white/70">
+              <p>• Unlimited topic quizzes</p>
+              <p>• My problem questions – automatically practise the questions you struggle with most</p>
+              <p>• Exam mode – realistic timed mock exams like the real electrical exams</p>
+              <p>• Flashcards – quick revision for key electrical terms and concepts</p>
+              <p>• Tool Box – built-in electrical calculators (voltage drop, cable size, Zs, conduit fill, RCD testing)</p>
+              <p>• Real performance tracking</p>
+              <p>• Weak topic targeting</p>
+              <p>• Exam-style mock tests</p>
+            </div>
+
+            <div className="pt-2">
+              <Link
+                href="/signup"
+                className="inline-flex items-center justify-center rounded-xl bg-[#FFC400] px-4 py-2.5 text-sm font-semibold text-[#1F1F1F] ring-1 ring-[#FFC400]/60 transition hover:bg-[#FFD54A]"
+              >
+                Upgrade Now
+              </Link>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+
+  const dashboardRightCards = [
     (
       <div
         key="progress-tracker"
@@ -591,39 +698,22 @@ export default function TopicsPage() {
         key="problem-questions"
         className="rounded-3xl bg-gradient-to-br from-[#2A2A2A]/82 via-[#1F1F1F]/76 to-[#2A2A2A]/82 p-7 ring-1 ring-white/14 shadow-[0_12px_30px_rgba(0,0,0,0.22)]"
       >
-        <div className="text-base font-semibold leading-tight text-white/85">Problem questions</div>
+        <div className="text-base font-semibold leading-tight text-white/85">My problem questions</div>
         <p className="mt-3 text-sm leading-6 text-white/70">
-          Questions you&apos;ve missed before — practise these to improve fastest.
+          Questions you&apos;ve answered incorrectly before — practise these to improve your weakest areas fastest.
         </p>
-        {problemPreview && (
-          <>
-            <p className="mt-4 text-sm text-white/85">
-              {problemPreview.totalCount} problem question{problemPreview.totalCount === 1 ? "" : "s"}
-              {problemPreview.hasRealData ? " tracked" : " (demo)"}
-            </p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {problemPreview.topTopics.map((topic) => (
-                <span
-                  key={topic.title}
-                  className="rounded-full border border-white/15 bg-white/5 px-2 py-1 text-xs text-white/75"
-                >
-                  {topic.title} ({topic.count})
-                </span>
-              ))}
-            </div>
-            <div className="mt-3 space-y-1">
-              {problemPreview.sampleQuestions.map((question) => (
-                <p
-                  key={question}
-                  className="truncate text-xs text-white/65"
-                  title={question}
-                >
-                  • {question}
-                </p>
-              ))}
-            </div>
-          </>
-        )}
+        <p className="mt-4 text-sm text-white/85">Principles of Electrical Science</p>
+        <div className="mt-3 space-y-1">
+          <p className="truncate text-xs text-white/65" title="Which statement about series and parallel circuits is correct?">
+            • Which statement about series and parallel circuits is correct?
+          </p>
+          <p className="truncate text-xs text-white/65" title="What is the SI unit of resistance?">
+            • What is the SI unit of resistance?
+          </p>
+          <p className="truncate text-xs text-white/65" title="Good conductor materials include?">
+            • Good conductor materials include?
+          </p>
+        </div>
         <p className="mt-4 text-xs text-white/50">
           Demo preview
         </p>
@@ -759,78 +849,12 @@ export default function TopicsPage() {
                   </div>
                 </div>
               ))}
-              <div className="mt-auto">
-                <div className="relative min-h-[180px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#252017]/94 via-[#1B1A17]/92 to-[#211C14]/94 p-8 ring-1 ring-[#FFC400]/30 shadow-[0_14px_34px_rgba(0,0,0,0.24)] spark-plus-glow">
-                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(260px_160px_at_12%_0%,rgba(255,196,0,0.14),transparent_62%)]" />
-                  <div className="relative flex flex-col gap-4">
-                    {showUpgradeLoadingCard ? (
-                      <>
-                        <div className="flex items-start justify-between gap-3">
-                          <p className="text-base font-semibold leading-tight text-white">Spark Theory+</p>
-                          <span className="rounded-full border border-[#FFC400]/45 bg-[#FFC400]/10 px-2.5 py-1 text-[11px] font-semibold text-[#FFE083]">
-                            Checking plan
-                          </span>
-                        </div>
-                        <p className="text-sm leading-6 text-white/75">
-                          Checking your subscription status…
-                        </p>
-                      </>
-                    ) : isPlusSubscriber ? (
-                      <>
-                        <div className="flex items-start justify-between gap-3">
-                          <p className="text-base font-semibold leading-tight text-white">You&apos;re on Spark Theory+</p>
-                          <span className="rounded-full border border-[#FFC400]/45 bg-[#FFC400]/10 px-2.5 py-1 text-[11px] font-semibold text-[#FFE083]">
-                            Active
-                          </span>
-                        </div>
-                        <p className="text-sm leading-6 text-white/75">
-                          Your PLUS plan is active. You have access to full progress tracking, personalised revision support, and premium quiz features.
-                        </p>
-                        <div className="space-y-1 text-xs leading-5 text-white/70">
-                          <p>• Unlimited topic quizzes</p>
-                          <p>• Real performance tracking</p>
-                          <p>• Weak area targeting</p>
-                          <p>• Exam-style mock tests</p>
-                          <p>• Priority support</p>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="flex items-start justify-between gap-3">
-                          <p className="text-base font-semibold leading-tight text-white">Upgrade to Spark Theory+</p>
-                          <span className="rounded-full border border-[#FFC400]/45 bg-[#FFC400]/10 px-2.5 py-1 text-[11px] font-semibold text-[#FFE083]">
-                            Spark Theory+
-                          </span>
-                        </div>
-
-                        <p className="text-sm leading-6 text-white/75">
-                          Unlock full progress tracking, personalised weak-topic analysis, unlimited quizzes, and smart revision paths built around your performance.
-                        </p>
-
-                        <div className="space-y-1 text-xs leading-5 text-white/70">
-                          <p>• Unlimited topic quizzes</p>
-                          <p>• Real performance tracking</p>
-                          <p>• Weak area targeting</p>
-                          <p>• Exam-style mock tests</p>
-                          <p>• Priority support</p>
-                        </div>
-
-                        <div className="pt-2">
-                          <Link
-                            href="/signup"
-                            className="inline-flex items-center justify-center rounded-xl bg-[#FFC400] px-4 py-2.5 text-sm font-semibold text-[#1F1F1F] ring-1 ring-[#FFC400]/60 transition hover:bg-[#FFD54A]"
-                          >
-                            Upgrade Now
-                          </Link>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
+              {revisionSupportCard}
+              {electricalToolBoxCard}
             </div>
 
             <div className="flex flex-col h-full min-h-full gap-6">
+              {sparkTheoryPlusCard}
               {dashboardRightCards}
             </div>
           </div>
