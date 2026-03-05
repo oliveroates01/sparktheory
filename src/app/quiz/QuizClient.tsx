@@ -1296,16 +1296,26 @@ export default function QuizPage() {
       <div className="relative mx-auto w-full max-w-3xl px-6 py-10">
         <header className="flex items-center justify-between mb-8">
           <div>
+            {quizMode === "flashcards" ? (
+              <Link
+                href="/trade/electrical"
+                className="inline-flex rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/80 transition hover:bg-white/10"
+              >
+                Back
+              </Link>
+            ) : null}
             <p className="text-xs text-white/60">Spark Theory</p>
             <h1 className="text-xl font-bold">{quizTitle}</h1>
             <p className="text-xs text-white/40">topic: {topic || "(none)"}</p>
           </div>
 
-          <div className="flex gap-2">
-            <Link href={topicsHref} className="bg-white/10 px-3 py-2 rounded-lg">
-              Topics
-            </Link>
-          </div>
+          {quizMode !== "flashcards" ? (
+            <div className="flex gap-2">
+              <Link href={topicsHref} className="bg-white/10 px-3 py-2 rounded-lg">
+                Topics
+              </Link>
+            </div>
+          ) : null}
         </header>
 
         {bank.length === 0 && !flashcardsNeedsSetup && (

@@ -569,6 +569,13 @@ export default function ElectricalPage() {
       `/quiz?trade=electrical&mode=flashcards&level=${normalizedLevel}&topic=all-level-${normalizedLevel}`
     );
   };
+  const startToolBox = () => {
+    if (!isPlus) {
+      goToUpgradeFlow();
+      return;
+    }
+    router.push("/tools");
+  };
 
   const noUnseenQuestionsAvailable =
     typeof unseenCount === "number" && unseenCount === 0;
@@ -682,94 +689,95 @@ export default function ElectricalPage() {
               {typeof passProbability === "number" ? `${passProbability}%` : "—"}
             </span>
           </div>
-          <div className="mx-auto mt-3 w-full max-w-2xl">
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+          <div className="mx-auto mt-3 w-full max-w-4xl">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-stretch">
               <button
                 type="button"
                 onClick={startWeakAreasQuiz}
-                className="block w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-center text-xs font-semibold text-white/80 transition hover:bg-white/10"
+                className="relative h-full w-full rounded-xl border border-white/15 bg-white/5 px-5 py-2.5 text-center text-xs font-semibold text-white/80 transition hover:bg-white/10 flex flex-col justify-between"
               >
-                <span className="inline-flex items-center gap-1.5">
-                  Focus on weak areas
-                  {!isPlus ? (
-                    <>
-                      <svg
-                        aria-hidden="true"
-                        viewBox="0 0 24 24"
-                        className="h-3.5 w-3.5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <rect x="5" y="11" width="14" height="10" rx="2" />
-                        <path d="M8 11V8a4 4 0 0 1 8 0v3" />
-                      </svg>
-                      <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold ring-1 ring-white/20">
-                        Plus
-                      </span>
-                    </>
-                  ) : null}
-                </span>
+                {!isPlus ? (
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    className="absolute top-3 right-3 h-4 w-4 text-white/70"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="5" y="11" width="14" height="10" rx="2" />
+                    <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+                  </svg>
+                ) : null}
+                <span className="inline-flex items-center whitespace-nowrap">Focus on weak areas</span>
               </button>
               <button
                 type="button"
                 onClick={startExamMode}
-                className="block w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-center text-xs font-semibold text-white/80 transition hover:bg-white/10"
+                className="relative h-full w-full rounded-xl border border-white/15 bg-white/5 px-5 py-2.5 text-center text-xs font-semibold text-white/80 transition hover:bg-white/10 flex flex-col justify-between"
               >
-                <span className="inline-flex items-center gap-1.5">
-                  Exam mode
-                  {!isPlus ? (
-                    <>
-                      <svg
-                        aria-hidden="true"
-                        viewBox="0 0 24 24"
-                        className="h-3.5 w-3.5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <rect x="5" y="11" width="14" height="10" rx="2" />
-                        <path d="M8 11V8a4 4 0 0 1 8 0v3" />
-                      </svg>
-                      <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold ring-1 ring-white/20">
-                        Plus
-                      </span>
-                    </>
-                  ) : null}
-                </span>
+                {!isPlus ? (
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    className="absolute top-3 right-3 h-4 w-4 text-white/70"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="5" y="11" width="14" height="10" rx="2" />
+                    <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+                  </svg>
+                ) : null}
+                <span className="inline-flex items-center">Exam mode</span>
               </button>
               <button
                 type="button"
                 onClick={startFlashcardsMode}
-                className="block w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-center text-xs font-semibold text-white/80 transition hover:bg-white/10"
+                className="relative h-full w-full rounded-xl border border-white/15 bg-white/5 px-5 py-2.5 text-center text-xs font-semibold text-white/80 transition hover:bg-white/10 flex flex-col justify-between"
               >
-                <span className="inline-flex items-center gap-1.5">
-                  Flashcards
-                  {!isPlus ? (
-                    <>
-                      <svg
-                        aria-hidden="true"
-                        viewBox="0 0 24 24"
-                        className="h-3.5 w-3.5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <rect x="5" y="11" width="14" height="10" rx="2" />
-                        <path d="M8 11V8a4 4 0 0 1 8 0v3" />
-                      </svg>
-                      <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold ring-1 ring-white/20">
-                        Plus
-                      </span>
-                    </>
-                  ) : null}
-                </span>
+                {!isPlus ? (
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    className="absolute top-3 right-3 h-4 w-4 text-white/70"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="5" y="11" width="14" height="10" rx="2" />
+                    <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+                  </svg>
+                ) : null}
+                <span className="inline-flex items-center">Flashcards</span>
+              </button>
+              <button
+                type="button"
+                onClick={startToolBox}
+                className="relative h-full w-full rounded-xl border border-white/15 bg-white/5 px-5 py-2.5 text-center text-xs font-semibold text-white/80 transition hover:bg-white/10 flex flex-col justify-between"
+              >
+                {!isPlus ? (
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    className="absolute top-3 right-3 h-4 w-4 text-white/70"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="5" y="11" width="14" height="10" rx="2" />
+                    <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+                  </svg>
+                ) : null}
+                <span className="inline-flex items-center gap-1.5">Tool Box</span>
               </button>
             </div>
           </div>

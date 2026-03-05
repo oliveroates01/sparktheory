@@ -9,8 +9,6 @@ import { auth } from "@/lib/firebase";
 import { db } from "@/lib/firebase";
 import { normalizeManualOverride, resolvePlusAccess } from "@/lib/entitlements";
 import {
-  getAttemptsKey,
-  loadAttempts,
   getMasteryByTopic,
 } from "@/lib/progress/attempts";
 import { getMissedKey, loadMissedMap, type MissedMap } from "@/lib/progress/missed";
@@ -294,13 +292,6 @@ export default function WeakElectricalClient() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const attemptsKey = getAttemptsKey("electrical", level, currentUserId);
-    const levelAttempts = loadAttempts(attemptsKey).filter(
-      (attempt) =>
-        attempt.trade === "electrical" &&
-        attempt.level === level &&
-        attempt.mode !== "flashcards"
-    );
     const missedMap = loadMissedMap(getMissedKey("electrical", level, currentUserId));
 
     const mastery = getMasteryByTopic({
@@ -312,16 +303,6 @@ export default function WeakElectricalClient() {
       Object.entries(mastery).filter(([topic]) => validTopicSet.has(topic))
     );
     setMasteryByTopic(masteryForLevelTopics);
-    const attemptedTopicSet = new Set(
-      levelAttempts
-        .map((attempt) => (attempt.topicKey || "").trim().toLowerCase())
-        .filter((topic) => topic && topic !== "all-level-2" && topic !== "all-level-3")
-        .filter((topic) => validTopicSet.has(topic))
-    );
-    const attemptedTopics = validTopics.filter((topic) => attemptedTopicSet.has(topic));
-    setHasAttemptedWeakTopics(attemptedTopics.length > 0);
-    setWeakTopics(attemptedTopics);
-    setSelectedTopics([]);
 
     const groups: MissedGroup[] = [];
 
@@ -399,6 +380,23 @@ export default function WeakElectricalClient() {
     }
 
     setMissedGroups(groups);
+
+    const topicMissTotals = groups
+      .map((group) => ({
+        topic: group.topic,
+        misses: group.questions.reduce(
+          (sum, question) => sum + Math.max(0, Number(question.wrong) || 0),
+          0
+        ),
+      }))
+      .filter((entry) => entry.misses > 0)
+      .sort((a, b) => b.misses - a.misses);
+
+    const totalMisses = topicMissTotals.reduce((sum, entry) => sum + entry.misses, 0);
+    const topWeakTopics = topicMissTotals.slice(0, 3).map((entry) => entry.topic);
+    setHasAttemptedWeakTopics(totalMisses > 0);
+    setWeakTopics(topWeakTopics);
+    setSelectedTopics([]);
   }, [level, currentUserId, validTopicRows, validTopics, validTopicSet, refreshTick]);
 
   const setLevelParam = (nextLevel: "2" | "3") => {
