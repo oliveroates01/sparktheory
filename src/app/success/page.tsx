@@ -17,7 +17,7 @@ export default function SuccessPage() {
 
           <div className="mt-6">
             <Link
-              href="/dashboard"
+              href="/trade/electrical"
               className="inline-flex items-center justify-center rounded-xl bg-[#FFC400] px-4 py-2.5 text-sm font-semibold text-black ring-1 ring-[#FF9100]/40 transition hover:bg-[#FF9100]"
             >
               Go to Dashboard
