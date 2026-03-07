@@ -13,7 +13,7 @@ export default function SuccessPage() {
   useEffect(() => {
     if (typeof window !== "undefined" && window.gtag) {
       window.gtag("event", "conversion", {
-        send_to: "AW-CONVERSION_ID/LABEL",
+        send_to: "AW-17999737501",
         value: 26.0,
         currency: "GBP",
       });
