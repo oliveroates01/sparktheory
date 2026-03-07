@@ -31,7 +31,8 @@ export async function POST(request: Request) {
       priceId,
       email: payload.email,
       uid,
-      successUrl: `${baseUrl}/account?checkout=success`,
+      successUrl:
+        "https://www.sparktheory.co.uk/success?session_id={CHECKOUT_SESSION_ID}",
       cancelUrl: `${baseUrl}/account?checkout=cancelled`,
     });
 

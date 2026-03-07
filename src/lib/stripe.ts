@@ -104,6 +104,7 @@ export async function createCheckoutSession(input: CreateCheckoutSessionInput) {
 
   if (input.uid) {
     params.set("client_reference_id", input.uid);
+    params.set("metadata[uid]", input.uid);
     params.set("metadata[userId]", input.uid);
     params.set("metadata[firebaseUid]", input.uid);
     params.set("subscription_data[metadata][userId]", input.uid);
