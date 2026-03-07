@@ -29,6 +29,20 @@ export default function RootLayout({
   return (
     <html lang="en" data-build-sha={buildSha} data-build-time={buildTime}>
       <head>
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17999737501"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-17999737501');
+            `,
+          }}
+        />
         <Script
           id="ms-clarity"
           strategy="afterInteractive"
