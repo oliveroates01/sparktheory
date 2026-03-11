@@ -55,10 +55,10 @@ export const principlesElectricalScienceLevel3Questions = [
     id: "pes3-005",
     question: "If conductor length doubles and all else is constant, resistance will?",
     options: [
-      "Double",
-      "Halve",
-      "Stay the same",
-      "Quadruple",
+      "Double in practice on site",
+      "Halve on site in this context",
+      "Stay the same in this context",
+      "Quadruple as standard",
     ],
     correctIndex: 0,
     explanation:
@@ -68,10 +68,10 @@ export const principlesElectricalScienceLevel3Questions = [
     id: "pes3-006",
     question: "If the cross‑sectional area doubles, resistance will?",
     options: [
-      "Halve",
-      "Double",
-      "Stay the same",
-      "Increase by 25%",
+      "Halve in practice on site",
+      "Double on site in this context",
+      "Stay the same in this context",
+      "Increase by 25% as standard",
     ],
     correctIndex: 0,
     explanation:
@@ -315,10 +315,10 @@ export const principlesElectricalScienceLevel3Questions = [
     id: "pes3-025",
     question: "If current doubles in a circuit with constant resistance, power loss will?",
     options: [
-      "Increase four‑fold",
-      "Double",
-      "Stay the same",
-      "Halve",
+      "Increase four‑fold in practice",
+      "Double on site in this context",
+      "Stay the same in this context",
+      "Halve as standard in normal use",
     ],
     correctIndex: 0,
     explanation:
@@ -382,8 +382,8 @@ export const principlesElectricalScienceLevel3Questions = [
     options: [
       "Inside from south to north, outside from north to south",
       "Inside from north to south, outside from south to north",
-      "Only inside the magnet",
-      "Only outside the magnet",
+      "Only inside the magnet in this context",
+      "Only outside the magnet as standard",
     ],
     correctIndex: 0,
     explanation:
@@ -393,9 +393,9 @@ export const principlesElectricalScienceLevel3Questions = [
     id: "pes3-031",
     question: "When like magnetic poles face each other they?",
     options: [
-      "Repel",
-      "Attract",
-      "Neutralize",
+      "Repel in practice on site",
+      "Attract on site in this context",
+      "Neutralize in this context",
       "Rotate at right angles",
     ],
     correctIndex: 0,
@@ -591,7 +591,7 @@ export const principlesElectricalScienceLevel3Questions = [
       "A changing magnetic field in a coil inducing e.m.f. in the same coil",
       "A magnetic field inducing e.m.f. in a separate coil",
       "Static charge stored in a capacitor",
-      "Energy transfer by heat",
+      "Energy transfer by heat as standard",
     ],
     correctIndex: 0,
     explanation:
@@ -630,7 +630,7 @@ export const principlesElectricalScienceLevel3Questions = [
       "Two conductors separated by a dielectric storing energy in an electric field",
       "A device that stores energy chemically",
       "A coil that stores energy magnetically only",
-      "A resistor used to limit current",
+      "A resistor used to limit current as standard",
     ],
     correctIndex: 0,
     explanation:

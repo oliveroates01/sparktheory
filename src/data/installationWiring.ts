@@ -4,7 +4,7 @@ export const installationWiringQuestions = [
       question: "Which is an example of statutory regulations affecting electrical work?",
       options: [
         "Electricity at Work Regulations",
-        "On Site Guide",
+        "On Site Guide on site",
         "Manufacturer catalogue",
         "Company toolbox talk",
       ],
@@ -137,7 +137,7 @@ export const installationWiringQuestions = [
       options: [
         "Keeping different circuit types separated",
         "Bunching cables together",
-        "Removing insulation",
+        "Removing insulation in this context",
         "Running all circuits in one conduit",
       ],
       correctIndex: 0,
@@ -148,9 +148,9 @@ export const installationWiringQuestions = [
       question: "Trunking and tray may be suspended from girders using?",
       options: [
         "Appropriate brackets and supports",
-        "Adhesive only",
-        "Plastic clips only",
-        "Cable ties only",
+        "Adhesive only on site",
+        "Plastic clips only in this context",
+        "Cable ties only as standard",
       ],
       correctIndex: 0,
       explanation: "Suspended systems use suitable brackets and supports.",
@@ -161,7 +161,7 @@ export const installationWiringQuestions = [
       options: [
         "Allows neat containment of power and data",
         "Cannot carry data cables",
-        "Is only for lighting",
+        "Is only for lighting in this context",
         "Must be buried in walls",
       ],
       correctIndex: 0,
@@ -185,7 +185,7 @@ export const installationWiringQuestions = [
       options: [
         "Higher material and installation cost",
         "Lower fire resistance",
-        "Poor durability",
+        "Poor durability in this context",
         "Cannot be used in emergencies",
       ],
       correctIndex: 0,
@@ -198,7 +198,7 @@ export const installationWiringQuestions = [
         "Good mechanical protection for underground use",
         "Highest fire resistance",
         "No need for earthing",
-        "No glands required",
+        "No glands required as standard",
       ],
       correctIndex: 0,
       explanation: "SWA provides mechanical protection for buried cables.",
@@ -292,8 +292,8 @@ export const installationWiringQuestions = [
       question: "A key reason for segregation of circuits is to?",
       options: [
         "Avoid interference between power and data circuits",
-        "Increase voltage",
-        "Reduce insulation",
+        "Increase voltage on site",
+        "Reduce insulation in this context",
         "Allow mixing voltages",
       ],
       correctIndex: 0,
