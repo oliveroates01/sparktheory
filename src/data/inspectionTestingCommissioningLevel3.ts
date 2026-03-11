@@ -5,9 +5,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
       "On an Electrical Installation Certificate schedule of inspection, boxes should be marked?",
     options: [
       "Ticked for compliance or N/A, and defects corrected before certification",
-      "Unsatisfactory and left for later",
-      "Only with dates",
-      "Only for new installations",
+      "Unsatisfactory and left for later during inspection and testing",
+      "Only with dates during inspection and testing only as a typical case",
+      "Only for new installations during inspection and testing only as a typical case",
     ],
     correctIndex: 0,
     explanation:
@@ -20,8 +20,8 @@ export const inspectionTestingCommissioningLevel3Questions = [
     options: [
       "A changeover arrangement prevents back‑feeding the public supply",
       "It is connected directly to the intake without isolation",
-      "It shares the same neutral without any control",
-      "It bypasses the main switch",
+      "It shares the same neutral without any control during inspection and testing",
+      "It bypasses the main switch during inspection and testing",
     ],
     correctIndex: 0,
     explanation:
@@ -46,9 +46,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "Which item checks the distributor’s earthing arrangement?",
     options: [
       "Correct connection of the MET to the supply earthing",
-      "Position of light switches",
-      "Number of socket outlets",
-      "Type of lamp holders",
+      "Position of light switches during inspection and testing",
+      "Number of socket outlets during inspection and testing",
+      "Type of lamp holders during inspection and testing",
     ],
     correctIndex: 0,
     explanation:
@@ -59,9 +59,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "For TT systems, inspection should confirm?",
     options: [
       "A correctly selected and installed earth electrode",
-      "A direct connection to the supply PEN",
-      "No earthing at all for the installation",
-      "A neutral‑earth link in the installation",
+      "A direct connection to the supply PEN during inspection and testing",
+      "No earthing at all for the installation during inspection and testing",
+      "A neutral‑earth link in the installation during inspection and testing",
     ],
     correctIndex: 0,
     explanation: "TT systems require an earth electrode connected to the MET.",
@@ -71,9 +71,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "Main protective bonding conductors should be connected?",
     options: [
       "Within 600 mm of service entry or meter (if practicable)",
-      "At the furthest branch",
-      "On flexible pipe sections",
-      "After any tee joints",
+      "At the furthest branch during inspection and testing",
+      "On flexible pipe sections during inspection and testing",
+      "After any tee joints during inspection and testing",
     ],
     correctIndex: 0,
     explanation:
@@ -85,9 +85,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
       "Protective bonding conductor sizes for TN‑S and TT are based on?",
     options: [
       "Half the earthing conductor, minimum 6 mm², maximum 25 mm²",
-      "Equal to line conductor size only",
-      "Fixed at 10 mm² always",
-      "Based on breaker rating only",
+      "Equal to line conductor size only during inspection and testing",
+      "Fixed at 10 mm² always during inspection and testing",
+      "Based on breaker rating only during inspection and testing",
     ],
     correctIndex: 0,
     explanation:
@@ -98,9 +98,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "For TN‑C‑S (PME), bonding conductor size is determined by?",
     options: [
       "Supply neutral size and Table 54.8",
-      "Circuit length only",
-      "RCD rating",
-      "Switchgear type",
+      "Circuit length only during inspection and testing",
+      "RCD rating during inspection and testing",
+      "Switchgear type during inspection and testing",
     ],
     correctIndex: 0,
     explanation: "TN‑C‑S bonding uses the supply neutral size per Table 54.8.",
@@ -108,7 +108,12 @@ export const inspectionTestingCommissioningLevel3Questions = [
   {
     id: "itc3-009",
     question: "Main protective bonding conductors should be coloured?",
-    options: ["Green and yellow", "Brown", "Blue", "Black"],
+    options: [
+      "Green and yellow",
+      "Brown during inspection and testing",
+      "Blue during inspection and testing",
+      "Black during inspection and testing",
+    ],
     correctIndex: 0,
     explanation: "Protective bonding conductors use green/yellow insulation.",
   },
@@ -136,8 +141,8 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "Colour coding for BS 951 clamps uses?",
     options: [
       "Red for dry, blue/green for corrosive or humid",
-      "Red for corrosive, blue for dry",
-      "Green for dry only",
+      "Red for corrosive, blue for dry during inspection and testing",
+      "Green for dry only during inspection and testing",
       "No colour coding for the installation",
     ],
     correctIndex: 0,
@@ -149,8 +154,8 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "Bonding connection labels must state?",
     options: [
       "Safety electrical connection – do not remove",
-      "Danger 230 V",
-      "Tested OK",
+      "Danger 230 V during inspection and testing",
+      "Tested OK during inspection and testing",
       "No label required for the installation",
     ],
     correctIndex: 0,
@@ -175,8 +180,8 @@ export const inspectionTestingCommissioningLevel3Questions = [
       "Barriers/enclosures for basic protection should typically provide?",
     options: [
       "At least IP2X or IPXXB on accessible surfaces",
-      "Only IP00",
-      "Only IP1X",
+      "Only IP00 during inspection and testing",
+      "Only IP1X during inspection and testing",
       "No IP requirement for the installation",
     ],
     correctIndex: 0,
@@ -201,9 +206,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "PELV systems differ from SELV because?",
     options: [
       "They may not be separated from earth",
-      "They use higher voltages",
-      "They are AC only",
-      "They require no transformer",
+      "They use higher voltages during inspection and testing",
+      "They are AC only during inspection and testing",
+      "They require no transformer during inspection and testing",
     ],
     correctIndex: 0,
     explanation: "PELV may be earthed, unlike SELV.",
@@ -214,8 +219,8 @@ export const inspectionTestingCommissioningLevel3Questions = [
       "Where disconnection times cannot be met and RCDs are not feasible, inspection may consider?",
     options: [
       "Local supplementary equipotential bonding",
-      "Removing protective devices",
-      "Using thinner conductors",
+      "Removing protective devices during inspection and testing",
+      "Using thinner conductors during inspection and testing",
       "Lowering supply voltage permanently",
     ],
     correctIndex: 0,
@@ -226,7 +231,12 @@ export const inspectionTestingCommissioningLevel3Questions = [
     id: "itc3-019",
     question:
       "RCDs used for additional protection should typically be rated at?",
-    options: ["30 mA or less", "300 mA", "500 mA", "1 A"],
+    options: [
+      "30 mA or less",
+      "300 mA during inspection and testing",
+      "500 mA during inspection and testing",
+      "1 A during inspection and testing",
+    ],
     correctIndex: 0,
     explanation: "Additional protection usually requires 30 mA RCDs.",
   },
@@ -235,9 +245,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "FELV refers to circuits where?",
     options: [
       "SELV/PELV requirements are not met but voltage is below 50 V AC",
-      "Voltage is above 230 V",
-      "Only DC is used",
-      "All circuits are double insulated",
+      "Voltage is above 230 V during inspection and testing",
+      "Only DC is used during inspection and testing only as a typical case",
+      "All circuits are double insulated during inspection and testing",
     ],
     correctIndex: 0,
     explanation:
@@ -261,9 +271,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "For bonding clamps, the connection point should be?",
     options: [
       "Accessible for future inspection and testing",
-      "Hidden inside walls",
-      "Covered permanently by insulation",
-      "Placed after flexible sections",
+      "Hidden inside walls during inspection and testing",
+      "Covered permanently by insulation during inspection and testing",
+      "Placed after flexible sections during inspection and testing",
     ],
     correctIndex: 0,
     explanation:
@@ -275,9 +285,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
       "When identifying extraneous conductive parts, ‘Earth potential’ refers to?",
     options: [
       "The potential of the ground (capital E)",
-      "The potential between phases",
-      "The voltage of the circuit",
-      "A testing voltage only",
+      "The potential between phases during inspection and testing",
+      "The voltage of the circuit during inspection and testing",
+      "A testing voltage only during inspection and testing",
     ],
     correctIndex: 0,
     explanation: "Earth potential refers to the potential of the ground mass.",
@@ -301,9 +311,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "Why is a changeover switch important for inspections?",
     options: [
       "Prevents paralleling a standby generator with the public supply",
-      "Increases Zs",
-      "Replaces RCDs",
-      "Provides overcurrent protection",
+      "Increases Zs during inspection and testing as a typical case",
+      "Replaces RCDs during inspection and testing as a typical case",
+      "Provides overcurrent protection during inspection and testing",
     ],
     correctIndex: 0,
     explanation:
@@ -314,9 +324,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "A bonding clamp must be labelled per BS 7671 at the?",
     options: [
       "Point of connection to an extraneous conductive part",
-      "Consumer unit front cover",
-      "Main switch handle",
-      "Lighting switch",
+      "Consumer unit front cover during inspection and testing",
+      "Main switch handle during inspection and testing",
+      "Lighting switch during inspection and testing",
     ],
     correctIndex: 0,
     explanation:
@@ -328,9 +338,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
       "In a schedule of inspection, the intake equipment section includes checks on?",
     options: [
       "Isolator and meter tails for protection and secure fixing",
-      "Socket polarity only",
-      "RCD trip times only",
-      "Lighting controls only",
+      "Socket polarity only during inspection and testing",
+      "RCD trip times only during inspection and testing",
+      "Lighting controls only during inspection and testing",
     ],
     correctIndex: 0,
     explanation:
@@ -342,8 +352,8 @@ export const inspectionTestingCommissioningLevel3Questions = [
     options: [
       "On the consumer’s side, after the stopcock",
       "Before the service enters the building",
-      "On plastic sections",
-      "After tee joints",
+      "On plastic sections during inspection and testing",
+      "After tee joints during inspection and testing",
     ],
     correctIndex: 0,
     explanation:

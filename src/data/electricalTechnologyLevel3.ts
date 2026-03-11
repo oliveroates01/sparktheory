@@ -4,9 +4,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "What identifies a Statutory Regulation?",
     options: [
       "Its title includes ‘Regulations’ and it has an SI number",
-      "It is published only by manufacturers",
-      "It is guidance without legal force",
-      "It is a company procedure",
+      "It is published only by manufacturers in electrical engineering practice",
+      "It is guidance without legal force in electrical engineering practice",
+      "It is a company procedure in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -17,9 +17,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "The Electricity at Work Regulations 1989 (EAWR) are made under?",
     options: [
       "The Health and Safety at Work Act",
-      "The Building Regulations",
-      "The Gas Safety Regulations",
-      "The Consumer Rights Act",
+      "The Building Regulations in electrical engineering practice",
+      "The Gas Safety Regulations in electrical engineering practice",
+      "The Consumer Rights Act in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -30,9 +30,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "EAWR applies to?",
     options: [
       "Workplaces, including systems beyond BS 7671 voltage scope",
-      "Private homes only",
-      "Only low‑voltage domestic circuits",
-      "Only new installations",
+      "Private homes only in electrical engineering practice",
+      "Only low‑voltage domestic circuits in electrical engineering practice",
+      "Only new installations in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -43,9 +43,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which document gives guidance on EAWR interpretation?",
     options: [
       "HSE memorandum of guidance HSR25",
-      "IET On‑Site Guide",
-      "BS 7671 Part 7",
-      "IET GN8",
+      "IET On‑Site Guide in electrical engineering practice",
+      "BS 7671 Part 7 in electrical engineering practice",
+      "IET GN8 in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -56,9 +56,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "ESQCR 2002 mainly applies to?",
     options: [
       "Electricity suppliers’ lines and apparatus",
-      "Portable appliance testing only",
-      "Domestic lighting circuits",
-      "Tool safety inspections",
+      "Portable appliance testing only in electrical engineering practice",
+      "Domestic lighting circuits in electrical engineering practice",
+      "Tool safety inspections in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -102,9 +102,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "A key purpose of the IET On‑Site Guide is to?",
     options: [
       "Provide design/installation/testing guidance for standard installations",
-      "Replace BS 7671 completely",
-      "Provide statutory law",
-      "Set insurance requirements",
+      "Replace BS 7671 completely in electrical engineering practice",
+      "Provide statutory law in electrical engineering practice as a typical case",
+      "Set insurance requirements in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -128,9 +128,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "CPD seminars are often used to?",
     options: [
       "Provide updates and develop professional knowledge",
-      "Replace statutory law",
-      "Certify an installation",
-      "Issue legal notices",
+      "Replace statutory law in electrical engineering practice",
+      "Certify an installation in electrical engineering practice",
+      "Issue legal notices in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation: "CPD seminars update knowledge and professional competence.",
@@ -140,9 +140,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "ACoPs are?",
     options: [
       "Approved Codes of Practice with special legal status",
-      "Manufacturer brochures",
-      "Optional customer preferences",
-      "Company trademarks",
+      "Manufacturer brochures in electrical engineering practice",
+      "Optional customer preferences in electrical engineering practice",
+      "Company trademarks in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -153,9 +153,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which drawing type shows what has actually been installed?",
     options: [
       "As‑fitted or installed drawings",
-      "Concept drawings",
-      "Tender sketches",
-      "Marketing diagrams",
+      "Concept drawings in electrical engineering practice",
+      "Tender sketches in electrical engineering practice",
+      "Marketing diagrams in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -166,9 +166,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Why must symbols on drawings be explained?",
     options: [
       "To ensure the drawing is understood by installers",
-      "To replace the need for scale",
-      "To avoid using standard symbols",
-      "To hide design intent",
+      "To replace the need for scale in electrical engineering practice",
+      "To avoid using standard symbols in electrical engineering practice",
+      "To hide design intent in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation: "A key or legend ensures symbols are correctly interpreted.",
@@ -204,9 +204,9 @@ export const electricalTechnologyLevel3Questions = [
       "Electricity cannot be stored in significant amounts, so the system must?",
     options: [
       "Balance supply and demand continuously",
-      "Store energy at substations",
-      "Run only at night",
-      "Shut down during low demand",
+      "Store energy at substations in electrical engineering practice",
+      "Run only at night in electrical engineering practice",
+      "Shut down during low demand in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -230,8 +230,8 @@ export const electricalTechnologyLevel3Questions = [
     options: [
       "To reduce I²R losses and keep cable sizes manageable",
       "To make transformers smaller at the generator",
-      "To increase domestic voltage",
-      "To reduce grid frequency",
+      "To increase domestic voltage in electrical engineering practice",
+      "To reduce grid frequency in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -242,9 +242,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "High‑voltage overhead transmission in the UK mainly uses?",
     options: [
       "Pylons with overhead lines",
-      "Underground only",
-      "Subsea only",
-      "Battery storage",
+      "Underground only in electrical engineering practice",
+      "Subsea only in electrical engineering practice",
+      "Battery storage in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation: "UK transmission is predominantly overhead on pylons.",
@@ -254,9 +254,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "At high voltage, electricity can?",
     options: [
       "Arc through air across short distances",
-      "Not pass through air at all",
-      "Only pass through water",
-      "Only pass through plastic",
+      "Not pass through air at all in electrical engineering practice",
+      "Only pass through water in electrical engineering practice",
+      "Only pass through plastic in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -267,9 +267,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Why are longer insulators used at higher voltages?",
     options: [
       "To increase creepage distance and prevent flashover",
-      "To increase current flow",
-      "To reduce transformer size",
-      "To improve power factor",
+      "To increase current flow in electrical engineering practice",
+      "To reduce transformer size in electrical engineering practice",
+      "To improve power factor in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -280,9 +280,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which statement about renewable energy is correct?",
     options: [
       "Its share of electricity production has been increasing",
-      "It is no longer used in the UK",
-      "It is only for off‑grid homes",
-      "It replaced all fossil fuels already",
+      "It is no longer used in the UK in electrical engineering practice",
+      "It is only for off‑grid homes in electrical engineering practice",
+      "It replaced all fossil fuels already in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -293,9 +293,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Pumped‑storage hydro works by?",
     options: [
       "Pumping water up off‑peak, releasing it at peak demand",
-      "Storing steam in tanks",
-      "Storing electricity in capacitors",
-      "Running only at night",
+      "Storing steam in tanks in electrical engineering practice",
+      "Storing electricity in capacitors in electrical engineering practice",
+      "Running only at night in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -306,9 +306,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Technical drawings should use symbols that are?",
     options: [
       "British Standard where possible, with a legend",
-      "Invented without explanation",
-      "Written only in text",
-      "Scaled to actual device size",
+      "Invented without explanation in electrical engineering practice",
+      "Written only in text in electrical engineering practice",
+      "Scaled to actual device size in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation: "BS symbols should be used and explained in a key or legend.",
@@ -325,9 +325,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Why might A3 reductions be used on site?",
     options: [
       "Easy printing and quick reference, but less readability",
-      "To show full‑size scale",
-      "To avoid any loss of detail",
-      "To increase drawing accuracy",
+      "To show full‑size scale in electrical engineering practice",
+      "To avoid any loss of detail in electrical engineering practice",
+      "To increase drawing accuracy in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:
@@ -338,9 +338,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which statement about technical specifications is true?",
     options: [
       "Manufacturers provide them based on testing and development",
-      "They are never biased toward products",
-      "They replace statutory regulations",
-      "They are only verbal",
+      "They are never biased toward products in electrical engineering practice",
+      "They replace statutory regulations in electrical engineering practice",
+      "They are only verbal in electrical engineering practice",
     ],
     correctIndex: 0,
     explanation:

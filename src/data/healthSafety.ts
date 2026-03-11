@@ -382,9 +382,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "What is an accident at work?",
     options: [
       "An unplanned event causing harm or damage",
-      "A planned maintenance activity",
-      "A routine toolbox talk session",
-      "A completed risk assessment form",
+      "A planned maintenance activity in workplace safety practice",
+      "A routine toolbox talk session in workplace safety practice",
+      "A completed risk assessment form in workplace safety practice",
     ],
     correctIndex: 0,
     explanation: "An accident is an unplanned event causing injury or damage.",
@@ -407,8 +407,8 @@ export const healthSafetyQuestions: Question[] = [
       "After 30 June 2000, what must workplaces with 5+ employees display?",
     options: [
       "The official HSE health and safety law poster",
-      "A company advert showing site rules",
-      "A weekly rota of staff holidays",
+      "A company advert showing site rules in workplace safety practice",
+      "A weekly rota of staff holidays in workplace safety practice",
       "A toolbox talk schedule for the month",
     ],
     correctIndex: 0,
@@ -449,7 +449,7 @@ export const healthSafetyQuestions: Question[] = [
     options: [
       "Report it to the site safety representative",
       "Post it on social media immediately",
-      "Keep quiet to avoid delays",
+      "Keep quiet to avoid delays in workplace safety practice",
       "Fix it alone without telling anyone",
     ],
     correctIndex: 0,
@@ -607,8 +607,8 @@ export const healthSafetyQuestions: Question[] = [
     question: "In an EWR prosecution, what is the key defence?",
     options: [
       "Prove reasonable steps and due diligence",
-      "Say you were told to hurry up",
-      "Say the task looked low risk",
+      "Say you were told to hurry up in workplace safety practice",
+      "Say the task looked low risk in workplace safety practice",
       "Say the client accepted the risk",
     ],
     correctIndex: 0,
@@ -686,9 +686,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "Who is responsible for carrying out risk assessments on site?",
     options: [
       "The employer or responsible person",
-      "Only the newest apprentice",
-      "Only visiting inspectors",
-      "Only the site cleaner",
+      "Only the newest apprentice in workplace safety practice",
+      "Only visiting inspectors in workplace safety practice",
+      "Only the site cleaner in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -726,9 +726,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "What is a near miss?",
     options: [
       "An incident that could have caused harm",
-      "A planned safety inspection",
-      "A completed accident report",
-      "A successful job completion",
+      "A planned safety inspection in workplace safety practice",
+      "A completed accident report in workplace safety practice",
+      "A successful job completion in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -753,8 +753,8 @@ export const healthSafetyQuestions: Question[] = [
     options: [
       "Bend knees and keep back straight",
       "Twist while lifting quickly",
-      "Lift with arms only",
-      "Pull with one hand",
+      "Lift with arms only in workplace safety practice",
+      "Pull with one hand in workplace safety practice",
     ],
     correctIndex: 0,
     explanation: "Correct lifting technique reduces strain and risk of injury.",
@@ -803,9 +803,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "Why should test instruments be checked before use?",
     options: [
       "To confirm they are working correctly",
-      "To make the test quicker",
+      "To make the test quicker in workplace safety practice",
       "To reduce the need for isolation",
-      "To avoid using PPE",
+      "To avoid using PPE in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -816,9 +816,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "What is the main aim of safe isolation?",
     options: [
       "Ensure circuits are dead before work",
-      "Speed up installation times",
-      "Reduce paperwork",
-      "Allow tools to run cooler",
+      "Speed up installation times in workplace safety practice",
+      "Reduce paperwork in workplace safety practice",
+      "Allow tools to run cooler in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -829,9 +829,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "What should you do if a fire alarm sounds on site?",
     options: [
       "Leave immediately using the escape route",
-      "Finish the job before leaving",
-      "Ignore it if unsure",
-      "Wait for friends before exiting",
+      "Finish the job before leaving in workplace safety practice",
+      "Ignore it if unsure in workplace safety practice",
+      "Wait for friends before exiting in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -880,9 +880,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "Which of these would normally be reportable under RIDDOR?",
     options: [
       "A major injury requiring hospital treatment",
-      "A minor paper cut",
-      "A late arrival to work",
-      "A broken mobile phone",
+      "A minor paper cut in workplace safety practice",
+      "A late arrival to work in workplace safety practice",
+      "A broken mobile phone in workplace safety practice",
     ],
     correctIndex: 0,
     explanation: "Serious injuries must be reported under RIDDOR regulations.",
@@ -893,8 +893,8 @@ export const healthSafetyQuestions: Question[] = [
     options: [
       "To prevent trips and allow safe access",
       "To improve site appearance only",
-      "To reduce cleaning time",
-      "To avoid using warning signs",
+      "To reduce cleaning time in workplace safety practice",
+      "To avoid using warning signs in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -920,7 +920,7 @@ export const healthSafetyQuestions: Question[] = [
       "So they understand site hazards and rules",
       "So they can start work immediately",
       "So they can inspect other workers",
-      "So they avoid signing paperwork",
+      "So they avoid signing paperwork in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -946,9 +946,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "Who is responsible for carrying out risk assessments on site?",
     options: [
       "The employer or responsible person",
-      "Only the newest apprentice",
-      "Only visiting inspectors",
-      "Only the site receptionist",
+      "Only the newest apprentice in workplace safety practice",
+      "Only visiting inspectors in workplace safety practice",
+      "Only the site receptionist in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -1063,9 +1063,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "What is the purpose of a toolbox talk?",
     options: [
       "Share safety information with workers",
-      "Decide company holidays",
-      "Train customers on products",
-      "Promote company branding",
+      "Decide company holidays in workplace safety practice",
+      "Train customers on products in workplace safety practice",
+      "Promote company branding in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -1197,9 +1197,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "A key step in safe manual handling is to?",
     options: [
       "Bend knees and keep back straight",
-      "Keep legs straight",
-      "Twist while lifting",
-      "Lift away from body",
+      "Keep legs straight in workplace safety practice",
+      "Twist while lifting in workplace safety practice",
+      "Lift away from body in workplace safety practice",
     ],
     correctIndex: 0,
     explanation: "Safe lifting uses bent knees and a straight back.",
@@ -1223,9 +1223,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "Which is one power of HSE inspectors?",
     options: [
       "Enter premises unannounced to investigate",
-      "Set employee pay rates",
-      "Approve overtime",
-      "Choose contractors",
+      "Set employee pay rates in workplace safety practice",
+      "Approve overtime in workplace safety practice",
+      "Choose contractors in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -1250,9 +1250,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "The Health and Safety at Work etc. Act 1974 is?",
     options: [
       "Primary legislation for occupational health and safety in Great Britain",
-      "A non‑statutory guidance note",
-      "A manufacturer’s code of practice",
-      "A local authority policy only",
+      "A non‑statutory guidance note in workplace safety practice",
+      "A manufacturer’s code of practice in workplace safety practice",
+      "A local authority policy only in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -1278,9 +1278,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "Under the HSW Act, employees must?",
     options: [
       "Take reasonable care and cooperate on safety matters",
-      "Write company safety policy",
-      "Issue improvement notices",
-      "Set national standards",
+      "Write company safety policy in workplace safety practice",
+      "Issue improvement notices in workplace safety practice",
+      "Set national standards in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -1292,9 +1292,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "PUWER 1998 requires work equipment to be?",
     options: [
       "Suitable and safe for the task and environment",
-      "New and branded",
-      "Used only indoors",
-      "Owned by the worker",
+      "New and branded in workplace safety practice",
+      "Used only indoors in workplace safety practice",
+      "Owned by the worker in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -1306,9 +1306,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "COSHH regulations focus on?",
     options: [
       "Controlling hazardous substances and exposure",
-      "Wiring colour codes",
-      "Noise at work only",
-      "Scaffold inspection",
+      "Wiring colour codes in workplace safety practice",
+      "Noise at work only in workplace safety practice",
+      "Scaffold inspection in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -1329,8 +1329,8 @@ export const healthSafetyQuestions: Question[] = [
     question: "HSE inspectors can do which of the following?",
     options: [
       "Enter and inspect workplaces without notice",
-      "Set electricity prices",
-      "Approve all designs",
+      "Set electricity prices in workplace safety practice",
+      "Approve all designs in workplace safety practice",
       "Issue building completion certificates",
     ],
     correctIndex: 0,
@@ -1343,9 +1343,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "A prohibition notice is used when?",
     options: [
       "There is a risk of serious personal injury",
-      "Minor issues need correction",
-      "A design is incomplete",
-      "A training record is missing",
+      "Minor issues need correction in workplace safety practice",
+      "A design is incomplete in workplace safety practice",
+      "A training record is missing in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:
@@ -1357,9 +1357,9 @@ export const healthSafetyQuestions: Question[] = [
     question: "A breach of non‑statutory guidance often results in?",
     options: [
       "Contractual or quality issues and possible legal consequences",
-      "No consequences ever for the installation",
-      "Automatic criminal conviction",
-      "Immediate imprisonment only",
+      "No consequences ever for the installation in workplace safety practice",
+      "Automatic criminal conviction in workplace safety practice",
+      "Immediate imprisonment only in workplace safety practice",
     ],
     correctIndex: 0,
     explanation:

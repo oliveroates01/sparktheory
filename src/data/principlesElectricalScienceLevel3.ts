@@ -4,9 +4,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "What does resistivity describe?",
     options: [
       "How strongly a material opposes the flow of electric current",
-      "The maximum current a cable can safely carry",
-      "The voltage available at a supply point",
-      "The energy stored in a conductor",
+      "The maximum current a cable can safely carry in advanced electrical theory",
+      "The voltage available at a supply point in advanced electrical theory",
+      "The energy stored in a conductor in advanced electrical theory",
     ],
     correctIndex: 0,
     explanation:
@@ -84,9 +84,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "A low insulation resistance reading (e.g., < 0.5 MΩ) suggests?",
     options: [
       "Insulation deterioration and possible fault",
-      "A healthy circuit with no leakage",
-      "A correct polarity test result",
-      "Normal operation under load",
+      "A healthy circuit with no leakage in advanced electrical theory",
+      "A correct polarity test result in advanced electrical theory",
+      "Normal operation under load in advanced electrical theory",
     ],
     correctIndex: 0,
     explanation:
@@ -140,7 +140,7 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-014",
-    question: "The text states copper resistance changes by about?",
+    question: "How much does copper resistance change with temperature?",
     options: [
       "2% for every 5 °C change",
       "5% for every 2 °C change",
@@ -182,8 +182,8 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "The total resistance of a parallel circuit is found by?",
     options: [
       "Adding the reciprocals of each resistance",
-      "Adding all resistances directly",
-      "Multiplying all resistances",
+      "Adding all resistances directly in advanced electrical theory",
+      "Multiplying all resistances in advanced electrical theory",
       "Subtracting the largest resistance",
     ],
     correctIndex: 0,
@@ -242,7 +242,12 @@ export const principlesElectricalScienceLevel3Questions = [
     id: "pes3-025",
     question:
       "If current doubles in a circuit with constant resistance, power loss will?",
-    options: ["Increase four‑fold", "Double", "Stay the same", "Halve"],
+    options: [
+      "Increase four‑fold",
+      "Double in advanced electrical theory",
+      "Stay the same in advanced electrical theory",
+      "Halve in advanced electrical theory",
+    ],
     correctIndex: 0,
     explanation:
       "Power loss is proportional to I², so doubling current gives four times the power.",
@@ -277,9 +282,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "A practical way to reduce voltage drop in a circuit is to?",
     options: [
       "Increase conductor cross‑sectional area",
-      "Increase conductor length",
-      "Reduce conductor size",
-      "Add more resistors in series",
+      "Increase conductor length in advanced electrical theory",
+      "Reduce conductor size in advanced electrical theory",
+      "Add more resistors in series in advanced electrical theory",
     ],
     correctIndex: 0,
     explanation:
@@ -304,8 +309,8 @@ export const principlesElectricalScienceLevel3Questions = [
     options: [
       "Inside from south to north, outside from north to south",
       "Inside from north to south, outside from south to north",
-      "Only inside the magnet",
-      "Only outside the magnet",
+      "Only inside the magnet in advanced electrical theory",
+      "Only outside the magnet in advanced electrical theory",
     ],
     correctIndex: 0,
     explanation:
@@ -371,8 +376,8 @@ export const principlesElectricalScienceLevel3Questions = [
     options: [
       "Cancel each other’s magnetic fields",
       "Double the magnetic field strength",
-      "Produce no current",
-      "Increase voltage drop",
+      "Produce no current in advanced electrical theory",
+      "Increase voltage drop in advanced electrical theory",
     ],
     correctIndex: 0,
     explanation:
@@ -383,9 +388,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "A solenoid is best described as?",
     options: [
       "A coil of wire that produces a stronger magnetic field",
-      "A permanent magnet with fixed polarity",
-      "A resistor used for current limiting",
-      "A device that stores chemical energy",
+      "A permanent magnet with fixed polarity in advanced electrical theory",
+      "A resistor used for current limiting in advanced electrical theory",
+      "A device that stores chemical energy in advanced electrical theory",
     ],
     correctIndex: 0,
     explanation:
@@ -476,9 +481,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "Self‑induction refers to?",
     options: [
       "A changing magnetic field in a coil inducing e.m.f. in the same coil",
-      "A magnetic field inducing e.m.f. in a separate coil",
-      "Static charge stored in a capacitor",
-      "Energy transfer by heat",
+      "A magnetic field inducing e.m.f. in a separate coil in advanced electrical theory",
+      "Static charge stored in a capacitor in advanced electrical theory",
+      "Energy transfer by heat in advanced electrical theory as a typical case",
     ],
     correctIndex: 0,
     explanation:
@@ -489,9 +494,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "Mutual induction refers to?",
     options: [
       "A changing field in one coil inducing e.m.f. in another coil",
-      "A coil inducing e.m.f. in itself",
-      "A battery driving current in a circuit",
-      "A conductor cancelling magnetic fields",
+      "A coil inducing e.m.f. in itself in advanced electrical theory",
+      "A battery driving current in a circuit in advanced electrical theory",
+      "A conductor cancelling magnetic fields in advanced electrical theory",
     ],
     correctIndex: 0,
     explanation:
@@ -509,9 +514,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "A capacitor is best described as?",
     options: [
       "Two conductors separated by a dielectric storing energy in an electric field",
-      "A device that stores energy chemically",
-      "A coil that stores energy magnetically only",
-      "A resistor used to limit current",
+      "A device that stores energy chemically in advanced electrical theory",
+      "A coil that stores energy magnetically only in advanced electrical theory",
+      "A resistor used to limit current in advanced electrical theory",
     ],
     correctIndex: 0,
     explanation:
@@ -522,9 +527,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "Compared with half‑wave rectification, full‑wave rectification?",
     options: [
       "Uses both halves of the AC waveform and gives a higher mean output",
-      "Blocks both halves of the AC waveform",
-      "Always produces pure DC with no ripple",
-      "Requires only one diode in single‑phase",
+      "Blocks both halves of the AC waveform in advanced electrical theory",
+      "Always produces pure DC with no ripple in advanced electrical theory",
+      "Requires only one diode in single‑phase in advanced electrical theory",
     ],
     correctIndex: 0,
     explanation:
