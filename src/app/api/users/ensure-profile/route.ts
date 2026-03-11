@@ -71,22 +71,27 @@ export async function POST(request: Request) {
     }
 
     if (!snapshot.exists) {
-      await userRef.set({
+      const createPayload: Record<string, unknown> = {
         uid: decoded.uid,
         email,
         displayName: displayName || "",
-        username,
-        usernameLower: username,
+        points: 0,
         plan: "FREE",
         subscriptionStatus: "none",
         hasPlusAccess: false,
         manualOverride: "none",
         createdAt: now,
         updatedAt: now,
-      });
+      };
+      if (hasUsername) {
+        createPayload.username = username;
+        createPayload.usernameLower = username;
+      }
+      await userRef.set(createPayload);
       return NextResponse.json({ created: true });
     }
 
+    const snapshotData = snapshot.data() || {};
     const updatePayload: Record<string, unknown> = {
       updatedAt: now,
     };
@@ -95,6 +100,10 @@ export async function POST(request: Request) {
     if (hasUsername) {
       updatePayload.username = username;
       updatePayload.usernameLower = username;
+    }
+    const existingPoints = snapshotData.points;
+    if (typeof existingPoints !== "number" || !Number.isFinite(existingPoints)) {
+      updatePayload.points = 0;
     }
 
     await userRef.set(updatePayload, { merge: true });

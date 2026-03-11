@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
-import { collection, getDocs, limit, query, where } from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
+import { auth } from "@/lib/firebase";
 import { ensureUserProfile } from "@/lib/userProfile";
 
 const USERNAME_REGEX = /^[a-z0-9_]{3,20}$/;
@@ -37,27 +36,56 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      const existingUsernameQuery = query(
-        collection(db, "users"),
-        where("usernameLower", "==", normalizedUsername),
-        limit(1)
-      );
-      const existingUsername = await getDocs(existingUsernameQuery);
-      if (!existingUsername.empty) {
-        setError("Username already taken. Please choose another.");
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      try {
+        await updateProfile(cred.user, { displayName: normalizedUsername });
+        await ensureUserProfile(cred.user, { username: normalizedUsername });
+      } catch (profileErr) {
+        const profileCode = (profileErr as { code?: string } | null)?.code;
+        const profileMessage =
+          (profileErr as { message?: string } | null)?.message || "";
+
+        console.log("[signup] profile creation/save failed");
+        console.log("raw error", profileErr);
+        console.log("error code", profileCode);
+        console.log("error message", profileMessage);
+
+        if (profileMessage.includes("Username already taken")) {
+          setError("This username is already taken.");
+        } else if (profileMessage.includes("Invalid username")) {
+          setError("Username must be 3-20 characters and use only letters, numbers, or underscores.");
+        } else if (
+          profileCode === "permission-denied" ||
+          profileMessage.toLowerCase().includes("permission denied")
+        ) {
+          setError("Could not create profile.");
+        } else if (profileMessage) {
+          setError(profileMessage.includes("save username") ? "Could not save username." : profileMessage);
+        } else {
+          setError("Could not create profile.");
+        }
         return;
       }
-
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(cred.user, { displayName: normalizedUsername });
-      await ensureUserProfile(cred.user, { username: normalizedUsername });
       router.replace("/account");
     } catch (err) {
-      const message = err instanceof Error ? err.message : "";
-      if (message.includes("Username already taken")) {
-        setError("Username already taken. Please choose another.");
+      const code = (err as { code?: string } | null)?.code;
+      const message = (err as { message?: string } | null)?.message || "";
+
+      console.log("[signup] account creation failed");
+      console.log("raw error", err);
+      console.log("error code", code);
+      console.log("error message", message);
+
+      if (code === "auth/email-already-in-use") {
+        setError("This email is already in use.");
+      } else if (code === "auth/weak-password") {
+        setError("Password should be at least 6 characters.");
+      } else if (code === "auth/invalid-email") {
+        setError("Please enter a valid email address.");
+      } else if (message.includes("Username already taken")) {
+        setError("This username is already taken.");
       } else {
-        setError("Could not create account. Check your details and try again.");
+        setError(message || "Could not create account.");
       }
     } finally {
       setLoading(false);
