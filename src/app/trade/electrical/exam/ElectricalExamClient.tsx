@@ -12,7 +12,9 @@ import {
   appendAttempt,
   createAttemptId,
   getAttemptsKey,
+  getStreakDays,
 } from "@/lib/progress/attempts";
+import { awardLeaderboardPoints } from "@/lib/leaderboard/points";
 import { healthSafetyQuestions } from "@/data/healthSafety";
 import { principlesElectricalScienceQuestions } from "@/data/principlesElectricalScience";
 import { electricalInstallationTechnologyQuestions } from "@/data/ElectricalInstallationTechnology";
@@ -433,6 +435,31 @@ export default function ElectricalExamClient() {
       correctCount: score,
       durationSec,
     });
+
+    if (currentUserId) {
+      const streakDays = getStreakDays({
+        trade: "electrical",
+        level: activeLevel,
+        userId: currentUserId,
+      });
+      const basePoints =
+        score * 10 + 50 + (percent >= PASS_PERCENT ? 50 : 0);
+      void awardLeaderboardPoints({
+        uid: currentUserId,
+        basePoints,
+        streakDays,
+      }).catch((error) => {
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("[leaderboard] failed to award exam points", {
+            error,
+            uid: currentUserId,
+            basePoints,
+            streakDays,
+          });
+        }
+      });
+    }
+
     setSavedAttempt(true);
   }, [finished, savedAttempt, questions.length, activeLevel, activeTopic, currentUserId, percent, score, durationSec]);
 

@@ -3,10 +3,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { onAuthStateChanged, signOut, type User } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { onAuthStateChanged, signOut, updateProfile, type User } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "@/lib/firebase";
 import SparkTheoryLogo from "@/components/Brand/SparkTheoryLogo";
 import { ensureUserProfile } from "@/lib/userProfile";
+import { backfillLeaderboardPointsFromLocalProgress } from "@/lib/leaderboard/backfill";
 
 type AccountData = {
   brandName: string;
@@ -27,6 +29,8 @@ type SubscriptionState = {
   status: string;
   currentPeriodEnd: number | null;
 };
+
+const USERNAME_REGEX = /^[a-z0-9_]{3,20}$/;
 
 function initialsFromEmail(email: string) {
   const name = email.split("@")[0] || "U";
@@ -72,6 +76,11 @@ export default function AccountPage() {
   const [billingLoading, setBillingLoading] = useState<StripeEndpoint | null>(null);
   const [billingError, setBillingError] = useState("");
   const [billingNotice, setBillingNotice] = useState("");
+  const [currentUsername, setCurrentUsername] = useState("");
+  const [newUsername, setNewUsername] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [usernameNotice, setUsernameNotice] = useState("");
+  const [updatingUsername, setUpdatingUsername] = useState(false);
   const [subscription, setSubscription] = useState<SubscriptionState>({
     hasSubscription: false,
     cancelAtPeriodEnd: false,
@@ -173,11 +182,43 @@ export default function AccountPage() {
       setUser(u);
       setLoading(false);
       if (u) {
-        void ensureUserProfile(u);
+        void ensureUserProfile(u).catch(() => {});
+      } else {
+        setCurrentUsername("");
+        setNewUsername("");
+        setUsernameError("");
+        setUsernameNotice("");
       }
     });
     return () => unsub();
   }, []);
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function loadCurrentUsername() {
+      if (!user) return;
+      try {
+        const userSnap = await getDoc(doc(db, "users", user.uid));
+        if (ignore) return;
+        const profileUsername = String(userSnap.data()?.username || "").trim();
+        setCurrentUsername(profileUsername);
+      } catch {
+        if (ignore) return;
+        setCurrentUsername("");
+      }
+    }
+
+    void loadCurrentUsername();
+    return () => {
+      ignore = true;
+    };
+  }, [user]);
+
+  useEffect(() => {
+    if (!user?.uid) return;
+    void backfillLeaderboardPointsFromLocalProgress(user.uid).catch(() => {});
+  }, [user?.uid]);
 
   const fetchSubscriptionStatus = useCallback(async () => {
     if (!user?.email) {
@@ -428,6 +469,48 @@ export default function AccountPage() {
     }
   }
 
+  async function handleUsernameUpdate(e: React.FormEvent) {
+    e.preventDefault();
+    if (!user || updatingUsername) return;
+
+    setUsernameError("");
+    setUsernameNotice("");
+    const normalizedUsername = newUsername.trim().toLowerCase();
+
+    if (!USERNAME_REGEX.test(normalizedUsername)) {
+      setUsernameError("Username must be 3-20 characters and use only letters, numbers, or underscores.");
+      return;
+    }
+
+    if (normalizedUsername === currentUsername.trim().toLowerCase()) {
+      setUsernameNotice("Username updated successfully.");
+      return;
+    }
+
+    setUpdatingUsername(true);
+    try {
+      await updateProfile(user, { displayName: normalizedUsername });
+      await ensureUserProfile(user, { username: normalizedUsername });
+      setCurrentUsername(normalizedUsername);
+      setNewUsername("");
+      setUsernameNotice("Username updated successfully.");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "";
+      if (message.includes("Username already taken")) {
+        setUsernameError("Username already taken. Please choose another.");
+      } else {
+        setUsernameError("Could not update username. Please try again.");
+      }
+    } finally {
+      setUpdatingUsername(false);
+    }
+  }
+
+  const hasUsername = currentUsername.trim().length > 0;
+  const usernameCardTitle = hasUsername ? "Change username" : "Add username";
+  const usernameInputLabel = hasUsername ? "New username" : "Username";
+  const usernameButtonLabel = hasUsername ? "Update username" : "Save username";
+
   return (
     <div className="min-h-screen bg-[#1F1F1F] text-white">
       <div className="pointer-events-none fixed inset-0">
@@ -525,6 +608,51 @@ export default function AccountPage() {
                 ) : null}
               </div>
             </div>
+
+            {user ? (
+              <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.05] p-5">
+                <div className="text-sm font-semibold">{usernameCardTitle}</div>
+                <div className="mt-4 space-y-4">
+                  {hasUsername ? (
+                    <div className="flex items-center justify-between gap-4 text-sm">
+                      <span className="text-white/60">Current username</span>
+                      <span className="font-medium">{currentUsername}</span>
+                    </div>
+                  ) : null}
+                  <form className="grid gap-3" onSubmit={handleUsernameUpdate}>
+                    <label className="grid gap-2 text-sm">
+                      <span className="text-white/70">{usernameInputLabel}</span>
+                      <input
+                        id="new-username"
+                        name="newUsername"
+                        type="text"
+                        value={newUsername}
+                        onChange={(event) => setNewUsername(event.target.value)}
+                        className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40"
+                        placeholder="Choose a username"
+                      />
+                    </label>
+                    {usernameError ? (
+                      <div className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-2 text-sm text-red-200">
+                        {usernameError}
+                      </div>
+                    ) : null}
+                    {usernameNotice ? (
+                      <div className="rounded-xl border border-emerald-300/40 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-100">
+                        {usernameNotice}
+                      </div>
+                    ) : null}
+                    <button
+                      type="submit"
+                      disabled={updatingUsername}
+                      className="rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      {updatingUsername ? "Updating..." : usernameButtonLabel}
+                    </button>
+                  </form>
+                </div>
+              </div>
+            ) : null}
           </section>
 
           <section className="grid gap-6">

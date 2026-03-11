@@ -2,9 +2,62 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidUsername(value) {
+      return value is string
+        && value.size() >= 3
+        && value.size() <= 20
+        && value.matches('^[a-z0-9_]+$');
+    }
+
+    function isValidPoints(value) {
+      return value is int || value is float;
+    }
+
+    function usernamePairChangedTogether(changedKeys) {
+      return changedKeys.hasAny(['username']) == changedKeys.hasAny(['usernameLower']);
+    }
+
+    function hasValidUsernamePair(data) {
+      return isValidUsername(data.username) && isValidUsername(data.usernameLower);
+    }
+
     match /users/{userId} {
-      allow read: if request.auth != null && request.auth.uid == userId;
-      allow write: if false;
+      allow read: if isOwner(userId);
+
+      // Allow users to create their own profile doc with leaderboard-safe fields.
+      allow create: if isOwner(userId)
+        && request.resource.data.keys().hasOnly(['username', 'usernameLower', 'points', 'updatedAt'])
+        && (
+          !request.resource.data.keys().hasAny(['username', 'usernameLower']) ||
+          (
+            request.resource.data.keys().hasAny(['username']) &&
+            request.resource.data.keys().hasAny(['usernameLower']) &&
+            hasValidUsernamePair(request.resource.data)
+          )
+        )
+        && (!request.resource.data.keys().hasAny(['points']) || isValidPoints(request.resource.data.points))
+        && (!request.resource.data.keys().hasAny(['updatedAt']) || request.resource.data.updatedAt is timestamp);
+
+      // Allow users to update only their own username/leaderboard fields.
+      allow update: if isOwner(userId)
+        && request.resource.data.diff(resource.data).changedKeys().hasOnly(['username', 'usernameLower', 'points', 'updatedAt'])
+        && usernamePairChangedTogether(request.resource.data.diff(resource.data).changedKeys())
+        && (
+          !request.resource.data.diff(resource.data).changedKeys().hasAny(['username', 'usernameLower']) ||
+          hasValidUsernamePair(request.resource.data)
+        )
+        && (!request.resource.data.diff(resource.data).changedKeys().hasAny(['points']) || isValidPoints(request.resource.data.points))
+        && (!request.resource.data.diff(resource.data).changedKeys().hasAny(['updatedAt']) || request.resource.data.updatedAt is timestamp);
+
+      allow delete: if false;
     }
 
     match /{document=**} {

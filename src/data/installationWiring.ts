@@ -172,9 +172,9 @@ export const installationWiringQuestions = [
       question: "Skirting trunking is useful because it?",
       options: [
         "Provides low‑level containment around a room",
-        "Is only for ceiling runs",
-        "Cannot be opened",
-        "Is always underground",
+        "Allows cables to run vertically between floors",
+        "Is designed for ceiling-mounted cable containment",
+        "Provides mechanical protection for buried cables",
       ],
       correctIndex: 0,
       explanation: "Skirting trunking runs around room perimeters at low level.",

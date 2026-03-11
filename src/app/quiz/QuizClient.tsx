@@ -12,10 +12,12 @@ import {
   appendAttempt,
   createAttemptId,
   getAttemptsKey,
+  getStreakDays,
   getWeakTopics,
   loadAttempts,
 } from "@/lib/progress/attempts";
 import { recordMissedQuestions } from "@/lib/progress/missed";
+import { awardLeaderboardPoints } from "@/lib/leaderboard/points";
 
 import { type StoredResult } from "@/components/ProgressReport";
 
@@ -1208,6 +1210,30 @@ export default function QuizPage() {
       correctCount: quizMode === "flashcards" ? 0 : score,
       durationSec: secondsTaken,
     });
+
+    if ((quizMode === "practice" || quizMode === "weak") && currentUserId) {
+      const streakDays = getStreakDays({
+        trade: "electrical",
+        level: normalizedLevel,
+        userId: currentUserId,
+      });
+      const basePoints = score * 10 + 25;
+      void awardLeaderboardPoints({
+        uid: currentUserId,
+        basePoints,
+        streakDays,
+      }).catch((error) => {
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("[leaderboard] failed to award quiz points", {
+            error,
+            uid: currentUserId,
+            basePoints,
+            streakDays,
+          });
+        }
+      });
+    }
+
     if (process.env.NODE_ENV !== "production") {
       console.debug("[attempts] saved", {
         key: attemptsKey,

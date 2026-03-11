@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { collection, getDocs, limit, query, where } from "firebase/firestore";
+import { auth, db } from "@/lib/firebase";
 import { ensureUserProfile } from "@/lib/userProfile";
+
+const USERNAME_REGEX = /^[a-z0-9_]{3,20}$/;
 
 export default function SignupPage() {
   const router = useRouter();
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,16 +28,37 @@ export default function SignupPage() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    const normalizedUsername = username.trim().toLowerCase();
+    if (!USERNAME_REGEX.test(normalizedUsername)) {
+      setError("Username must be 3-20 characters and use only letters, numbers, or underscores.");
+      return;
+    }
+
     setLoading(true);
     try {
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
-      if (name.trim()) {
-        await updateProfile(cred.user, { displayName: name.trim() });
+      const existingUsernameQuery = query(
+        collection(db, "users"),
+        where("usernameLower", "==", normalizedUsername),
+        limit(1)
+      );
+      const existingUsername = await getDocs(existingUsernameQuery);
+      if (!existingUsername.empty) {
+        setError("Username already taken. Please choose another.");
+        return;
       }
-      await ensureUserProfile(cred.user);
+
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(cred.user, { displayName: normalizedUsername });
+      await ensureUserProfile(cred.user, { username: normalizedUsername });
       router.replace("/account");
     } catch (err) {
-      setError("Could not create account. Check your details and try again.");
+      const message = err instanceof Error ? err.message : "";
+      if (message.includes("Username already taken")) {
+        setError("Username already taken. Please choose another.");
+      } else {
+        setError("Could not create account. Check your details and try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -57,13 +81,15 @@ export default function SignupPage() {
 
           <form className="mt-6 grid gap-4" onSubmit={onSubmit}>
             <label className="grid gap-2 text-sm">
-              <span className="text-white/70">Full name</span>
+              <span className="text-white/70">Username</span>
               <input
+                id="username"
+                name="username"
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40"
-                placeholder="Your name"
+                placeholder="Choose a username"
               />
             </label>
 

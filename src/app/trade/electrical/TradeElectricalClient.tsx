@@ -679,6 +679,14 @@ export default function ElectricalPage() {
               Show progress
             </Link>
           </div>
+          <div className="mx-auto mt-2 w-full max-w-2xl">
+            <Link
+              href="/trade/electrical/leaderboard"
+              className="block w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-center text-xs font-semibold text-white/80 transition hover:bg-white/10"
+            >
+              Leaderboard
+            </Link>
+          </div>
           <div className="mx-auto mt-2 w-full max-w-2xl text-xs text-white/70">
             Streak: <span className="font-semibold text-white">{streakDays}</span>{" "}
             {streakDays === 1 ? "day" : "days"}
