@@ -4,7 +4,7 @@ export const installationWiringQuestions = [
       question: "Which is an example of statutory regulations affecting electrical work?",
       options: [
         "Electricity at Work Regulations",
-        "On Site Guide on site",
+        "On Site Guide",
         "Manufacturer catalogue",
         "Company toolbox talk",
       ],
@@ -121,7 +121,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-018",
-      question: "A key advantage of MI cable is that it?",
+      question: "What is a key advantage of MI cable?",
       options: [
         "Withstands very high temperatures and fire",
         "Requires no termination",
@@ -137,7 +137,7 @@ export const installationWiringQuestions = [
       options: [
         "Keeping different circuit types separated",
         "Bunching cables together",
-        "Removing insulation in this context",
+        "Removing insulation",
         "Running all circuits in one conduit",
       ],
       correctIndex: 0,
@@ -148,20 +148,20 @@ export const installationWiringQuestions = [
       question: "Trunking and tray may be suspended from girders using?",
       options: [
         "Appropriate brackets and supports",
-        "Adhesive only on site",
-        "Plastic clips only in this context",
-        "Cable ties only as standard",
+        "Adhesive only",
+        "Plastic clips only",
+        "Cable ties only",
       ],
       correctIndex: 0,
       explanation: "Suspended systems use suitable brackets and supports.",
     },
     {
       id: "iwse-022",
-      question: "Mini‑trunking in a classroom is useful because it?",
+      question: "Why is mini-trunking useful in a classroom?",
       options: [
         "Allows neat containment of power and data",
         "Cannot carry data cables",
-        "Is only for lighting in this context",
+        "Is only for lighting",
         "Must be buried in walls",
       ],
       correctIndex: 0,
@@ -169,7 +169,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-023",
-      question: "Skirting trunking is useful because it?",
+      question: "Why is skirting trunking useful?",
       options: [
         "Provides low‑level containment around a room",
         "Allows cables to run vertically between floors",
@@ -185,7 +185,7 @@ export const installationWiringQuestions = [
       options: [
         "Higher material and installation cost",
         "Lower fire resistance",
-        "Poor durability in this context",
+        "Poor durability",
         "Cannot be used in emergencies",
       ],
       correctIndex: 0,
@@ -198,7 +198,7 @@ export const installationWiringQuestions = [
         "Good mechanical protection for underground use",
         "Highest fire resistance",
         "No need for earthing",
-        "No glands required as standard",
+        "No glands required",
       ],
       correctIndex: 0,
       explanation: "SWA provides mechanical protection for buried cables.",
@@ -277,7 +277,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-034",
-      question: "MI cable is suitable for emergency circuits because it?",
+      question: "Why is MI cable suitable for emergency circuits?",
       options: [
         "Maintains integrity in fire conditions",
         "Is cheap and flexible",
@@ -292,8 +292,8 @@ export const installationWiringQuestions = [
       question: "A key reason for segregation of circuits is to?",
       options: [
         "Avoid interference between power and data circuits",
-        "Increase voltage on site",
-        "Reduce insulation in this context",
+        "Increase voltage",
+        "Reduce insulation",
         "Allow mixing voltages",
       ],
       correctIndex: 0,
@@ -325,7 +325,7 @@ export const installationWiringQuestions = [
     },
     {
       id: "iwse-040",
-      question: "A downside of MI cable compared with PVC/SWA is that it?",
+      question: "What is a downside of MI cable compared with PVC/SWA?",
       options: [
         "Requires specialist termination",
         "Has poor mechanical protection",

@@ -6,7 +6,7 @@ export const electricalTechnologyLevel3Questions = [
       "Its title includes ‘Regulations’ and it has an SI number",
       "It is published only by manufacturers",
       "It is guidance without legal force",
-      "It is a company procedure as standard",
+      "It is a company procedure",
     ],
     correctIndex: 0,
     explanation:
@@ -17,9 +17,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "The Health and Safety at Work etc. Act 1974 is?",
     options: [
       "Primary legislation for occupational health and safety in Great Britain",
-      "A non‑statutory guidance note on site",
+      "A non‑statutory guidance note",
       "A manufacturer’s code of practice",
-      "A local authority policy only as standard",
+      "A local authority policy only",
     ],
     correctIndex: 0,
     explanation:
@@ -45,7 +45,7 @@ export const electricalTechnologyLevel3Questions = [
       "Take reasonable care and cooperate on safety matters",
       "Write company safety policy",
       "Issue improvement notices",
-      "Set national standards as standard",
+      "Set national standards",
     ],
     correctIndex: 0,
     explanation:
@@ -69,9 +69,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "EAWR applies to?",
     options: [
       "Workplaces, including systems beyond BS 7671 voltage scope",
-      "Private homes only on site",
+      "Private homes only",
       "Only low‑voltage domestic circuits",
-      "Only new installations as standard",
+      "Only new installations",
     ],
     correctIndex: 0,
     explanation:
@@ -82,9 +82,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which document gives guidance on EAWR interpretation?",
     options: [
       "HSE memorandum of guidance HSR25",
-      "IET On‑Site Guide on site",
-      "BS 7671 Part 7 in this context",
-      "IET GN8 as standard in normal use",
+      "IET On‑Site Guide",
+      "BS 7671 Part 7",
+      "IET GN8",
     ],
     correctIndex: 0,
     explanation:
@@ -108,9 +108,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "PUWER 1998 requires work equipment to be?",
     options: [
       "Suitable and safe for the task and environment",
-      "New and branded on site",
-      "Used only indoors in this context",
-      "Owned by the worker as standard",
+      "New and branded",
+      "Used only indoors",
+      "Owned by the worker",
     ],
     correctIndex: 0,
     explanation:
@@ -121,9 +121,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "COSHH regulations focus on?",
     options: [
       "Controlling hazardous substances and exposure",
-      "Wiring colour codes on site",
-      "Noise at work only in this context",
-      "Scaffold inspection as standard",
+      "Wiring colour codes",
+      "Noise at work only",
+      "Scaffold inspection",
     ],
     correctIndex: 0,
     explanation:
@@ -133,10 +133,10 @@ export const electricalTechnologyLevel3Questions = [
     id: "et3-011",
     question: "Which is NOT covered by COSHH?",
     options: [
-      "Asbestos in practice",
-      "Dusts and fumes on site",
-      "Chemicals in this context",
-      "Biological agents as standard",
+      "Asbestos",
+      "Dusts and fumes",
+      "Chemicals",
+      "Biological agents",
     ],
     correctIndex: 0,
     explanation:
@@ -199,9 +199,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "A key purpose of the IET On‑Site Guide is to?",
     options: [
       "Provide design/installation/testing guidance for standard installations",
-      "Replace BS 7671 completely on site",
-      "Provide statutory law in this context",
-      "Set insurance requirements as standard",
+      "Replace BS 7671 completely",
+      "Provide statutory law",
+      "Set insurance requirements",
     ],
     correctIndex: 0,
     explanation:
@@ -212,7 +212,7 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which is a source of technical information?",
     options: [
       "Technical specifications",
-      "Rumours on site",
+      "Rumours",
       "Unofficial social posts",
       "Personal opinions only",
     ],
@@ -225,9 +225,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "CPD seminars are often used to?",
     options: [
       "Provide updates and develop professional knowledge",
-      "Replace statutory law on site",
+      "Replace statutory law",
       "Certify an installation",
-      "Issue legal notices as standard",
+      "Issue legal notices",
     ],
     correctIndex: 0,
     explanation:
@@ -238,9 +238,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "ACoPs are?",
     options: [
       "Approved Codes of Practice with special legal status",
-      "Manufacturer brochures on site",
+      "Manufacturer brochures",
       "Optional customer preferences",
-      "Company trademarks as standard",
+      "Company trademarks",
     ],
     correctIndex: 0,
     explanation:
@@ -251,8 +251,8 @@ export const electricalTechnologyLevel3Questions = [
     question: "HSE inspectors can do which of the following?",
     options: [
       "Enter and inspect workplaces without notice",
-      "Set electricity prices on site",
-      "Approve all designs in this context",
+      "Set electricity prices",
+      "Approve all designs",
       "Issue building completion certificates",
     ],
     correctIndex: 0,
@@ -265,7 +265,7 @@ export const electricalTechnologyLevel3Questions = [
     options: [
       "There is a risk of serious personal injury",
       "Minor issues need correction",
-      "A design is incomplete in this context",
+      "A design is incomplete",
       "A training record is missing",
     ],
     correctIndex: 0,
@@ -277,7 +277,7 @@ export const electricalTechnologyLevel3Questions = [
     question: "A breach of non‑statutory guidance often results in?",
     options: [
       "Contractual or quality issues and possible legal consequences",
-      "No consequences ever on site",
+      "No consequences ever",
       "Automatic criminal conviction",
       "Immediate imprisonment only",
     ],
@@ -290,9 +290,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which drawing type shows what has actually been installed?",
     options: [
       "As‑fitted or installed drawings",
-      "Concept drawings on site",
-      "Tender sketches in this context",
-      "Marketing diagrams as standard",
+      "Concept drawings",
+      "Tender sketches",
+      "Marketing diagrams",
     ],
     correctIndex: 0,
     explanation:
@@ -305,7 +305,7 @@ export const electricalTechnologyLevel3Questions = [
       "To ensure the drawing is understood by installers",
       "To replace the need for scale",
       "To avoid using standard symbols",
-      "To hide design intent as standard",
+      "To hide design intent",
     ],
     correctIndex: 0,
     explanation:
@@ -329,8 +329,8 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which statement about paper sizes is correct?",
     options: [
       "A0 is twice the size of A1, and sizes halve each step",
-      "A3 is larger than A1 on site",
-      "A4 is larger than A2 in this context",
+      "A3 is larger than A1",
+      "A4 is larger than A2",
       "Sizes increase as numbers decrease",
     ],
     correctIndex: 0,
@@ -356,7 +356,7 @@ export const electricalTechnologyLevel3Questions = [
     options: [
       "Balance supply and demand continuously",
       "Store energy at substations",
-      "Run only at night in this context",
+      "Run only at night",
       "Shut down during low demand",
     ],
     correctIndex: 0,
@@ -367,9 +367,9 @@ export const electricalTechnologyLevel3Questions = [
     id: "et3-029",
     question: "Which is a listed electricity generation method?",
     options: [
-      "Nuclear power in practice",
+      "Nuclear power",
       "Compressed air in buildings only",
-      "Battery banks only in this context",
+      "Battery banks only",
       "Manual generators only",
     ],
     correctIndex: 0,
@@ -382,8 +382,8 @@ export const electricalTechnologyLevel3Questions = [
     options: [
       "To reduce I²R losses and keep cable sizes manageable",
       "To make transformers smaller at the generator",
-      "To increase domestic voltage in this context",
-      "To reduce grid frequency as standard",
+      "To increase domestic voltage",
+      "To reduce grid frequency",
     ],
     correctIndex: 0,
     explanation:
@@ -394,9 +394,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "High‑voltage overhead transmission in the UK mainly uses?",
     options: [
       "Pylons with overhead lines",
-      "Underground only on site",
-      "Subsea only in this context",
-      "Battery storage as standard",
+      "Underground only",
+      "Subsea only",
+      "Battery storage",
     ],
     correctIndex: 0,
     explanation:
@@ -422,7 +422,7 @@ export const electricalTechnologyLevel3Questions = [
       "To increase creepage distance and prevent flashover",
       "To increase current flow",
       "To reduce transformer size",
-      "To improve power factor as standard",
+      "To improve power factor",
     ],
     correctIndex: 0,
     explanation:
@@ -446,9 +446,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Pumped‑storage hydro works by?",
     options: [
       "Pumping water up off‑peak, releasing it at peak demand",
-      "Storing steam in tanks on site",
+      "Storing steam in tanks",
       "Storing electricity in capacitors",
-      "Running only at night as standard",
+      "Running only at night",
     ],
     correctIndex: 0,
     explanation:
@@ -460,7 +460,7 @@ export const electricalTechnologyLevel3Questions = [
     options: [
       "British Standard where possible, with a legend",
       "Invented without explanation",
-      "Written only in text in this context",
+      "Written only in text",
       "Scaled to actual device size",
     ],
     correctIndex: 0,
@@ -498,7 +498,7 @@ export const electricalTechnologyLevel3Questions = [
     question: "Why might A3 reductions be used on site?",
     options: [
       "Easy printing and quick reference, but less readability",
-      "To show full‑size scale on site",
+      "To show full‑size scale",
       "To avoid any loss of detail",
       "To increase drawing accuracy",
     ],
@@ -513,7 +513,7 @@ export const electricalTechnologyLevel3Questions = [
       "Manufacturers provide them based on testing and development",
       "They are never biased toward products",
       "They replace statutory regulations",
-      "They are only verbal as standard",
+      "They are only verbal",
     ],
     correctIndex: 0,
     explanation:
@@ -524,8 +524,8 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which is a situation where IET Regulations alone apply?",
     options: [
       "Agricultural buildings",
-      "Mines on site in this context",
-      "Quarries in this context",
+      "Mines",
+      "Quarries",
       "Railway traction systems",
     ],
     correctIndex: 0,
@@ -536,10 +536,10 @@ export const electricalTechnologyLevel3Questions = [
     id: "et3-042",
     question: "Which is a situation where IET Regulations do NOT apply alone?",
     options: [
-      "Mines or quarries in practice",
-      "Domestic dwellings on site",
+      "Mines or quarries",
+      "Domestic dwellings",
       "Agricultural premises",
-      "Caravans as standard",
+      "Caravans",
     ],
     correctIndex: 0,
     explanation:

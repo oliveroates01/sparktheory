@@ -15,7 +15,7 @@ export type Question = {
         "To define safety duties for employers and workers",
         "To control wages and working hours nationally",
         "To manage pollution on construction projects",
-        "To licence all trades working on site",
+        "To licence all trades working",
       ],
       correctIndex: 0,
       explanation:
@@ -108,7 +108,7 @@ export type Question = {
       question: "What is non-statutory guidance mainly used for?",
       options: [
         "To show ways to comply with the law",
-        "To replace legal duties on site",
+        "To replace legal duties",
         "To allow workers to ignore rules",
         "To create new criminal offences",
       ],
@@ -165,7 +165,7 @@ export type Question = {
       options: [
         "Show reasonable steps were taken",
         "Say the job was urgent to finish",
-        "Blame another worker on site",
+        "Blame another worker",
         "Claim the rules do not apply",
       ],
       correctIndex: 0,
@@ -245,7 +245,7 @@ export type Question = {
       question: "What is the main purpose of COSHH regulations?",
       options: [
         "Control exposure to harmful substances",
-        "Control working hours on site",
+        "Control working hours",
         "Regulate site parking arrangements",
         "Set electricity supply tolerances",
       ],
@@ -324,7 +324,7 @@ export type Question = {
       options: [
         "Safety helmets and harness systems",
         "Lightweight trainers and hoodies",
-        "Removing warning signs on site",
+        "Removing warning signs",
         "Assuming falling objects are unlikely",
       ],
       correctIndex: 0,
@@ -430,7 +430,7 @@ export type Question = {
       options: [
         "To improve health and safety measures",
         "To reduce wages and overtime costs",
-        "To avoid providing PPE on site",
+        "To avoid providing PPE",
         "To replace risk assessments completely",
       ],
       correctIndex: 0,
@@ -470,7 +470,7 @@ export type Question = {
         "To show safety actions were taken",
         "To advertise the company publicly",
         "To avoid reporting accidents legally",
-        "To replace method statements on site",
+        "To replace method statements",
       ],
       correctIndex: 0,
       explanation:
@@ -808,7 +808,7 @@ export type Question = {
           "To confirm they are working correctly",
           "To make the test quicker",
           "To reduce the need for isolation",
-          "To avoid using PPE as standard",
+          "To avoid using PPE",
         ],
         correctIndex: 0,
         explanation:
@@ -820,7 +820,7 @@ export type Question = {
         options: [
           "Ensure circuits are dead before work",
           "Speed up installation times",
-          "Reduce paperwork on site",
+          "Reduce paperwork",
           "Allow tools to run cooler",
         ],
         correctIndex: 0,
@@ -833,7 +833,7 @@ export type Question = {
         options: [
           "Leave immediately using the escape route",
           "Finish the job before leaving",
-          "Ignore it if unsure in this context",
+          "Ignore it if unsure",
           "Wait for friends before exiting",
         ],
         correctIndex: 0,
@@ -884,7 +884,7 @@ export type Question = {
         question: "Which of these would normally be reportable under RIDDOR?",
         options: [
           "A major injury requiring hospital treatment",
-          "A minor paper cut on site",
+          "A minor paper cut",
           "A late arrival to work",
           "A broken mobile phone",
         ],
@@ -993,7 +993,7 @@ export type Question = {
         options: [
           "The chance of harm occurring",
           "The size of a toolbox",
-          "The number of workers on site",
+          "The number of workers",
           "The colour of safety signs",
         ],
         correctIndex: 0,
@@ -1033,10 +1033,10 @@ export type Question = {
         legacyIds: ["hs-058"],
         question: "Which document explains how a task will be carried out safely?",
         options: [
-          "Method statement in practice",
-          "Payslip on site in this context",
-          "Delivery note in this context",
-          "Tool catalogue as standard",
+          "Method statement",
+          "Payslip",
+          "Delivery note",
+          "Tool catalogue",
         ],
         correctIndex: 0,
         explanation:
@@ -1049,7 +1049,7 @@ export type Question = {
         options: [
           "To work safely and reduce risk",
           "To increase speed regardless of safety",
-          "To avoid using PPE in this context",
+          "To avoid using PPE",
           "To ignore manufacturer guidance",
         ],
         correctIndex: 0,
@@ -1131,9 +1131,9 @@ export type Question = {
         legacyIds: ["hs-065"],
         question: "Which item is commonly used for fall protection?",
         options: [
-          "Safety harness in practice",
-          "Dust mask on site in this context",
-          "Ear defenders in this context",
+          "Safety harness",
+          "Dust mask",
+          "Ear defenders",
           "High-visibility vest",
         ],
         correctIndex: 0,
@@ -1216,9 +1216,9 @@ export type Question = {
         question: "A key step in safe manual handling is to?",
         options: [
           "Bend knees and keep back straight",
-          "Keep legs straight on site",
-          "Twist while lifting in this context",
-          "Lift away from body as standard",
+          "Keep legs straight",
+          "Twist while lifting",
+          "Lift away from body",
         ],
         correctIndex: 0,
         explanation: "Safe lifting uses bent knees and a straight back.",
@@ -1243,8 +1243,8 @@ export type Question = {
         options: [
           "Enter premises unannounced to investigate",
           "Set employee pay rates",
-          "Approve overtime in this context",
-          "Choose contractors as standard",
+          "Approve overtime",
+          "Choose contractors",
         ],
         correctIndex: 0,
         explanation: "Inspectors can enter premises and investigate without notice.",
@@ -1254,10 +1254,10 @@ export type Question = {
         legacyIds: ["eit-013"],
         question: "On construction sites there is a duty for workers to wear?",
         options: [
-          "Head protection in practice",
+          "Head protection",
           "Hearing protection only",
-          "Respirators only in this context",
-          "No PPE as standard in normal use",
+          "Respirators only",
+          "No PPE",
         ],
         correctIndex: 0,
         explanation: "Head protection is required on construction sites.",

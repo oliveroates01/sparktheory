@@ -5,8 +5,8 @@ export const inspectionTestingCommissioningLevel3Questions = [
     options: [
       "Ticked for compliance or N/A, and defects corrected before certification",
       "Unsatisfactory and left for later",
-      "Only with dates in this context",
-      "Only for new installations as standard",
+      "Only with dates",
+      "Only for new installations",
     ],
     correctIndex: 0,
     explanation:
@@ -19,7 +19,7 @@ export const inspectionTestingCommissioningLevel3Questions = [
       "A changeover arrangement prevents back‑feeding the public supply",
       "It is connected directly to the intake without isolation",
       "It shares the same neutral without any control",
-      "It bypasses the main switch as standard",
+      "It bypasses the main switch",
     ],
     correctIndex: 0,
     explanation:
@@ -31,7 +31,7 @@ export const inspectionTestingCommissioningLevel3Questions = [
     options: [
       "The inverter disconnects on supply loss",
       "The PV keeps energising the supply during outages",
-      "The PV has no earthing in this context",
+      "The PV has no earthing",
       "The PV bypasses protective devices",
     ],
     correctIndex: 0,
@@ -45,7 +45,7 @@ export const inspectionTestingCommissioningLevel3Questions = [
       "Correct connection of the MET to the supply earthing",
       "Position of light switches",
       "Number of socket outlets",
-      "Type of lamp holders as standard",
+      "Type of lamp holders",
     ],
     correctIndex: 0,
     explanation:
@@ -57,7 +57,7 @@ export const inspectionTestingCommissioningLevel3Questions = [
     options: [
       "A correctly selected and installed earth electrode",
       "A direct connection to the supply PEN",
-      "No earthing at all in this context",
+      "No earthing at all",
       "A neutral‑earth link in the installation",
     ],
     correctIndex: 0,
@@ -69,9 +69,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "Main protective bonding conductors should be connected?",
     options: [
       "Within 600 mm of service entry or meter (if practicable)",
-      "At the furthest branch on site",
+      "At the furthest branch",
       "On flexible pipe sections",
-      "After any tee joints as standard",
+      "After any tee joints",
     ],
     correctIndex: 0,
     explanation:
@@ -83,7 +83,7 @@ export const inspectionTestingCommissioningLevel3Questions = [
     options: [
       "Half the earthing conductor, minimum 6 mm², maximum 25 mm²",
       "Equal to line conductor size only",
-      "Fixed at 10 mm² always in this context",
+      "Fixed at 10 mm² always",
       "Based on breaker rating only",
     ],
     correctIndex: 0,
@@ -95,9 +95,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "For TN‑C‑S (PME), bonding conductor size is determined by?",
     options: [
       "Supply neutral size and Table 54.8",
-      "Circuit length only on site",
-      "RCD rating in this context",
-      "Switchgear type as standard",
+      "Circuit length only",
+      "RCD rating",
+      "Switchgear type",
     ],
     correctIndex: 0,
     explanation:
@@ -107,10 +107,10 @@ export const inspectionTestingCommissioningLevel3Questions = [
     id: "itc3-009",
     question: "Main protective bonding conductors should be coloured?",
     options: [
-      "Green and yellow in practice",
-      "Brown on site in this context",
-      "Blue in this context",
-      "Black as standard in normal use",
+      "Green and yellow",
+      "Brown",
+      "Blue",
+      "Black",
     ],
     correctIndex: 0,
     explanation:
@@ -120,10 +120,10 @@ export const inspectionTestingCommissioningLevel3Questions = [
     id: "itc3-010",
     question: "Bonding clamps must comply with?",
     options: [
-      "BS 951 in practice on site",
-      "BS 7671 Part 7 on site",
-      "BS 5839 in this context",
-      "BS 1387 as standard in normal use",
+      "BS 951",
+      "BS 7671 Part 7",
+      "BS 5839",
+      "BS 1387",
     ],
     correctIndex: 0,
     explanation:
@@ -148,8 +148,8 @@ export const inspectionTestingCommissioningLevel3Questions = [
     options: [
       "Red for dry, blue/green for corrosive or humid",
       "Red for corrosive, blue for dry",
-      "Green for dry only in this context",
-      "No colour coding as standard",
+      "Green for dry only",
+      "No colour coding",
     ],
     correctIndex: 0,
     explanation:
@@ -160,9 +160,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "Bonding connection labels must state?",
     options: [
       "Safety electrical connection – do not remove",
-      "Danger 230 V on site",
-      "Tested OK in this context",
-      "No label required as standard",
+      "Danger 230 V",
+      "Tested OK",
+      "No label required",
     ],
     correctIndex: 0,
     explanation:
@@ -173,9 +173,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "Basic protection can be provided by?",
     options: [
       "Insulation of live parts",
-      "RCDs only on site in this context",
+      "RCDs only",
       "Supplementary bonding only",
-      "Warning labels only as standard",
+      "Warning labels only",
     ],
     correctIndex: 0,
     explanation:
@@ -186,9 +186,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "Barriers/enclosures for basic protection should typically provide?",
     options: [
       "At least IP2X or IPXXB on accessible surfaces",
-      "Only IP00 on site in this context",
-      "Only IP1X in this context",
-      "No IP requirement as standard",
+      "Only IP00",
+      "Only IP1X",
+      "No IP requirement",
     ],
     correctIndex: 0,
     explanation:
@@ -200,7 +200,7 @@ export const inspectionTestingCommissioningLevel3Questions = [
     options: [
       "Separation from earth and suitable separation device",
       "Direct connection to earth",
-      "Use of PEN conductor in this context",
+      "Use of PEN conductor",
       "No segregation from other circuits",
     ],
     correctIndex: 0,
@@ -213,7 +213,7 @@ export const inspectionTestingCommissioningLevel3Questions = [
     options: [
       "They may not be separated from earth",
       "They use higher voltages",
-      "They are AC only in this context",
+      "They are AC only",
       "They require no transformer",
     ],
     correctIndex: 0,
@@ -237,10 +237,10 @@ export const inspectionTestingCommissioningLevel3Questions = [
     id: "itc3-019",
     question: "RCDs used for additional protection should typically be rated at?",
     options: [
-      "30 mA or less in practice",
-      "300 mA on site in this context",
-      "500 mA in this context",
-      "1 A as standard in normal use",
+      "30 mA or less",
+      "300 mA",
+      "500 mA",
+      "1 A",
     ],
     correctIndex: 0,
     explanation:
@@ -251,8 +251,8 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "FELV refers to circuits where?",
     options: [
       "SELV/PELV requirements are not met but voltage is below 50 V AC",
-      "Voltage is above 230 V on site",
-      "Only DC is used in this context",
+      "Voltage is above 230 V",
+      "Only DC is used",
       "All circuits are double insulated",
     ],
     correctIndex: 0,
@@ -264,9 +264,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "RLV circuits supplying 110 V AC must comply with?",
     options: [
       "Section 418 and appropriate Zs values",
-      "Only Part 7 on site in this context",
+      "Only Part 7",
       "No earth fault requirements",
-      "Only IP rating as standard",
+      "Only IP rating",
     ],
     correctIndex: 0,
     explanation:
@@ -277,7 +277,7 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "For bonding clamps, the connection point should be?",
     options: [
       "Accessible for future inspection and testing",
-      "Hidden inside walls on site",
+      "Hidden inside walls",
       "Covered permanently by insulation",
       "Placed after flexible sections",
     ],
@@ -313,11 +313,11 @@ export const inspectionTestingCommissioningLevel3Questions = [
   },
   {
     id: "itc3-025",
-    question: "For inspections, a changeover switch is important because it?",
+    question: "Why is a changeover switch important for inspections?",
     options: [
       "Prevents paralleling a standby generator with the public supply",
-      "Increases Zs on site in this context",
-      "Replaces RCDs in this context",
+      "Increases Zs",
+      "Replaces RCDs",
       "Provides overcurrent protection",
     ],
     correctIndex: 0,
@@ -330,8 +330,8 @@ export const inspectionTestingCommissioningLevel3Questions = [
     options: [
       "Point of connection to an extraneous conductive part",
       "Consumer unit front cover",
-      "Main switch handle in this context",
-      "Lighting switch as standard",
+      "Main switch handle",
+      "Lighting switch",
     ],
     correctIndex: 0,
     explanation:
@@ -342,9 +342,9 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "In a schedule of inspection, the intake equipment section includes checks on?",
     options: [
       "Isolator and meter tails for protection and secure fixing",
-      "Socket polarity only on site",
-      "RCD trip times only in this context",
-      "Lighting controls only as standard",
+      "Socket polarity only",
+      "RCD trip times only",
+      "Lighting controls only",
     ],
     correctIndex: 0,
     explanation:
@@ -356,8 +356,8 @@ export const inspectionTestingCommissioningLevel3Questions = [
     options: [
       "On the consumer’s side, after the stopcock",
       "Before the service enters the building",
-      "On plastic sections in this context",
-      "After tee joints as standard",
+      "On plastic sections",
+      "After tee joints",
     ],
     correctIndex: 0,
     explanation:
@@ -368,8 +368,8 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "A bonding clamp should be suitable for?",
     options: [
       "The environment where it is installed",
-      "Only indoor use on site",
-      "Only plastic pipes in this context",
+      "Only indoor use",
+      "Only plastic pipes",
       "No label requirements",
     ],
     correctIndex: 0,
@@ -381,7 +381,7 @@ export const inspectionTestingCommissioningLevel3Questions = [
     question: "For ADS, RCDs are relied on for fault protection when?",
     options: [
       "Zs values are too high to meet disconnection times",
-      "Zs values are very low on site",
+      "Zs values are very low",
       "No protective devices are fitted",
       "Only SELV circuits are used",
     ],
