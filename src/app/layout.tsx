@@ -14,8 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Spark Theory",
-  description: "Quiz website",
+  title: "Spark Theory | Electrical Exam Practice & Revision",
+  description:
+    "Practice electrical exam questions with mock tests, flashcards and smart revision tools. Track weak topics and improve your pass chances with Spark Theory.",
   icons: {
     icon: [{ url: "/favicon.ico", sizes: "96x96", type: "image/x-icon" }],
   },
