@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Spark Theory",
   description: "Quiz website",
+  icons: {
+    icon: [{ url: "/favicon.png", sizes: "48x48", type: "image/png" }],
+  },
 };
 
 const buildSha = process.env.NEXT_PUBLIC_GIT_SHA || process.env.VERCEL_GIT_COMMIT_SHA || "dev";
@@ -29,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-build-sha={buildSha} data-build-time={buildTime}>
       <head>
+        <link rel="icon" href="/favicon.png" sizes="48x48" />
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=AW-17999737501"
