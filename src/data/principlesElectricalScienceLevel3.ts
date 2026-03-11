@@ -4,9 +4,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "What does resistivity describe?",
     options: [
       "How strongly a material opposes the flow of electric current",
-      "The maximum current a cable can safely carry",
-      "The voltage available at a supply point",
-      "The energy stored in a conductor",
+      "The maximum current a cable can safely carry as the sole approach",
+      "The voltage available at a supply point as the full solution",
+      "The energy stored in a conductor with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -108,9 +108,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "A low insulation resistance reading (e.g., < 0.5 MΩ) suggests?",
     options: [
       "Insulation deterioration and possible fault",
-      "A healthy circuit with no leakage",
-      "A correct polarity test result",
-      "Normal operation under load",
+      "A healthy circuit with no leakage as the complete answer",
+      "A correct polarity test result as the complete answer",
+      "Normal operation under load with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -316,9 +316,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "If current doubles in a circuit with constant resistance, power loss will?",
     options: [
       "Increase four‑fold",
-      "Double",
-      "Stay the same",
-      "Halve",
+      "Double as the sole approach",
+      "Stay the same as the full solution",
+      "Halve with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -355,9 +355,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "A practical way to reduce voltage drop in a circuit is to?",
     options: [
       "Increase conductor cross‑sectional area",
-      "Increase conductor length",
-      "Reduce conductor size",
-      "Add more resistors in series",
+      "Increase conductor length as the sole approach",
+      "Reduce conductor size as the full solution",
+      "Add more resistors in series with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -382,8 +382,8 @@ export const principlesElectricalScienceLevel3Questions = [
     options: [
       "Inside from south to north, outside from north to south",
       "Inside from north to south, outside from south to north",
-      "Only inside the magnet",
-      "Only outside the magnet",
+      "Only inside the magnet, with no additional measures",
+      "Only outside the magnet, with no additional measures",
     ],
     correctIndex: 0,
     explanation:
@@ -472,9 +472,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "A solenoid is best described as?",
     options: [
       "A coil of wire that produces a stronger magnetic field",
-      "A permanent magnet with fixed polarity",
-      "A resistor used for current limiting",
-      "A device that stores chemical energy",
+      "A permanent magnet with fixed polarity as the complete answer",
+      "A resistor used for current limiting as the complete answer",
+      "A device that stores chemical energy as the complete answer",
     ],
     correctIndex: 0,
     explanation:
@@ -589,9 +589,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "Self‑induction refers to?",
     options: [
       "A changing magnetic field in a coil inducing e.m.f. in the same coil",
-      "A magnetic field inducing e.m.f. in a separate coil",
-      "Static charge stored in a capacitor",
-      "Energy transfer by heat",
+      "A magnetic field inducing e.m.f. in a separate coil as the complete answer",
+      "Static charge stored in a capacitor as the full solution",
+      "Energy transfer by heat with no further action as the only control",
     ],
     correctIndex: 0,
     explanation:
@@ -602,9 +602,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "Mutual induction refers to?",
     options: [
       "A changing field in one coil inducing e.m.f. in another coil",
-      "A coil inducing e.m.f. in itself",
-      "A battery driving current in a circuit",
-      "A conductor cancelling magnetic fields",
+      "A coil inducing e.m.f. in itself as the complete answer",
+      "A battery driving current in a circuit as the complete answer",
+      "A conductor cancelling magnetic fields as the complete answer",
     ],
     correctIndex: 0,
     explanation:
@@ -628,9 +628,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "A capacitor is best described as?",
     options: [
       "Two conductors separated by a dielectric storing energy in an electric field",
-      "A device that stores energy chemically",
-      "A coil that stores energy magnetically only",
-      "A resistor used to limit current",
+      "A device that stores energy chemically as the complete answer as the full solution",
+      "A coil that stores energy magnetically only, with no additional measures",
+      "A resistor used to limit current as the complete answer as the only control",
     ],
     correctIndex: 0,
     explanation:
@@ -641,9 +641,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "Compared with half‑wave rectification, full‑wave rectification?",
     options: [
       "Uses both halves of the AC waveform and gives a higher mean output",
-      "Blocks both halves of the AC waveform",
-      "Always produces pure DC with no ripple",
-      "Requires only one diode in single‑phase",
+      "Blocks both halves of the AC waveform as the sole approach",
+      "Always produces pure DC with no ripple as the full solution",
+      "Requires only one diode in single‑phase, with no additional measures",
     ],
     correctIndex: 0,
     explanation:

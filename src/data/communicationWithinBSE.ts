@@ -66,10 +66,10 @@ export type Question = {
       id: "comm-8",
       question: "First person to report a site issue to?",
       options: [
-    "Client",
+    "Client with no additional measures",
     "Supervisor/chargehand",
-    "Any apprentice",
-    "Post online",
+    "Any apprentice as the full solution",
+    "Post online with no further action",
   ],
   correctIndex: 1,
       explanation: "Use the site communication chain/escalation route."
@@ -78,10 +78,10 @@ export type Question = {
       id: "comm-9",
       question: "Toolbox talks are mainly used for?",
       options: [
-    "Sell tools",
+    "Sell tools with no additional measures",
     "Brief hazards/controls/tasks",
-    "Check payroll",
-    "Test maths",
+    "Check payroll as the full solution",
+    "Test maths with no further action",
   ],
   correctIndex: 1,
       explanation: "They communicate risks, controls, and planned work."
@@ -98,10 +98,10 @@ export type Question = {
       id: "comm-11",
       question: "Most effective method on a very noisy site?",
       options: [
-    "Whispering",
+    "Whispering with no additional measures",
     "Agreed hand signals/radio",
-    "Long emails",
-    "Wait silently",
+    "Long emails as the full solution",
+    "Wait silently with no further action",
   ],
   correctIndex: 1,
       explanation: "Use agreed signals/radios when speech is unreliable."
@@ -110,10 +110,10 @@ export type Question = {
       id: "comm-12",
       question: "Why keep communication professional?",
       options: [
-    "To create conflict",
+    "To create conflict as the main approach",
     "To maintain working relationships",
-    "To avoid PPE",
-    "To ignore rules",
+    "To avoid PPE as the main approach",
+    "To ignore rules as the main approach",
   ],
   correctIndex: 1,
       explanation: "Professional comms support teamwork and compliance."
@@ -136,10 +136,10 @@ export type Question = {
       id: "comm-15",
       question: "Main aim of a site meeting?",
       options: [
-    "Avoid work",
+    "Avoid work with no additional measures",
     "Coordinate tasks/issues/resources",
-    "Replace drawings",
-    "Reduce communication",
+    "Replace drawings as the full solution",
+    "Reduce communication with no further action",
   ],
   correctIndex: 1,
       explanation: "Meetings align people, progress, risks, and actions."
@@ -155,10 +155,10 @@ export type Question = {
       id: "comm-17",
       question: "Before passing info on, you should?",
       options: [
-    "Guess missing details",
+    "Guess missing details with no additional measures",
     "Check it’s correct and relevant",
-    "Add opinions",
-    "Tell only friends",
+    "Add opinions as the full solution",
+    "Tell only friends, with no additional measures",
   ],
   correctIndex: 1,
       explanation: "Bad info causes bad decisions and unsafe work."
@@ -167,9 +167,9 @@ export type Question = {
       id: "comm-18",
       question: "Why write down critical instructions?",
       options: [
-    "To slow work",
+    "To slow work as the main approach",
     "To create a traceable record",
-    "To avoid speaking",
+    "To avoid speaking as the main approach",
     "To avoid responsibility",
   ],
   correctIndex: 1,
@@ -179,10 +179,10 @@ export type Question = {
       id: "comm-19",
       question: "A major outcome of poor communication is?",
       options: [
-    "Fewer defects",
+    "Fewer defects with no additional measures",
     "Mistakes/rework/accidents",
-    "Instant compliance",
-    "Lower risk",
+    "Instant compliance as the full solution",
+    "Lower risk with no further action",
   ],
   correctIndex: 1,
       explanation: "Poor comms increases errors and safety hazards."
@@ -191,10 +191,10 @@ export type Question = {
       id: "comm-20",
       question: "Best approach for safety-critical info?",
       options: [
-    "Say it once",
+    "Say it once with no additional measures",
     "Be clear and confirm understanding",
-    "Text later",
-    "Assume they heard",
+    "Text later as the full solution",
+    "Assume they heard with no further action",
   ],
   correctIndex: 1,
       explanation: "Safety messages must be confirmed, not assumed."
@@ -204,10 +204,10 @@ export type Question = {
       id: "comm-21",
       question: "Why report near misses?",
       options: [
-    "To blame others",
+    "To blame others as the main approach",
     "To prevent future accidents",
-    "To avoid learning",
-    "To reduce training",
+    "To avoid learning as the main approach",
+    "To reduce training as the main approach",
   ],
   correctIndex: 1,
       explanation: "Near misses highlight risks before someone gets hurt."
@@ -223,10 +223,10 @@ export type Question = {
       id: "comm-23",
       question: "Best way to reduce language barriers?",
       options: [
-    "Use slang terms only",
+    "Use slang terms only, with no additional measures",
     "Use simple words/visuals + check-back",
-    "Speak faster only",
-    "Ignore it and continue",
+    "Speak faster only, with no additional measures",
+    "Ignore it and continue with no further action",
   ],
   correctIndex: 1,
       explanation: "Simple wording, visuals, and confirmation improve understanding."
@@ -247,10 +247,10 @@ export type Question = {
       id: "comm-25",
       question: "Why is poor timekeeping a communication issue?",
       options: [
-    "It improves coordination",
+    "It improves coordination with no additional measures",
     "It disrupts schedules and other trades",
-    "It removes risk",
-    "It replaces planning",
+    "It removes risk as the full solution",
+    "It replaces planning with no further action",
   ],
   correctIndex: 1,
       explanation: "Late updates cause knock-on delays for others."
@@ -259,10 +259,10 @@ export type Question = {
       id: "comm-26",
       question: "Good communication habit on site?",
       options: [
-    "Interrupting",
+    "Interrupting with no additional measures",
     "Updating progress regularly",
-    "Ignoring drawings",
-    "Avoiding briefings",
+    "Ignoring drawings as the full solution",
+    "Avoiding briefings with no further action",
   ],
   correctIndex: 1,
       explanation: "Progress updates keep everyone coordinated."
@@ -271,10 +271,10 @@ export type Question = {
       id: "comm-27",
       question: "Why keep messages short and clear?",
       options: [
-    "To hide details",
+    "To hide details as the main approach",
     "To speed understanding/decisions",
-    "To confuse people",
-    "To delay approvals",
+    "To confuse people as the main approach",
+    "To delay approvals as the main approach",
   ],
   correctIndex: 1,
       explanation: "Clear, concise messages reduce mistakes."
@@ -283,10 +283,10 @@ export type Question = {
       id: "comm-28",
       question: "A proper shift handover should include?",
       options: [
-    "Only opinions",
+    "Only opinions, with no additional measures",
     "Work done + issues + next steps",
-    "Only jokes",
-    "No detail",
+    "Only jokes, with no additional measures",
+    "No detail for the installation",
   ],
   correctIndex: 1,
       explanation: "Handover must transfer facts and risks to the next team."
@@ -295,10 +295,10 @@ export type Question = {
       id: "comm-29",
       question: "Why coordinate with other trades?",
       options: [
-    "To compete",
+    "To compete as the main approach",
     "To prevent clashes and rework",
     "To avoid method statements",
-    "To reduce safety",
+    "To reduce safety as the main approach",
   ],
   correctIndex: 1,
       explanation: "Coordination avoids conflicts in space/time and sequence."
@@ -307,10 +307,10 @@ export type Question = {
       id: "comm-30",
       question: "Best way to handle conflict professionally?",
       options: [
-    "Argue loudly",
+    "Argue loudly with no additional measures",
     "Stay calm and follow procedure",
-    "Ignore safety",
-    "Refuse to speak",
+    "Ignore safety as the full solution",
+    "Refuse to speak with no further action",
   ],
   correctIndex: 1,
       explanation: "Use calm facts and the agreed site process."
@@ -334,10 +334,10 @@ export type Question = {
       id: "comm-33",
       question: "A method statement mainly describes?",
       options: [
-    "Company history",
+    "Company history with no additional measures",
     "How to do the task safely",
-    "Tool prices",
-    "Testing exemptions",
+    "Tool prices as the full solution",
+    "Testing exemptions with no further action",
   ],
   correctIndex: 1,
       explanation: "It sets out steps, hazards, and controls."
@@ -346,10 +346,10 @@ export type Question = {
       id: "comm-34",
       question: "Why use correct technical terms?",
       options: [
-    "To impress people",
+    "To impress people as the main approach",
     "To ensure shared accurate meaning",
-    "To reduce training",
-    "To avoid specs",
+    "To reduce training as the main approach",
+    "To avoid specs as the main approach",
   ],
   correctIndex: 1,
       explanation: "Wrong terms can lead to wrong components/work."
@@ -358,10 +358,10 @@ export type Question = {
       id: "comm-35",
       question: "Site notice boards are used to?",
       options: [
-    "Display jokes",
+    "Display jokes with no additional measures",
     "Share key information/updates",
-    "Hide changes",
-    "Replace inductions",
+    "Hide changes as the full solution",
+    "Replace inductions with no further action",
   ],
   correctIndex: 1,
       explanation: "They communicate rules, contacts, and site updates."
@@ -370,10 +370,10 @@ export type Question = {
       id: "comm-36",
       question: "If you get conflicting instructions, you should?",
       options: [
-    "Pick the easiest",
+    "Pick the easiest with no additional measures",
     "Stop and clarify with supervisor",
-    "Ignore both",
-    "Ask client only",
+    "Ignore both as the full solution",
+    "Ask client only, with no additional measures",
   ],
   correctIndex: 1,
       explanation: "Conflicts must be resolved before continuing."
@@ -382,10 +382,10 @@ export type Question = {
       id: "comm-37",
       question: "Most important emergency message includes?",
       options: [
-    "Tool brand",
+    "Tool brand with no additional measures",
     "Hazard + exact location",
-    "Timesheet info",
-    "Who’s to blame",
+    "Timesheet info as the full solution",
+    "Who’s to blame with no further action",
   ],
   correctIndex: 1,
       explanation: "Emergency comms must be clear, fast, and specific."
@@ -394,10 +394,10 @@ export type Question = {
       id: "comm-38",
       question: "Why rely on drawings/specifications?",
       options: [
-    "To guess less",
+    "To guess less as the main approach",
     "To follow the intended design",
-    "To avoid checks",
-    "To skip approvals",
+    "To avoid checks as the main approach",
+    "To skip approvals as the main approach",
   ],
   correctIndex: 1,
       explanation: "Drawings/specs define what ‘correct’ looks like."
@@ -413,10 +413,10 @@ export type Question = {
       id: "comm-40",
       question: "Purpose of safety signage?",
       options: [
-    "Decoration only",
+    "Decoration only, with no additional measures",
     "Warn and guide behaviour",
-    "Replace PPE",
-    "Replace training",
+    "Replace PPE as the full solution",
+    "Replace training with no further action",
   ],
   correctIndex: 1,
       explanation: "Signs communicate hazards, rules, and mandatory actions."
@@ -426,10 +426,10 @@ export type Question = {
       id: "comm-41",
       question: "Good client communication example?",
       options: [
-    "Private gossip",
+    "Private gossip with no additional measures",
     "Progress update/handover note",
-    "Tool order",
-    "Trade banter",
+    "Tool order as the full solution",
+    "Trade banter with no further action",
   ],
   correctIndex: 1,
       explanation: "Clients need clear status, access, and handover info."
@@ -438,10 +438,10 @@ export type Question = {
       id: "comm-42",
       question: "When reporting an issue, how should you keep it?",
       options: [
-    "Emotional",
+    "Emotional with no additional measures",
     "Factual and specific",
-    "Vague",
-    "Anonymous",
+    "Vague as the full solution",
+    "Anonymous with no further action",
   ],
   correctIndex: 1,
       explanation: "Facts help the right decision be made quickly."
@@ -450,10 +450,10 @@ export type Question = {
       id: "comm-43",
       question: "Before sending an email about changes, you should?",
       options: [
-    "Send instantly",
+    "Send instantly with no additional measures",
     "Check details + recipients",
-    "Use slang terms",
-    "Leave out dates",
+    "Use slang terms as the full solution",
+    "Leave out dates with no further action",
   ],
   correctIndex: 1,
       explanation: "Correct content to correct people prevents confusion."
@@ -462,10 +462,10 @@ export type Question = {
       id: "comm-44",
       question: "A site “communication chain” is?",
       options: [
-    "A lifting chain",
+    "A lifting chain as the complete answer",
     "The agreed route for info escalation",
-    "A tool brand",
-    "A type of bonding",
+    "A tool brand as the complete answer",
+    "A type of bonding as the complete answer",
   ],
   correctIndex: 1,
       explanation: "It defines who you report to and in what order."
@@ -474,10 +474,10 @@ export type Question = {
       id: "comm-45",
       question: "Why must apprentices follow comms procedures?",
       options: [
-    "So they can ignore supervisors",
+    "So they can ignore supervisors with no additional measures",
     "Because safety/coordination depend on it",
-    "To avoid paperwork",
-    "To change specs freely",
+    "To avoid paperwork as the main approach",
+    "To change specs freely as the main approach",
   ],
   correctIndex: 1,
       explanation: "Good procedure prevents unsafe or unauthorised actions."
@@ -486,10 +486,10 @@ export type Question = {
       id: "comm-46",
       question: "Best way to give instructions?",
       options: [
-    "All details at once",
+    "All details at once with no additional measures",
     "Clear steps + check understanding",
-    "No context",
-    "Assume they know",
+    "No context for the installation",
+    "Assume they know with no further action",
   ],
   correctIndex: 1,
       explanation: "Step-by-step with confirmation reduces mistakes."
@@ -512,10 +512,10 @@ export type Question = {
       id: "comm-49",
       question: "Purpose of equipment/circuit labelling?",
       options: [
-    "Decoration only",
+    "Decoration only, with no additional measures",
     "Safe identification for operation/maintenance",
-    "Reduce testing",
-    "Increase voltage",
+    "Reduce testing as the full solution with no further action",
+    "Increase voltage with no further action",
   ],
   correctIndex: 1,
       explanation: "Labels support safe isolation and fault finding."
@@ -524,10 +524,10 @@ export type Question = {
       id: "comm-50",
       question: "Why report delays early?",
       options: [
-    "So nobody plans",
+    "So nobody plans with no additional measures",
     "So schedules/resources can change",
-    "So mistakes increase",
-    "So work stops",
+    "So mistakes increase as the full solution",
+    "So work stops with no further action",
   ],
   correctIndex: 1,
       explanation: "Early warning reduces knock-on delays and conflict."
@@ -544,10 +544,10 @@ export type Question = {
       id: "comm-52",
       question: "Which is poor communication?",
       options: [
-    "Check-back",
+    "Check-back with no additional measures",
     "Assuming you were understood",
-    "Using drawings",
-    "Asking questions",
+    "Using drawings as the full solution",
+    "Asking questions with no further action",
   ],
   correctIndex: 1,
       explanation: "Assumptions cause errors and unsafe actions."
@@ -556,10 +556,10 @@ export type Question = {
       id: "comm-53",
       question: "Why does communication support quality?",
       options: [
-    "Replaces inspection",
+    "Replaces inspection with no additional measures",
     "Aligns work to requirements",
-    "Avoids standards",
-    "Increases waste",
+    "Avoids standards as the full solution",
+    "Increases waste with no further action",
   ],
   correctIndex: 1,
       explanation: "Quality needs clear requirements and feedback."
@@ -568,10 +568,10 @@ export type Question = {
       id: "comm-54",
       question: "Customer asks for extra work (out of scope). You?",
       options: [
-    "Do it instantly",
+    "Do it instantly with no additional measures",
     "Refer via supervisor/variation process",
-    "Ignore request",
-    "Change drawings yourself",
+    "Ignore request as the full solution",
+    "Change drawings yourself with no further action",
   ],
   correctIndex: 1,
       explanation: "Scope changes need approval, costing, and record."
@@ -587,10 +587,10 @@ export type Question = {
       id: "comm-56",
       question: "Why are checklists useful for communication?",
       options: [
-    "Remove accountability",
+    "Remove accountability with no additional measures",
     "Standardise what must be done/reported",
-    "Replace competence",
-    "Reduce safety",
+    "Replace competence as the full solution",
+    "Reduce safety with no further action",
   ],
   correctIndex: 1,
       explanation: "They reduce missed steps and inconsistent reporting."
@@ -598,18 +598,23 @@ export type Question = {
     {
       id: "comm-57",
       question: "Knowing who to speak to matters because?",
-      options: ["You can avoid people", "Messages reach the right person fast", "Nothing gets reported", "Procedure is optional"],
-      correctIndex: 1,
+      options: [
+      "You can avoid people with no additional measures",
+      "Messages reach the right person fast",
+      "Nothing gets reported as the full solution",
+      "Procedure is optional with no further action",
+    ],
+    correctIndex: 1,
       explanation: "Correct routing prevents delays and confusion."
     },
     {
       id: "comm-58",
       question: "Most traceable communication method?",
       options: [
-    "Hand signals",
-    "Verbal only",
+    "Hand signals with no additional measures",
+    "Verbal only, with no additional measures",
     "Email/written record",
-    "Shouting",
+    "Shouting with no further action",
   ],
   correctIndex: 2,
       explanation: "Written comms provide an auditable record."
@@ -617,18 +622,23 @@ export type Question = {
     {
       id: "comm-59",
       question: "Why avoid rumours on site?",
-      options: ["They improve teamwork", "They damage trust and decisions", "They improve safety", "They reduce defects"],
-      correctIndex: 1,
+      options: [
+      "They improve teamwork with no additional measures",
+      "They damage trust and decisions",
+      "They improve safety as the full solution",
+      "They reduce defects with no further action",
+    ],
+    correctIndex: 1,
       explanation: "Rumours cause conflict and poor choices."
     },
     {
       id: "comm-60",
       question: "Good radio practice is to?",
       options: [
-    "Talk continuously",
+    "Talk continuously with no additional measures",
     "Be clear and confirm receipt",
-    "Use slang only",
-    "Avoid locations",
+    "Use slang only, with no additional measures",
+    "Avoid locations with no further action",
   ],
   correctIndex: 1,
       explanation: "Confirming receipt prevents misunderstandings."
@@ -638,10 +648,10 @@ export type Question = {
       id: "comm-61",
       question: "Why does body language matter?",
       options: [
-    "Never affects meaning",
+    "Never affects meaning with no additional measures",
     "Can support or contradict words",
-    "Replaces records",
-    "Replaces drawings",
+    "Replaces records as the full solution",
+    "Replaces drawings with no further action",
   ],
   correctIndex: 1,
       explanation: "Non-verbal cues can change how a message is understood."
@@ -659,8 +669,8 @@ export type Question = {
       options: [
     "Demand help immediately",
     "Explain what you need and why",
-    "Blame other people",
-    "Refuse to work",
+    "Blame other people as the full solution",
+    "Refuse to work with no further action",
   ],
   correctIndex: 1,
       explanation: "Clear requests get faster and better support."
@@ -669,10 +679,10 @@ export type Question = {
       id: "comm-64",
       question: "Why share your location when team working?",
       options: [
-    "To waste time",
+    "To waste time as the main approach",
     "Safety and coordination",
-    "Avoid planning",
-    "Increase noise",
+    "Avoid planning as the full solution",
+    "Increase noise with no further action",
   ],
   correctIndex: 1,
       explanation: "Location updates help manage risk and sequencing."
@@ -693,10 +703,10 @@ export type Question = {
       id: "comm-66",
       question: "A good progress update includes?",
       options: [
-    "Only jokes",
+    "Only jokes, with no additional measures",
     "Done + issues + next actions",
-    "Only blame",
-    "Nothing specific",
+    "Only blame, with no additional measures",
+    "Nothing specific with no further action",
   ],
   correctIndex: 1,
       explanation: "Status, risks, and next steps keep work aligned."
@@ -705,10 +715,10 @@ export type Question = {
       id: "comm-67",
       question: "Communication must be timely because?",
       options: [
-    "Problems should grow",
+    "Problems should grow with no additional measures",
     "Decisions/fixes happen faster",
-    "No one should plan",
-    "Work must stop",
+    "No one should plan for the installation",
+    "Work must stop with no further action",
   ],
   correctIndex: 1,
       explanation: "Late info causes delays and increased risk."
@@ -717,10 +727,10 @@ export type Question = {
       id: "comm-68",
       question: "During lifting ops, safest communication uses?",
       options: [
-    "Random shouting",
+    "Random shouting with no additional measures",
     "Agreed signals/appointed banksman",
-    "Walking under load",
-    "Ignoring the lift team",
+    "Walking under load as the full solution",
+    "Ignoring the lift team with no further action",
   ],
   correctIndex: 1,
       explanation: "Controlled signals prevent dangerous misunderstandings."
@@ -729,10 +739,10 @@ export type Question = {
       id: "comm-69",
       question: "Why give instructions to the right person?",
       options: [
-    "So the wrong person acts",
+    "So the wrong person acts with no additional measures",
     "Clear responsibility and action",
-    "More paperwork",
-    "No one acts",
+    "More paperwork as the full solution",
+    "No one acts for the installation",
   ],
   correctIndex: 1,
       explanation: "Correct recipient = correct action and accountability."
@@ -741,10 +751,10 @@ export type Question = {
       id: "comm-70",
       question: "Best safety instruction wording is?",
       options: [
-    "“Be careful”",
+    "“Be careful” with no additional measures",
     "Specific hazard + control",
-    "Only mention once",
-    "Say it later",
+    "Only mention once, with no additional measures",
+    "Say it later with no further action",
   ],
   correctIndex: 1,
       explanation: "Specific controls are actionable and measurable."
@@ -754,10 +764,10 @@ export type Question = {
       id: "comm-71",
       question: "Before working in another trade’s area, you should?",
       options: [
-    "Start without telling",
+    "Start without telling with no additional measures",
     "Coordinate access and sequence",
-    "Remove their kit",
-    "Ignore rules",
+    "Remove their kit as the full solution",
+    "Ignore rules with no further action",
   ],
   correctIndex: 1,
       explanation: "Coordination prevents clashes, damage, and delays."
@@ -766,10 +776,10 @@ export type Question = {
       id: "comm-72",
       question: "Why are as-built records valuable to clients?",
       options: [
-    "Increase cost",
+    "Increase cost with no additional measures",
     "Support maintenance and future changes",
-    "Replace training",
-    "Reduce safety",
+    "Replace training as the full solution",
+    "Reduce safety with no further action",
   ],
   correctIndex: 1,
       explanation: "Accurate records help safe operation and future work."
@@ -777,18 +787,23 @@ export type Question = {
     {
       id: "comm-73",
       question: "Main weakness of verbal instructions only?",
-      options: ["Always recorded", "Can be misheard/forgotten", "Never misunderstood", "Too traceable"],
-      correctIndex: 1,
+      options: [
+      "Always recorded with no additional measures",
+      "Can be misheard/forgotten",
+      "Never misunderstood as the full solution",
+      "Too traceable with no further action",
+    ],
+    correctIndex: 1,
       explanation: "Without a record, errors are more likely."
     },
     {
       id: "comm-74",
       question: "If you make an error in a record, you should?",
       options: [
-    "Hide the mistake",
+    "Hide the mistake with no additional measures",
     "Correct it properly (traceably)",
-    "Delete everything",
-    "Ignore it and continue",
+    "Delete everything as the full solution",
+    "Ignore it and continue with no further action",
   ],
   correctIndex: 1,
       explanation: "Records must remain honest and auditable."
@@ -797,10 +812,10 @@ export type Question = {
       id: "comm-75",
       question: "Why does respect matter in diverse teams?",
       options: [
-    "Creates conflict",
+    "Creates conflict with no additional measures",
     "Improves cooperation/understanding",
-    "Avoids learning",
-    "Reduces standards",
+    "Avoids learning as the full solution",
+    "Reduces standards with no further action",
   ],
   correctIndex: 1,
       explanation: "Respect improves teamwork and reduces misunderstanding."
@@ -809,10 +824,10 @@ export type Question = {
       id: "comm-76",
       question: "If a safety instruction seems wrong, you should?",
       options: [
-    "Ignore it and continue",
+    "Ignore it and continue with no additional measures",
     "Raise it with supervisor for clarification",
-    "Follow it silently",
-    "Tell the client first",
+    "Follow it silently as the full solution",
+    "Tell the client first with no further action",
   ],
   correctIndex: 1,
       explanation: "Escalate concerns through the correct route."
@@ -821,10 +836,10 @@ export type Question = {
       id: "comm-77",
       question: "Purpose of sharing RAMS?",
       options: [
-    "Reduce safety",
+    "Reduce safety with no additional measures",
     "Explain hazards and safe steps",
-    "Avoid supervision",
-    "Replace tools",
+    "Avoid supervision as the full solution",
+    "Replace tools with no further action",
   ],
   correctIndex: 1,
       explanation: "RAMS informs people how to work safely."
@@ -845,10 +860,10 @@ export type Question = {
       id: "comm-79",
       question: "Confidentiality in communication protects?",
       options: [
-    "Rumours",
+    "Rumours with no additional measures",
     "Client/company information",
-    "Mistakes",
-    "Unsafe practice",
+    "Mistakes as the full solution",
+    "Unsafe practice with no further action",
   ],
   correctIndex: 1,
       explanation: "Share sensitive info only with those who need it."
@@ -857,10 +872,10 @@ export type Question = {
       id: "comm-80",
       question: "Communicating quality requirements means?",
       options: [
-    "Ignoring specs",
+    "Ignoring specs with no additional measures",
     "Following standards/spec tolerances",
-    "Using any materials",
-    "Avoiding inspections",
+    "Using any materials as the full solution",
+    "Avoiding inspections with no further action",
   ],
   correctIndex: 1,
       explanation: "Quality is defined by drawings, specs, and standards."
@@ -869,8 +884,13 @@ export type Question = {
     {
       id: "comm-81",
       question: "Why confirm a task is complete?",
-      options: ["So nobody knows", "So others can proceed safely", "To avoid inspection", "To increase paperwork"],
-      correctIndex: 1,
+      options: [
+      "So nobody knows with no additional measures",
+      "So others can proceed safely",
+      "To avoid inspection as the main approach",
+      "To increase paperwork as the main approach",
+    ],
+    correctIndex: 1,
       explanation: "Completion updates allow safe sequencing and handover."
     },
     {
@@ -884,10 +904,10 @@ export type Question = {
       id: "comm-83",
       question: "Why communicate access requirements early?",
       options: [
-    "So people arrive unprepared",
+    "So people arrive unprepared with no additional measures",
     "So permits/resources can be planned",
-    "So safety drops",
-    "So trades clash",
+    "So safety drops as the full solution",
+    "So trades clash with no further action",
   ],
   correctIndex: 1,
       explanation: "Access affects permits, timing, and safe work methods."
@@ -896,10 +916,10 @@ export type Question = {
       id: "comm-84",
       question: "Asked to do a task outside your competence. You?",
       options: [
-    "Do it anyway alone",
+    "Do it anyway alone with no additional measures",
     "Tell supervisor and get guidance",
-    "Hide the issue",
-    "Blame other people",
+    "Hide the issue as the full solution",
+    "Blame other people with no further action",
   ],
   correctIndex: 1,
       explanation: "Work must stay within competence for safety and compliance."
@@ -915,10 +935,10 @@ export type Question = {
       id: "comm-86",
       question: "A permit-to-work briefing communicates?",
       options: [
-    "How to skip PPE",
+    "How to skip PPE with no additional measures",
     "Restrictions and safety controls",
-    "Tool brands",
-    "Testing exemptions",
+    "Tool brands as the full solution",
+    "Testing exemptions with no further action",
   ],
   correctIndex: 1,
       explanation: "Permits set conditions and controls for high-risk work."
@@ -927,10 +947,10 @@ export type Question = {
       id: "comm-87",
       question: "Best way to reduce critical communication errors?",
       options: [
-    "Rely on memory",
+    "Rely on memory with no additional measures",
     "Use written confirmation + check-backs",
-    "Avoid records",
-    "Assume others heard",
+    "Avoid records as the full solution",
+    "Assume others heard with no further action",
   ],
   correctIndex: 1,
       explanation: "Check-backs and records reduce high-risk mistakes."
@@ -939,10 +959,10 @@ export type Question = {
       id: "comm-88",
       question: "Why stay respectful under pressure?",
       options: [
-    "To cause conflict",
+    "To cause conflict as the main approach",
     "To keep teamwork and clear decisions",
-    "To reduce compliance",
-    "To increase mistakes",
+    "To reduce compliance as the main approach",
+    "To increase mistakes as the main approach",
   ],
   correctIndex: 1,
       explanation: "Respectful comms keeps focus on facts and actions."
@@ -958,10 +978,10 @@ export type Question = {
       id: "comm-90",
       question: "Why document defects/snags?",
       options: [
-    "To blame others",
+    "To blame others as the main approach",
     "To track and close defects",
-    "To avoid fixing",
-    "To reduce quality",
+    "To avoid fixing as the main approach",
+    "To reduce quality as the main approach",
   ],
   correctIndex: 1,
       explanation: "Snag lists make defects visible, owned, and corrected."
@@ -971,10 +991,10 @@ export type Question = {
       id: "comm-91",
       question: "Before formal client handover you should?",
       options: [
-    "Skip checks",
+    "Skip checks with no additional measures",
     "Confirm completion + accurate info",
-    "Hide docs",
-    "Remove labels",
+    "Hide docs as the full solution",
+    "Remove labels with no further action",
   ],
   correctIndex: 1,
       explanation: "Handover must be complete, accurate, and usable."
@@ -983,10 +1003,10 @@ export type Question = {
       id: "comm-92",
       question: "What most improves team communication?",
       options: [
-    "Avoid updates",
+    "Avoid updates with no additional measures",
     "Regular briefings + clear roles",
-    "Shouting",
-    "Ignoring feedback",
+    "Shouting as the full solution",
+    "Ignoring feedback with no further action",
   ],
   correctIndex: 1,
       explanation: "Briefings and roles reduce uncertainty and clashes."
@@ -995,10 +1015,10 @@ export type Question = {
       id: "comm-93",
       question: "Why is feedback important on site?",
       options: [
-    "It delays work",
+    "It delays work with no additional measures",
     "It improves performance/understanding",
-    "It replaces PPE",
-    "It removes responsibility",
+    "It replaces PPE as the full solution",
+    "It removes responsibility with no further action",
   ],
   correctIndex: 1,
       explanation: "Feedback stops repeat errors and improves standards."
@@ -1007,9 +1027,9 @@ export type Question = {
       id: "comm-94",
       question: "If test results affect others, you should?",
       options: [
-    "Keep private always",
+    "Keep private always with no additional measures",
     "Share/record to relevant people",
-    "Destroy records",
+    "Destroy records as the full solution",
     "Tell client verbally only",
   ],
   correctIndex: 1,
@@ -1019,10 +1039,10 @@ export type Question = {
       id: "comm-95",
       question: "Why report tool/equipment condition?",
       options: [
-    "Hide faults",
+    "Hide faults with no additional measures",
     "Prevent unsafe use and downtime",
-    "Increase waste",
-    "Ignore maintenance",
+    "Increase waste as the full solution",
+    "Ignore maintenance with no further action",
   ],
   correctIndex: 1,
       explanation: "Fault reporting prevents accidents and delays."
@@ -1031,10 +1051,10 @@ export type Question = {
       id: "comm-96",
       question: "Professional communication mainly supports?",
       options: [
-    "Arguments",
+    "Arguments with no additional measures",
     "Good relationships and standards",
-    "Skipping rules",
-    "Avoiding records",
+    "Skipping rules as the full solution",
+    "Avoiding records with no further action",
   ],
   correctIndex: 1,
       explanation: "Professional comms supports teamwork and compliance."
@@ -1049,8 +1069,13 @@ export type Question = {
     {
       id: "comm-98",
       question: "Why are records important in communication?",
-      options: ["To delay work", "Evidence and traceability", "Replace drawings", "Increase confusion"],
-      correctIndex: 1,
+      options: [
+      "To delay work as the main approach",
+      "Evidence and traceability",
+      "Replace drawings as the full solution",
+      "Increase confusion with no further action",
+    ],
+    correctIndex: 1,
       explanation: "Records show decisions, changes, and what was done."
     },
     {
@@ -1063,8 +1088,13 @@ export type Question = {
     {
       id: "comm-100",
       question: "Main aim of effective communication in BSE?",
-      options: ["Reduce inspections", "Safe, accurate, efficient work", "Increase paperwork", "Avoid responsibility"],
-      correctIndex: 1,
+      options: [
+      "Reduce inspections with no additional measures",
+      "Safe, accurate, efficient work",
+      "Increase paperwork as the full solution",
+      "Avoid responsibility with no further action",
+    ],
+    correctIndex: 1,
       explanation: "Effective comms supports safety, quality, and productivity."
     },
     {
@@ -1086,9 +1116,9 @@ export type Question = {
       question: "What is a disadvantage of electronic technical information?",
       options: [
         "Requires power or a device to access",
-        "Is always out of date",
-        "Cannot store large files",
-        "Is illegal to use",
+        "Is always out of date as the sole approach",
+        "Cannot store large files as the full solution",
+        "Is illegal to use with no further action",
       ],
       correctIndex: 0,
       explanation: "Electronic data needs a device and power to view."
@@ -1112,9 +1142,9 @@ export type Question = {
       question: "What is a disadvantage of hard-copy information?",
       options: [
         "Can be bulky and harder to update",
-        "Cannot be taken to site",
-        "Is illegal",
-        "Never gets damaged",
+        "Cannot be taken to site as the sole approach",
+        "Is illegal as the full solution",
+        "Never gets damaged with no further action",
       ],
       correctIndex: 0,
       explanation: "Printed materials can be bulky and out of date."
@@ -1126,8 +1156,8 @@ export type Question = {
       options: [
         "Can become outdated and damaged",
         "Requires software updates",
-        "Needs batteries",
-        "Cannot be shared",
+        "Needs batteries as the full solution",
+        "Cannot be shared with no further action",
       ],
       correctIndex: 0,
       explanation: "Printed materials can be out of date or damaged on site."
@@ -1138,9 +1168,9 @@ export type Question = {
       question: "What is an advantage of electronic technical information?",
       options: [
         "Can store large amounts of data in one place",
-        "Never needs charging",
-        "Cannot be lost",
-        "Cannot be corrupted",
+        "Never needs charging as the sole approach",
+        "Cannot be lost as the full solution with no further action",
+        "Cannot be corrupted with no further action",
       ],
       correctIndex: 0,
       explanation: "Electronic storage can hold a lot of information."
@@ -1151,9 +1181,9 @@ export type Question = {
       question: "An advantage of electronic technical info in the office is?",
       options: [
         "Easy search and fast updates",
-        "No need for backups",
-        "Cannot be shared",
-        "Always offline",
+        "No need for backups for the installation",
+        "Cannot be shared as the full solution",
+        "Always offline with no further action",
       ],
       correctIndex: 0,
       explanation: "Digital info is searchable and easy to update."
@@ -1164,9 +1194,9 @@ export type Question = {
       question: "An advantage of hard‑copy info in the office is?",
       options: [
         "Quick reference without devices",
-        "Never gets out of date",
-        "Always up to date",
-        "Cannot be lost",
+        "Never gets out of date as the sole approach",
+        "Always up to date as the full solution",
+        "Cannot be lost with no further action",
       ],
       correctIndex: 0,
       explanation: "Hard copy can be read without devices or power."

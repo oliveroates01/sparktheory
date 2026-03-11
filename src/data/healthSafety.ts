@@ -689,9 +689,9 @@ export type Question = {
         question: "Who is responsible for carrying out risk assessments on site?",
         options: [
           "The employer or responsible person",
-          "Only the newest apprentice",
-          "Only visiting inspectors",
-          "Only the site cleaner",
+          "Only the newest apprentice, with no additional measures",
+          "Only visiting inspectors, with no additional measures",
+          "Only the site cleaner, with no additional measures",
         ],
         correctIndex: 0,
         explanation:
@@ -728,9 +728,9 @@ export type Question = {
         question: "What is a near miss?",
         options: [
           "An incident that could have caused harm",
-          "A planned safety inspection",
-          "A completed accident report",
-          "A successful job completion",
+          "A planned safety inspection as the complete answer",
+          "A completed accident report as the complete answer",
+          "A successful job completion as the complete answer",
         ],
         correctIndex: 0,
         explanation:
@@ -755,8 +755,8 @@ export type Question = {
         options: [
           "Bend knees and keep back straight",
           "Twist while lifting quickly",
-          "Lift with arms only",
-          "Pull with one hand",
+          "Lift with arms only, with no additional measures",
+          "Pull with one hand with no further action",
         ],
         correctIndex: 0,
         explanation:
@@ -819,9 +819,9 @@ export type Question = {
         question: "What is the main aim of safe isolation?",
         options: [
           "Ensure circuits are dead before work",
-          "Speed up installation times",
-          "Reduce paperwork",
-          "Allow tools to run cooler",
+          "Speed up installation times as the sole approach",
+          "Reduce paperwork as the full solution",
+          "Allow tools to run cooler with no further action",
         ],
         correctIndex: 0,
         explanation:
@@ -884,9 +884,9 @@ export type Question = {
         question: "Which of these would normally be reportable under RIDDOR?",
         options: [
           "A major injury requiring hospital treatment",
-          "A minor paper cut",
-          "A late arrival to work",
-          "A broken mobile phone",
+          "A minor paper cut as the complete answer",
+          "A late arrival to work as the complete answer",
+          "A broken mobile phone as the complete answer",
         ],
         correctIndex: 0,
         explanation:
@@ -950,9 +950,9 @@ export type Question = {
         question: "Who is responsible for carrying out risk assessments on site?",
         options: [
           "The employer or responsible person",
-          "Only the newest apprentice",
-          "Only visiting inspectors",
-          "Only the site receptionist",
+          "Only the newest apprentice, with no additional measures",
+          "Only visiting inspectors, with no additional measures",
+          "Only the site receptionist, with no additional measures",
         ],
         correctIndex: 0,
         explanation:
@@ -1076,9 +1076,9 @@ export type Question = {
         question: "What is the purpose of a toolbox talk?",
         options: [
           "Share safety information with workers",
-          "Decide company holidays",
-          "Train customers on products",
-          "Promote company branding",
+          "Decide company holidays as the sole approach",
+          "Train customers on products as the full solution",
+          "Promote company branding with no further action",
         ],
         correctIndex: 0,
         explanation:
@@ -1216,9 +1216,9 @@ export type Question = {
         question: "A key step in safe manual handling is to?",
         options: [
           "Bend knees and keep back straight",
-          "Keep legs straight",
-          "Twist while lifting",
-          "Lift away from body",
+          "Keep legs straight as the sole approach",
+          "Twist while lifting as the full solution",
+          "Lift away from body with no further action",
         ],
         correctIndex: 0,
         explanation: "Safe lifting uses bent knees and a straight back.",
@@ -1242,9 +1242,9 @@ export type Question = {
         question: "Which is one power of HSE inspectors?",
         options: [
           "Enter premises unannounced to investigate",
-          "Set employee pay rates",
-          "Approve overtime",
-          "Choose contractors",
+          "Set employee pay rates as the sole approach",
+          "Approve overtime as the full solution",
+          "Choose contractors with no further action",
         ],
         correctIndex: 0,
         explanation: "Inspectors can enter premises and investigate without notice.",

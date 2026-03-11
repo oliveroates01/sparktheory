@@ -4,9 +4,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "What identifies a Statutory Regulation?",
     options: [
       "Its title includes ‘Regulations’ and it has an SI number",
-      "It is published only by manufacturers",
-      "It is guidance without legal force",
-      "It is a company procedure",
+      "It is published only by manufacturers, with no additional measures",
+      "It is guidance without legal force as the full solution",
+      "It is a company procedure with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -17,9 +17,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "The Health and Safety at Work etc. Act 1974 is?",
     options: [
       "Primary legislation for occupational health and safety in Great Britain",
-      "A non‑statutory guidance note",
-      "A manufacturer’s code of practice",
-      "A local authority policy only",
+      "A non‑statutory guidance note as the complete answer as the full solution",
+      "A manufacturer’s code of practice as the complete answer with no further action",
+      "A local authority policy only, with no additional measures",
     ],
     correctIndex: 0,
     explanation:
@@ -43,9 +43,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Under the HSW Act, employees must?",
     options: [
       "Take reasonable care and cooperate on safety matters",
-      "Write company safety policy",
-      "Issue improvement notices",
-      "Set national standards",
+      "Write company safety policy as the sole approach",
+      "Issue improvement notices as the full solution",
+      "Set national standards with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -69,9 +69,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "EAWR applies to?",
     options: [
       "Workplaces, including systems beyond BS 7671 voltage scope",
-      "Private homes only",
-      "Only low‑voltage domestic circuits",
-      "Only new installations",
+      "Private homes only, with no additional measures",
+      "Only low‑voltage domestic circuits, with no additional measures",
+      "Only new installations, with no additional measures",
     ],
     correctIndex: 0,
     explanation:
@@ -82,9 +82,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which document gives guidance on EAWR interpretation?",
     options: [
       "HSE memorandum of guidance HSR25",
-      "IET On‑Site Guide",
-      "BS 7671 Part 7",
-      "IET GN8",
+      "IET On‑Site Guide as the sole approach",
+      "BS 7671 Part 7 as the full solution",
+      "IET GN8 with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -95,9 +95,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "ESQCR 2002 mainly applies to?",
     options: [
       "Electricity suppliers’ lines and apparatus",
-      "Portable appliance testing only",
-      "Domestic lighting circuits",
-      "Tool safety inspections",
+      "Portable appliance testing only, with no additional measures",
+      "Domestic lighting circuits as the full solution",
+      "Tool safety inspections with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -108,9 +108,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "PUWER 1998 requires work equipment to be?",
     options: [
       "Suitable and safe for the task and environment",
-      "New and branded",
-      "Used only indoors",
-      "Owned by the worker",
+      "New and branded as the sole approach as the full solution",
+      "Used only indoors, with no additional measures",
+      "Owned by the worker with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -121,9 +121,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "COSHH regulations focus on?",
     options: [
       "Controlling hazardous substances and exposure",
-      "Wiring colour codes",
-      "Noise at work only",
-      "Scaffold inspection",
+      "Wiring colour codes as the sole approach",
+      "Noise at work only, with no additional measures",
+      "Scaffold inspection with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -199,9 +199,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "A key purpose of the IET On‑Site Guide is to?",
     options: [
       "Provide design/installation/testing guidance for standard installations",
-      "Replace BS 7671 completely",
-      "Provide statutory law",
-      "Set insurance requirements",
+      "Replace BS 7671 completely as the sole approach as the full solution",
+      "Provide statutory law as the full solution with no further action",
+      "Set insurance requirements with no further action as the only control",
     ],
     correctIndex: 0,
     explanation:
@@ -225,9 +225,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "CPD seminars are often used to?",
     options: [
       "Provide updates and develop professional knowledge",
-      "Replace statutory law",
-      "Certify an installation",
-      "Issue legal notices",
+      "Replace statutory law as the sole approach",
+      "Certify an installation as the full solution",
+      "Issue legal notices with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -238,9 +238,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "ACoPs are?",
     options: [
       "Approved Codes of Practice with special legal status",
-      "Manufacturer brochures",
-      "Optional customer preferences",
-      "Company trademarks",
+      "Manufacturer brochures as the sole approach",
+      "Optional customer preferences as the full solution",
+      "Company trademarks with no further action as the only control",
     ],
     correctIndex: 0,
     explanation:
@@ -251,8 +251,8 @@ export const electricalTechnologyLevel3Questions = [
     question: "HSE inspectors can do which of the following?",
     options: [
       "Enter and inspect workplaces without notice",
-      "Set electricity prices",
-      "Approve all designs",
+      "Set electricity prices as the sole approach",
+      "Approve all designs as the full solution",
       "Issue building completion certificates",
     ],
     correctIndex: 0,
@@ -264,9 +264,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "A prohibition notice is used when?",
     options: [
       "There is a risk of serious personal injury",
-      "Minor issues need correction",
-      "A design is incomplete",
-      "A training record is missing",
+      "Minor issues need correction as the sole approach",
+      "A design is incomplete as the complete answer",
+      "A training record is missing as the complete answer",
     ],
     correctIndex: 0,
     explanation:
@@ -277,9 +277,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "A breach of non‑statutory guidance often results in?",
     options: [
       "Contractual or quality issues and possible legal consequences",
-      "No consequences ever",
-      "Automatic criminal conviction",
-      "Immediate imprisonment only",
+      "No consequences ever for the installation as the full solution",
+      "Automatic criminal conviction as the full solution",
+      "Immediate imprisonment only, with no additional measures",
     ],
     correctIndex: 0,
     explanation:
@@ -290,9 +290,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which drawing type shows what has actually been installed?",
     options: [
       "As‑fitted or installed drawings",
-      "Concept drawings",
-      "Tender sketches",
-      "Marketing diagrams",
+      "Concept drawings as the sole approach",
+      "Tender sketches as the full solution",
+      "Marketing diagrams with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -303,9 +303,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Why must symbols on drawings be explained?",
     options: [
       "To ensure the drawing is understood by installers",
-      "To replace the need for scale",
-      "To avoid using standard symbols",
-      "To hide design intent",
+      "To replace the need for scale as the main approach",
+      "To avoid using standard symbols as the main approach",
+      "To hide design intent as the main approach",
     ],
     correctIndex: 0,
     explanation:
@@ -325,19 +325,6 @@ export const electricalTechnologyLevel3Questions = [
       "At 1:50, the real size is 50 times the drawing measurement.",
   },
   {
-    id: "et3-026",
-    question: "Which statement about paper sizes is correct?",
-    options: [
-      "A0 is twice the size of A1, and sizes halve each step",
-      "A3 is larger than A1",
-      "A4 is larger than A2",
-      "Sizes increase as numbers decrease",
-    ],
-    correctIndex: 0,
-    explanation:
-      "Each step down halves the area: A0 is twice A1, A1 is twice A2, and so on.",
-  },
-  {
     id: "et3-027",
     question: "National Grid’s role includes?",
     options: [
@@ -355,9 +342,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Electricity cannot be stored in significant amounts, so the system must?",
     options: [
       "Balance supply and demand continuously",
-      "Store energy at substations",
-      "Run only at night",
-      "Shut down during low demand",
+      "Store energy at substations as the sole approach",
+      "Run only at night, with no additional measures",
+      "Shut down during low demand with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -382,8 +369,8 @@ export const electricalTechnologyLevel3Questions = [
     options: [
       "To reduce I²R losses and keep cable sizes manageable",
       "To make transformers smaller at the generator",
-      "To increase domestic voltage",
-      "To reduce grid frequency",
+      "To increase domestic voltage as the main approach",
+      "To reduce grid frequency as the main approach",
     ],
     correctIndex: 0,
     explanation:
@@ -394,9 +381,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "High‑voltage overhead transmission in the UK mainly uses?",
     options: [
       "Pylons with overhead lines",
-      "Underground only",
-      "Subsea only",
-      "Battery storage",
+      "Underground only, with no additional measures",
+      "Subsea only, with no additional measures",
+      "Battery storage with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -407,9 +394,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "At high voltage, electricity can?",
     options: [
       "Arc through air across short distances",
-      "Not pass through air at all",
-      "Only pass through water",
-      "Only pass through plastic",
+      "Not pass through air at all as the sole approach",
+      "Only pass through water, with no additional measures",
+      "Only pass through plastic, with no additional measures",
     ],
     correctIndex: 0,
     explanation:
@@ -420,9 +407,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Why are longer insulators used at higher voltages?",
     options: [
       "To increase creepage distance and prevent flashover",
-      "To increase current flow",
-      "To reduce transformer size",
-      "To improve power factor",
+      "To increase current flow as the main approach",
+      "To reduce transformer size as the main approach",
+      "To improve power factor as the main approach",
     ],
     correctIndex: 0,
     explanation:
@@ -433,9 +420,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which statement about renewable energy is correct?",
     options: [
       "Its share of electricity production has been increasing",
-      "It is no longer used in the UK",
-      "It is only for off‑grid homes",
-      "It replaced all fossil fuels already",
+      "It is no longer used in the UK as the sole approach",
+      "It is only for off‑grid homes, with no additional measures",
+      "It replaced all fossil fuels already with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -446,9 +433,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Pumped‑storage hydro works by?",
     options: [
       "Pumping water up off‑peak, releasing it at peak demand",
-      "Storing steam in tanks",
-      "Storing electricity in capacitors",
-      "Running only at night",
+      "Storing steam in tanks as the sole approach as the full solution",
+      "Storing electricity in capacitors as the full solution",
+      "Running only at night, with no additional measures",
     ],
     correctIndex: 0,
     explanation:
@@ -459,9 +446,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Technical drawings should use symbols that are?",
     options: [
       "British Standard where possible, with a legend",
-      "Invented without explanation",
-      "Written only in text",
-      "Scaled to actual device size",
+      "Invented without explanation as the sole approach",
+      "Written only in text, with no additional measures",
+      "Scaled to actual device size with no further action",
     ],
     correctIndex: 0,
     explanation:
@@ -481,26 +468,13 @@ export const electricalTechnologyLevel3Questions = [
       "40 mm × 50 = 2000 mm = 2 m.",
   },
   {
-    id: "et3-038",
-    question: "Which paper size is larger?",
-    options: [
-      "A1 is larger than A2",
-      "A3 is larger than A2",
-      "A4 is larger than A3",
-      "A2 is larger than A1",
-    ],
-    correctIndex: 0,
-    explanation:
-      "In the A‑series, lower numbers indicate larger sizes.",
-  },
-  {
     id: "et3-039",
     question: "Why might A3 reductions be used on site?",
     options: [
       "Easy printing and quick reference, but less readability",
-      "To show full‑size scale",
-      "To avoid any loss of detail",
-      "To increase drawing accuracy",
+      "To show full‑size scale as the main approach as the full solution",
+      "To avoid any loss of detail as the main approach",
+      "To increase drawing accuracy as the main approach",
     ],
     correctIndex: 0,
     explanation:
@@ -511,9 +485,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which statement about technical specifications is true?",
     options: [
       "Manufacturers provide them based on testing and development",
-      "They are never biased toward products",
-      "They replace statutory regulations",
-      "They are only verbal",
+      "They are never biased toward products as the sole approach",
+      "They replace statutory regulations as the full solution",
+      "They are only verbal, with no additional measures",
     ],
     correctIndex: 0,
     explanation:
