@@ -51,6 +51,17 @@ export async function POST(request: Request) {
     const userRef = services.db.collection("users").doc(decoded.uid);
     const claimRef = services.db.collection("usernames").doc(usernameLower);
 
+    // Enforce uniqueness from the users collection before any write.
+    const existingByUsername = await services.db
+      .collection("users")
+      .where("usernameLower", "==", usernameLower)
+      .limit(2)
+      .get();
+    const takenByAnotherUser = existingByUsername.docs.some((docSnap) => docSnap.id !== decoded.uid);
+    if (takenByAnotherUser) {
+      return NextResponse.json({ error: "This username is already taken." }, { status: 409 });
+    }
+
     try {
       await services.db.runTransaction(async (tx) => {
         const userSnap = await tx.get(userRef);
@@ -106,7 +117,7 @@ export async function POST(request: Request) {
       const message = error instanceof Error ? error.message : "Failed to set username";
       if (message === "USERNAME_TAKEN") {
         return NextResponse.json(
-          { error: "Username already taken. Please choose another." },
+          { error: "This username is already taken." },
           { status: 409 }
         );
       }

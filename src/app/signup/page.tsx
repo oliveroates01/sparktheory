@@ -36,6 +36,23 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
+      const usernameCheckResp = await fetch("/api/users/check-username", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: normalizedUsername }),
+      });
+      const usernameCheck = (await usernameCheckResp.json().catch(() => ({}))) as {
+        available?: boolean;
+        error?: string;
+      };
+      if (!usernameCheckResp.ok) {
+        throw new Error(usernameCheck.error || "Could not verify username.");
+      }
+      if (usernameCheck.available === false) {
+        setError("This username is already taken.");
+        return;
+      }
+
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       try {
         await updateProfile(cred.user, { displayName: normalizedUsername });
