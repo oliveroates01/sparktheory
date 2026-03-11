@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title: "Spark Theory",
   description: "Quiz website",
   icons: {
-    icon: [{ url: "/favicon.png", sizes: "48x48", type: "image/png" }],
+    icon: [{ url: "/favicon.ico", sizes: "96x96", type: "image/x-icon" }],
   },
 };
 
@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-build-sha={buildSha} data-build-time={buildTime}>
       <head>
-        <link rel="icon" href="/favicon.png" sizes="48x48" />
+        <link rel="icon" href="/favicon.ico" sizes="96x96" />
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=AW-17999737501"
