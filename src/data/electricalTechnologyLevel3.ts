@@ -4,52 +4,13 @@ export const electricalTechnologyLevel3Questions = [
     question: "What identifies a Statutory Regulation?",
     options: [
       "Its title includes ‘Regulations’ and it has an SI number",
-      "It is published only by manufacturers, with no additional measures",
-      "It is guidance without legal force as the full solution",
-      "It is a company procedure with no further action",
+      "It is published only by manufacturers",
+      "It is guidance without legal force",
+      "It is a company procedure",
     ],
     correctIndex: 0,
     explanation:
       "Statutory Regulations are secondary legislation with a Statutory Instrument number.",
-  },
-  {
-    id: "et3-002",
-    question: "The Health and Safety at Work etc. Act 1974 is?",
-    options: [
-      "Primary legislation for occupational health and safety in Great Britain",
-      "A non‑statutory guidance note as the complete answer as the full solution",
-      "A manufacturer’s code of practice as the complete answer with no further action",
-      "A local authority policy only, with no additional measures",
-    ],
-    correctIndex: 0,
-    explanation:
-      "The HSW Act is primary legislation covering workplace health and safety in Great Britain.",
-  },
-  {
-    id: "et3-003",
-    question: "Which duty is required by the HSW Act for employers?",
-    options: [
-      "Provide free health and safety training",
-      "Allow employees to buy their own PPE",
-      "Avoid consulting workers about safety",
-      "Skip risk assessment for low‑risk tasks",
-    ],
-    correctIndex: 0,
-    explanation:
-      "Employers must provide free health and safety training under the HSW Act.",
-  },
-  {
-    id: "et3-004",
-    question: "Under the HSW Act, employees must?",
-    options: [
-      "Take reasonable care and cooperate on safety matters",
-      "Write company safety policy as the sole approach",
-      "Issue improvement notices as the full solution",
-      "Set national standards with no further action",
-    ],
-    correctIndex: 0,
-    explanation:
-      "Employees are required to take reasonable care and cooperate with safety arrangements.",
   },
   {
     id: "et3-005",
@@ -69,9 +30,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "EAWR applies to?",
     options: [
       "Workplaces, including systems beyond BS 7671 voltage scope",
-      "Private homes only, with no additional measures",
-      "Only low‑voltage domestic circuits, with no additional measures",
-      "Only new installations, with no additional measures",
+      "Private homes only",
+      "Only low‑voltage domestic circuits",
+      "Only new installations",
     ],
     correctIndex: 0,
     explanation:
@@ -82,9 +43,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which document gives guidance on EAWR interpretation?",
     options: [
       "HSE memorandum of guidance HSR25",
-      "IET On‑Site Guide as the sole approach",
-      "BS 7671 Part 7 as the full solution",
-      "IET GN8 with no further action",
+      "IET On‑Site Guide",
+      "BS 7671 Part 7",
+      "IET GN8",
     ],
     correctIndex: 0,
     explanation:
@@ -95,91 +56,34 @@ export const electricalTechnologyLevel3Questions = [
     question: "ESQCR 2002 mainly applies to?",
     options: [
       "Electricity suppliers’ lines and apparatus",
-      "Portable appliance testing only, with no additional measures",
-      "Domestic lighting circuits as the full solution",
-      "Tool safety inspections with no further action",
+      "Portable appliance testing only",
+      "Domestic lighting circuits",
+      "Tool safety inspections",
     ],
     correctIndex: 0,
     explanation:
       "ESQCR sets requirements for suppliers’ lines and apparatus, including earthing.",
   },
   {
-    id: "et3-009",
-    question: "PUWER 1998 requires work equipment to be?",
-    options: [
-      "Suitable and safe for the task and environment",
-      "New and branded as the sole approach as the full solution",
-      "Used only indoors, with no additional measures",
-      "Owned by the worker with no further action",
-    ],
-    correctIndex: 0,
-    explanation:
-      "PUWER ensures equipment is suitable for the task and safe in its environment.",
-  },
-  {
-    id: "et3-010",
-    question: "COSHH regulations focus on?",
-    options: [
-      "Controlling hazardous substances and exposure",
-      "Wiring colour codes as the sole approach",
-      "Noise at work only, with no additional measures",
-      "Scaffold inspection with no further action",
-    ],
-    correctIndex: 0,
-    explanation:
-      "COSHH requires control of hazardous substances, exposure and health surveillance.",
-  },
-  {
-    id: "et3-011",
-    question: "Which is NOT covered by COSHH?",
-    options: [
-      "Asbestos",
-      "Dusts and fumes",
-      "Chemicals",
-      "Biological agents",
-    ],
-    correctIndex: 0,
-    explanation:
-      "COSHH excludes asbestos, lead and radioactive substances which are covered elsewhere.",
-  },
-  {
     id: "et3-012",
     question: "Which BS 7671 part covers inspection and testing?",
-    options: [
-      "Part 6",
-      "Part 4",
-      "Part 2",
-      "Part 7",
-    ],
+    options: ["Part 6", "Part 4", "Part 2", "Part 7"],
     correctIndex: 0,
-    explanation:
-      "BS 7671 Part 6 is dedicated to inspection and testing.",
+    explanation: "BS 7671 Part 6 is dedicated to inspection and testing.",
   },
   {
     id: "et3-013",
     question: "Which BS 7671 part covers selection and erection?",
-    options: [
-      "Part 5",
-      "Part 1",
-      "Part 3",
-      "Part 6",
-    ],
+    options: ["Part 5", "Part 1", "Part 3", "Part 6"],
     correctIndex: 0,
-    explanation:
-      "Part 5 is titled Selection and Erection.",
+    explanation: "Part 5 is titled Selection and Erection.",
   },
   {
     id: "et3-014",
     question: "Which Guidance Note focuses on earthing and bonding?",
-    options: [
-      "GN8",
-      "GN2",
-      "GN4",
-      "GN6",
-    ],
+    options: ["GN8", "GN2", "GN4", "GN6"],
     correctIndex: 0,
-    explanation:
-      "GN8 covers earthing and bonding.",
+    explanation: "GN8 covers earthing and bonding.",
   },
   {
     id: "et3-015",
@@ -191,17 +95,16 @@ export const electricalTechnologyLevel3Questions = [
       "Special locations",
     ],
     correctIndex: 0,
-    explanation:
-      "GN3 is the guidance note for inspection and testing.",
+    explanation: "GN3 is the guidance note for inspection and testing.",
   },
   {
     id: "et3-016",
     question: "A key purpose of the IET On‑Site Guide is to?",
     options: [
       "Provide design/installation/testing guidance for standard installations",
-      "Replace BS 7671 completely as the sole approach as the full solution",
-      "Provide statutory law as the full solution with no further action",
-      "Set insurance requirements with no further action as the only control",
+      "Replace BS 7671 completely",
+      "Provide statutory law",
+      "Set insurance requirements",
     ],
     correctIndex: 0,
     explanation:
@@ -225,74 +128,34 @@ export const electricalTechnologyLevel3Questions = [
     question: "CPD seminars are often used to?",
     options: [
       "Provide updates and develop professional knowledge",
-      "Replace statutory law as the sole approach",
-      "Certify an installation as the full solution",
-      "Issue legal notices with no further action",
+      "Replace statutory law",
+      "Certify an installation",
+      "Issue legal notices",
     ],
     correctIndex: 0,
-    explanation:
-      "CPD seminars update knowledge and professional competence.",
+    explanation: "CPD seminars update knowledge and professional competence.",
   },
   {
     id: "et3-019",
     question: "ACoPs are?",
     options: [
       "Approved Codes of Practice with special legal status",
-      "Manufacturer brochures as the sole approach",
-      "Optional customer preferences as the full solution",
-      "Company trademarks with no further action as the only control",
+      "Manufacturer brochures",
+      "Optional customer preferences",
+      "Company trademarks",
     ],
     correctIndex: 0,
     explanation:
       "ACoPs are approved by the Secretary of State and have legal status.",
   },
   {
-    id: "et3-020",
-    question: "HSE inspectors can do which of the following?",
-    options: [
-      "Enter and inspect workplaces without notice",
-      "Set electricity prices as the sole approach",
-      "Approve all designs as the full solution",
-      "Issue building completion certificates",
-    ],
-    correctIndex: 0,
-    explanation:
-      "HSE inspectors have the right to enter and inspect workplaces without notice.",
-  },
-  {
-    id: "et3-021",
-    question: "A prohibition notice is used when?",
-    options: [
-      "There is a risk of serious personal injury",
-      "Minor issues need correction as the sole approach",
-      "A design is incomplete as the complete answer",
-      "A training record is missing as the complete answer",
-    ],
-    correctIndex: 0,
-    explanation:
-      "Prohibition notices stop dangerous activity where serious injury risk exists.",
-  },
-  {
-    id: "et3-022",
-    question: "A breach of non‑statutory guidance often results in?",
-    options: [
-      "Contractual or quality issues and possible legal consequences",
-      "No consequences ever for the installation as the full solution",
-      "Automatic criminal conviction as the full solution",
-      "Immediate imprisonment only, with no additional measures",
-    ],
-    correctIndex: 0,
-    explanation:
-      "Non‑statutory breaches often become contractual or quality disputes and can affect legal outcomes.",
-  },
-  {
     id: "et3-023",
     question: "Which drawing type shows what has actually been installed?",
     options: [
       "As‑fitted or installed drawings",
-      "Concept drawings as the sole approach",
-      "Tender sketches as the full solution",
-      "Marketing diagrams with no further action",
+      "Concept drawings",
+      "Tender sketches",
+      "Marketing diagrams",
     ],
     correctIndex: 0,
     explanation:
@@ -303,13 +166,12 @@ export const electricalTechnologyLevel3Questions = [
     question: "Why must symbols on drawings be explained?",
     options: [
       "To ensure the drawing is understood by installers",
-      "To replace the need for scale as the main approach",
-      "To avoid using standard symbols as the main approach",
-      "To hide design intent as the main approach",
+      "To replace the need for scale",
+      "To avoid using standard symbols",
+      "To hide design intent",
     ],
     correctIndex: 0,
-    explanation:
-      "A key or legend ensures symbols are correctly interpreted.",
+    explanation: "A key or legend ensures symbols are correctly interpreted.",
   },
   {
     id: "et3-025",
@@ -321,8 +183,7 @@ export const electricalTechnologyLevel3Questions = [
       "The drawing is twice actual size",
     ],
     correctIndex: 0,
-    explanation:
-      "At 1:50, the real size is 50 times the drawing measurement.",
+    explanation: "At 1:50, the real size is 50 times the drawing measurement.",
   },
   {
     id: "et3-027",
@@ -339,12 +200,13 @@ export const electricalTechnologyLevel3Questions = [
   },
   {
     id: "et3-028",
-    question: "Electricity cannot be stored in significant amounts, so the system must?",
+    question:
+      "Electricity cannot be stored in significant amounts, so the system must?",
     options: [
       "Balance supply and demand continuously",
-      "Store energy at substations as the sole approach",
-      "Run only at night, with no additional measures",
-      "Shut down during low demand with no further action",
+      "Store energy at substations",
+      "Run only at night",
+      "Shut down during low demand",
     ],
     correctIndex: 0,
     explanation:
@@ -360,8 +222,7 @@ export const electricalTechnologyLevel3Questions = [
       "Manual generators only",
     ],
     correctIndex: 0,
-    explanation:
-      "Nuclear is listed among UK generation methods.",
+    explanation: "Nuclear is listed among UK generation methods.",
   },
   {
     id: "et3-030",
@@ -369,8 +230,8 @@ export const electricalTechnologyLevel3Questions = [
     options: [
       "To reduce I²R losses and keep cable sizes manageable",
       "To make transformers smaller at the generator",
-      "To increase domestic voltage as the main approach",
-      "To reduce grid frequency as the main approach",
+      "To increase domestic voltage",
+      "To reduce grid frequency",
     ],
     correctIndex: 0,
     explanation:
@@ -381,22 +242,21 @@ export const electricalTechnologyLevel3Questions = [
     question: "High‑voltage overhead transmission in the UK mainly uses?",
     options: [
       "Pylons with overhead lines",
-      "Underground only, with no additional measures",
-      "Subsea only, with no additional measures",
-      "Battery storage with no further action",
+      "Underground only",
+      "Subsea only",
+      "Battery storage",
     ],
     correctIndex: 0,
-    explanation:
-      "UK transmission is predominantly overhead on pylons.",
+    explanation: "UK transmission is predominantly overhead on pylons.",
   },
   {
     id: "et3-032",
     question: "At high voltage, electricity can?",
     options: [
       "Arc through air across short distances",
-      "Not pass through air at all as the sole approach",
-      "Only pass through water, with no additional measures",
-      "Only pass through plastic, with no additional measures",
+      "Not pass through air at all",
+      "Only pass through water",
+      "Only pass through plastic",
     ],
     correctIndex: 0,
     explanation:
@@ -407,9 +267,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Why are longer insulators used at higher voltages?",
     options: [
       "To increase creepage distance and prevent flashover",
-      "To increase current flow as the main approach",
-      "To reduce transformer size as the main approach",
-      "To improve power factor as the main approach",
+      "To increase current flow",
+      "To reduce transformer size",
+      "To improve power factor",
     ],
     correctIndex: 0,
     explanation:
@@ -420,9 +280,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which statement about renewable energy is correct?",
     options: [
       "Its share of electricity production has been increasing",
-      "It is no longer used in the UK as the sole approach",
-      "It is only for off‑grid homes, with no additional measures",
-      "It replaced all fossil fuels already with no further action",
+      "It is no longer used in the UK",
+      "It is only for off‑grid homes",
+      "It replaced all fossil fuels already",
     ],
     correctIndex: 0,
     explanation:
@@ -433,9 +293,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Pumped‑storage hydro works by?",
     options: [
       "Pumping water up off‑peak, releasing it at peak demand",
-      "Storing steam in tanks as the sole approach as the full solution",
-      "Storing electricity in capacitors as the full solution",
-      "Running only at night, with no additional measures",
+      "Storing steam in tanks",
+      "Storing electricity in capacitors",
+      "Running only at night",
     ],
     correctIndex: 0,
     explanation:
@@ -446,35 +306,28 @@ export const electricalTechnologyLevel3Questions = [
     question: "Technical drawings should use symbols that are?",
     options: [
       "British Standard where possible, with a legend",
-      "Invented without explanation as the sole approach",
-      "Written only in text, with no additional measures",
-      "Scaled to actual device size with no further action",
+      "Invented without explanation",
+      "Written only in text",
+      "Scaled to actual device size",
     ],
     correctIndex: 0,
-    explanation:
-      "BS symbols should be used and explained in a key or legend.",
+    explanation: "BS symbols should be used and explained in a key or legend.",
   },
   {
     id: "et3-037",
     question: "On a 1:50 drawing, a 40 mm line represents a real length of?",
-    options: [
-      "2 m",
-      "0.4 m",
-      "20 m",
-      "4 m",
-    ],
+    options: ["2 m", "0.4 m", "20 m", "4 m"],
     correctIndex: 0,
-    explanation:
-      "40 mm × 50 = 2000 mm = 2 m.",
+    explanation: "40 mm × 50 = 2000 mm = 2 m.",
   },
   {
     id: "et3-039",
     question: "Why might A3 reductions be used on site?",
     options: [
       "Easy printing and quick reference, but less readability",
-      "To show full‑size scale as the main approach as the full solution",
-      "To avoid any loss of detail as the main approach",
-      "To increase drawing accuracy as the main approach",
+      "To show full‑size scale",
+      "To avoid any loss of detail",
+      "To increase drawing accuracy",
     ],
     correctIndex: 0,
     explanation:
@@ -485,9 +338,9 @@ export const electricalTechnologyLevel3Questions = [
     question: "Which statement about technical specifications is true?",
     options: [
       "Manufacturers provide them based on testing and development",
-      "They are never biased toward products as the sole approach",
-      "They replace statutory regulations as the full solution",
-      "They are only verbal, with no additional measures",
+      "They are never biased toward products",
+      "They replace statutory regulations",
+      "They are only verbal",
     ],
     correctIndex: 0,
     explanation:

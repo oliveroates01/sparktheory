@@ -4,9 +4,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "What does resistivity describe?",
     options: [
       "How strongly a material opposes the flow of electric current",
-      "The maximum current a cable can safely carry as the sole approach",
-      "The voltage available at a supply point as the full solution",
-      "The energy stored in a conductor with no further action",
+      "The maximum current a cable can safely carry",
+      "The voltage available at a supply point",
+      "The energy stored in a conductor",
     ],
     correctIndex: 0,
     explanation:
@@ -28,38 +28,23 @@ export const principlesElectricalScienceLevel3Questions = [
   {
     id: "pes3-003",
     question: "What resistivity value is given for copper at 20 °C?",
-    options: [
-      "0.0172 µΩm",
-      "0.172 µΩm",
-      "1.72 µΩm",
-      "0.00172 µΩm",
-    ],
+    options: ["0.0172 µΩm", "0.172 µΩm", "1.72 µΩm", "0.00172 µΩm"],
     correctIndex: 0,
-    explanation:
-      "The text gives copper resistivity as 0.0172 µΩm at 20 °C.",
+    explanation: "The text gives copper resistivity as 0.0172 µΩm at 20 °C.",
   },
   {
     id: "pes3-004",
     question: "Which formula gives conductor resistance from resistivity?",
-    options: [
-      "R = ρl / A",
-      "R = V / I",
-      "R = I / V",
-      "R = ρA / l",
-    ],
+    options: ["R = ρl / A", "R = V / I", "R = I / V", "R = ρA / l"],
     correctIndex: 0,
     explanation:
       "Resistance is calculated from resistivity, length and cross‑sectional area using R = ρl/A.",
   },
   {
     id: "pes3-005",
-    question: "If conductor length doubles and all else is constant, resistance will?",
-    options: [
-      "Double",
-      "Halve",
-      "Stay the same",
-      "Quadruple",
-    ],
+    question:
+      "If conductor length doubles and all else is constant, resistance will?",
+    options: ["Double", "Halve", "Stay the same", "Quadruple"],
     correctIndex: 0,
     explanation:
       "Resistance is proportional to length, so doubling length doubles resistance.",
@@ -67,12 +52,7 @@ export const principlesElectricalScienceLevel3Questions = [
   {
     id: "pes3-006",
     question: "If the cross‑sectional area doubles, resistance will?",
-    options: [
-      "Halve",
-      "Double",
-      "Stay the same",
-      "Increase by 25%",
-    ],
+    options: ["Halve", "Double", "Stay the same", "Increase by 25%"],
     correctIndex: 0,
     explanation:
       "Resistance is inversely proportional to cross‑sectional area, so doubling area halves resistance.",
@@ -80,19 +60,15 @@ export const principlesElectricalScienceLevel3Questions = [
   {
     id: "pes3-007",
     question: "Insulation resistance is typically measured in?",
-    options: [
-      "Megohms (MΩ)",
-      "Milliohms (mΩ)",
-      "Amperes (A)",
-      "Volts (V)",
-    ],
+    options: ["Megohms (MΩ)", "Milliohms (mΩ)", "Amperes (A)", "Volts (V)"],
     correctIndex: 0,
     explanation:
       "Insulation resistance testing uses high‑range measurements, usually expressed in megohms.",
   },
   {
     id: "pes3-008",
-    question: "A high insulation resistance reading (typically > 1 MΩ) indicates?",
+    question:
+      "A high insulation resistance reading (typically > 1 MΩ) indicates?",
     options: [
       "Good insulation and negligible leakage",
       "A short circuit between conductors",
@@ -108,9 +84,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "A low insulation resistance reading (e.g., < 0.5 MΩ) suggests?",
     options: [
       "Insulation deterioration and possible fault",
-      "A healthy circuit with no leakage as the complete answer",
-      "A correct polarity test result as the complete answer",
-      "Normal operation under load with no further action",
+      "A healthy circuit with no leakage",
+      "A correct polarity test result",
+      "Normal operation under load",
     ],
     correctIndex: 0,
     explanation:
@@ -118,7 +94,8 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-010",
-    question: "If an insulation tester scale is exceeded, the reading should be recorded as?",
+    question:
+      "If an insulation tester scale is exceeded, the reading should be recorded as?",
     options: [
       "Greater than the maximum scale value",
       "Zero because the meter has over‑ranged",
@@ -152,21 +129,14 @@ export const principlesElectricalScienceLevel3Questions = [
       "Rt1 = Rt2 / (1 + αT)",
     ],
     correctIndex: 0,
-    explanation:
-      "The text gives Rt1 = Rt2(1 + αT) for temperature change.",
+    explanation: "The text gives Rt1 = Rt2(1 + αT) for temperature change.",
   },
   {
     id: "pes3-013",
     question: "What temperature coefficient is given for copper at 20 °C?",
-    options: [
-      "0.00396 Ω/°C",
-      "0.0396 Ω/°C",
-      "0.000396 Ω/°C",
-      "0.00430 Ω/°C",
-    ],
+    options: ["0.00396 Ω/°C", "0.0396 Ω/°C", "0.000396 Ω/°C", "0.00430 Ω/°C"],
     correctIndex: 0,
-    explanation:
-      "For copper at 20 °C, α is given as 0.00396 Ω/°C.",
+    explanation: "For copper at 20 °C, α is given as 0.00396 Ω/°C.",
   },
   {
     id: "pes3-014",
@@ -178,8 +148,7 @@ export const principlesElectricalScienceLevel3Questions = [
       "1% for every 20 °C change",
     ],
     correctIndex: 0,
-    explanation:
-      "A rule of thumb given is 2% change in resistance per 5 °C.",
+    explanation: "A rule of thumb given is 2% change in resistance per 5 °C.",
   },
   {
     id: "pes3-015",
@@ -191,34 +160,22 @@ export const principlesElectricalScienceLevel3Questions = [
       "The product of all resistances",
     ],
     correctIndex: 0,
-    explanation:
-      "Series resistance adds directly: Rt = R1 + R2 + R3 + ...",
+    explanation: "Series resistance adds directly: Rt = R1 + R2 + R3 + ...",
   },
   {
     id: "pes3-016",
-    question: "In a series circuit, which quantity remains constant through each resistor?",
-    options: [
-      "Current",
-      "Voltage",
-      "Resistance",
-      "Power",
-    ],
+    question:
+      "In a series circuit, which quantity remains constant through each resistor?",
+    options: ["Current", "Voltage", "Resistance", "Power"],
     correctIndex: 0,
-    explanation:
-      "Current is the same through all series components.",
+    explanation: "Current is the same through all series components.",
   },
   {
     id: "pes3-017",
     question: "In a parallel circuit, which quantity is common to each branch?",
-    options: [
-      "Voltage",
-      "Current",
-      "Resistance",
-      "Power",
-    ],
+    options: ["Voltage", "Current", "Resistance", "Power"],
     correctIndex: 0,
-    explanation:
-      "Voltage is the same across each parallel branch.",
+    explanation: "Voltage is the same across each parallel branch.",
   },
   {
     id: "pes3-018",
@@ -249,77 +206,43 @@ export const principlesElectricalScienceLevel3Questions = [
   {
     id: "pes3-020",
     question: "Conductance is the reciprocal of resistance and is measured in?",
-    options: [
-      "Siemens (S)",
-      "Ohms (Ω)",
-      "Amperes (A)",
-      "Teslas (T)",
-    ],
+    options: ["Siemens (S)", "Ohms (Ω)", "Amperes (A)", "Teslas (T)"],
     correctIndex: 0,
-    explanation:
-      "Conductance (1/R) is measured in siemens.",
+    explanation: "Conductance (1/R) is measured in siemens.",
   },
   {
     id: "pes3-021",
     question: "Which equation is Ohm’s law?",
-    options: [
-      "V = IR",
-      "P = VI",
-      "E = βlv",
-      "R = ρl/A",
-    ],
+    options: ["V = IR", "P = VI", "E = βlv", "R = ρl/A"],
     correctIndex: 0,
-    explanation:
-      "Ohm’s law states V = IR.",
+    explanation: "Ohm’s law states V = IR.",
   },
   {
     id: "pes3-022",
     question: "Electrical power in a DC circuit can be calculated by?",
-    options: [
-      "P = VI",
-      "P = V/R",
-      "P = I/R",
-      "P = R/V",
-    ],
+    options: ["P = VI", "P = V/R", "P = I/R", "P = R/V"],
     correctIndex: 0,
-    explanation:
-      "Power equals voltage times current (P = VI).",
+    explanation: "Power equals voltage times current (P = VI).",
   },
   {
     id: "pes3-023",
     question: "Which formula gives power using current and resistance?",
-    options: [
-      "P = I²R",
-      "P = V²I",
-      "P = R²I",
-      "P = I/R",
-    ],
+    options: ["P = I²R", "P = V²I", "P = R²I", "P = I/R"],
     correctIndex: 0,
-    explanation:
-      "From P = VI and V = IR, power can be written as P = I²R.",
+    explanation: "From P = VI and V = IR, power can be written as P = I²R.",
   },
   {
     id: "pes3-024",
     question: "Which formula gives power using voltage and resistance?",
-    options: [
-      "P = V²/R",
-      "P = V/R²",
-      "P = R/V²",
-      "P = V/R",
-    ],
+    options: ["P = V²/R", "P = V/R²", "P = R/V²", "P = V/R"],
     correctIndex: 0,
-    explanation:
-      "Using Ohm’s law, power can be written as P = V²/R.",
+    explanation: "Using Ohm’s law, power can be written as P = V²/R.",
   },
   {
     id: "pes3-025",
-    question: "If current doubles in a circuit with constant resistance, power loss will?",
-    options: [
-      "Increase four‑fold",
-      "Double as the sole approach",
-      "Stay the same as the full solution",
-      "Halve with no further action",
-    ],
+    question:
+      "If current doubles in a circuit with constant resistance, power loss will?",
+    options: ["Increase four‑fold", "Double", "Stay the same", "Halve"],
     correctIndex: 0,
     explanation:
       "Power loss is proportional to I², so doubling current gives four times the power.",
@@ -347,17 +270,16 @@ export const principlesElectricalScienceLevel3Questions = [
       "Vdrop = V × I",
     ],
     correctIndex: 0,
-    explanation:
-      "Voltage drop is the product of current and resistance.",
+    explanation: "Voltage drop is the product of current and resistance.",
   },
   {
     id: "pes3-028",
     question: "A practical way to reduce voltage drop in a circuit is to?",
     options: [
       "Increase conductor cross‑sectional area",
-      "Increase conductor length as the sole approach",
-      "Reduce conductor size as the full solution",
-      "Add more resistors in series with no further action",
+      "Increase conductor length",
+      "Reduce conductor size",
+      "Add more resistors in series",
     ],
     correctIndex: 0,
     explanation:
@@ -382,8 +304,8 @@ export const principlesElectricalScienceLevel3Questions = [
     options: [
       "Inside from south to north, outside from north to south",
       "Inside from north to south, outside from south to north",
-      "Only inside the magnet, with no additional measures",
-      "Only outside the magnet, with no additional measures",
+      "Only inside the magnet",
+      "Only outside the magnet",
     ],
     correctIndex: 0,
     explanation:
@@ -392,19 +314,14 @@ export const principlesElectricalScienceLevel3Questions = [
   {
     id: "pes3-031",
     question: "What happens when like magnetic poles face each other?",
-    options: [
-      "Repel",
-      "Attract",
-      "Neutralize",
-      "Rotate at right angles",
-    ],
+    options: ["Repel", "Attract", "Neutralize", "Rotate at right angles"],
     correctIndex: 0,
-    explanation:
-      "Like poles repel, unlike poles attract.",
+    explanation: "Like poles repel, unlike poles attract.",
   },
   {
     id: "pes3-032",
-    question: "A magnetic field around a current‑carrying conductor appears as?",
+    question:
+      "A magnetic field around a current‑carrying conductor appears as?",
     options: [
       "Concentric rings around the conductor",
       "Straight lines along the conductor",
@@ -425,18 +342,13 @@ export const principlesElectricalScienceLevel3Questions = [
       "Flowing right to left",
     ],
     correctIndex: 0,
-    explanation:
-      "A cross indicates current flowing away from the viewer.",
+    explanation: "A cross indicates current flowing away from the viewer.",
   },
   {
     id: "pes3-034",
-    question: "If current flows away from the viewer, the magnetic field rotates?",
-    options: [
-      "Clockwise",
-      "Anticlockwise",
-      "Upwards",
-      "Downwards",
-    ],
+    question:
+      "If current flows away from the viewer, the magnetic field rotates?",
+    options: ["Clockwise", "Anticlockwise", "Upwards", "Downwards"],
     correctIndex: 0,
     explanation:
       "Current away from the viewer produces a clockwise field rotation.",
@@ -451,8 +363,7 @@ export const principlesElectricalScienceLevel3Questions = [
       "The conductor insulation type",
     ],
     correctIndex: 0,
-    explanation:
-      "Greater current produces a stronger magnetic field.",
+    explanation: "Greater current produces a stronger magnetic field.",
   },
   {
     id: "pes3-036",
@@ -472,9 +383,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "A solenoid is best described as?",
     options: [
       "A coil of wire that produces a stronger magnetic field",
-      "A permanent magnet with fixed polarity as the complete answer",
-      "A resistor used for current limiting as the complete answer",
-      "A device that stores chemical energy as the complete answer",
+      "A permanent magnet with fixed polarity",
+      "A resistor used for current limiting",
+      "A device that stores chemical energy",
     ],
     correctIndex: 0,
     explanation:
@@ -495,7 +406,8 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-039",
-    question: "Using the right‑hand grip rule on a solenoid, the thumb points to?",
+    question:
+      "Using the right‑hand grip rule on a solenoid, the thumb points to?",
     options: [
       "The north pole",
       "The south pole",
@@ -509,51 +421,30 @@ export const principlesElectricalScienceLevel3Questions = [
   {
     id: "pes3-040",
     question: "The unit of magnetic flux is?",
-    options: [
-      "Weber (Wb)",
-      "Tesla (T)",
-      "Henry (H)",
-      "Siemens (S)",
-    ],
+    options: ["Weber (Wb)", "Tesla (T)", "Henry (H)", "Siemens (S)"],
     correctIndex: 0,
-    explanation:
-      "Magnetic flux is measured in webers (Wb).",
+    explanation: "Magnetic flux is measured in webers (Wb).",
   },
   {
     id: "pes3-041",
     question: "Magnetic flux density is measured in?",
-    options: [
-      "Teslas (T)",
-      "Webers (Wb)",
-      "Henrys (H)",
-      "Ohms (Ω)",
-    ],
+    options: ["Teslas (T)", "Webers (Wb)", "Henrys (H)", "Ohms (Ω)"],
     correctIndex: 0,
-    explanation:
-      "Flux density is measured in teslas, equivalent to Wb/m².",
+    explanation: "Flux density is measured in teslas, equivalent to Wb/m².",
   },
   {
     id: "pes3-042",
     question: "Which formula relates flux density to flux and area?",
-    options: [
-      "β = Φ / A",
-      "β = Φ × A",
-      "β = A / Φ",
-      "β = Φ + A",
-    ],
+    options: ["β = Φ / A", "β = Φ × A", "β = A / Φ", "β = Φ + A"],
     correctIndex: 0,
     explanation:
       "Flux density equals total flux divided by cross‑sectional area.",
   },
   {
     id: "pes3-043",
-    question: "The force on a current‑carrying conductor in a magnetic field is?",
-    options: [
-      "F = βLI",
-      "F = V/I",
-      "F = I²R",
-      "F = β/A",
-    ],
+    question:
+      "The force on a current‑carrying conductor in a magnetic field is?",
+    options: ["F = βLI", "F = V/I", "F = I²R", "F = β/A"],
     correctIndex: 0,
     explanation:
       "The force depends on flux density, conductor length and current: F = βLI.",
@@ -573,13 +464,9 @@ export const principlesElectricalScienceLevel3Questions = [
   },
   {
     id: "pes3-045",
-    question: "The induced e.m.f. in a straight conductor moving in a field is?",
-    options: [
-      "E = βlv",
-      "E = IR",
-      "E = V/I",
-      "E = β/A",
-    ],
+    question:
+      "The induced e.m.f. in a straight conductor moving in a field is?",
+    options: ["E = βlv", "E = IR", "E = V/I", "E = β/A"],
     correctIndex: 0,
     explanation:
       "Induced e.m.f. depends on flux density, conductor length and velocity: E = βlv.",
@@ -589,9 +476,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "Self‑induction refers to?",
     options: [
       "A changing magnetic field in a coil inducing e.m.f. in the same coil",
-      "A magnetic field inducing e.m.f. in a separate coil as the complete answer",
-      "Static charge stored in a capacitor as the full solution",
-      "Energy transfer by heat with no further action as the only control",
+      "A magnetic field inducing e.m.f. in a separate coil",
+      "Static charge stored in a capacitor",
+      "Energy transfer by heat",
     ],
     correctIndex: 0,
     explanation:
@@ -602,9 +489,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "Mutual induction refers to?",
     options: [
       "A changing field in one coil inducing e.m.f. in another coil",
-      "A coil inducing e.m.f. in itself as the complete answer",
-      "A battery driving current in a circuit as the complete answer",
-      "A conductor cancelling magnetic fields as the complete answer",
+      "A coil inducing e.m.f. in itself",
+      "A battery driving current in a circuit",
+      "A conductor cancelling magnetic fields",
     ],
     correctIndex: 0,
     explanation:
@@ -613,24 +500,18 @@ export const principlesElectricalScienceLevel3Questions = [
   {
     id: "pes3-048",
     question: "Which formula gives flux change from e.m.f. and time?",
-    options: [
-      "Φ = Et",
-      "Φ = E/t",
-      "Φ = t/E",
-      "Φ = E + t",
-    ],
+    options: ["Φ = Et", "Φ = E/t", "Φ = t/E", "Φ = E + t"],
     correctIndex: 0,
-    explanation:
-      "Flux change equals e.m.f. multiplied by time: Φ = Et.",
+    explanation: "Flux change equals e.m.f. multiplied by time: Φ = Et.",
   },
   {
     id: "pes3-049",
     question: "A capacitor is best described as?",
     options: [
       "Two conductors separated by a dielectric storing energy in an electric field",
-      "A device that stores energy chemically as the complete answer as the full solution",
-      "A coil that stores energy magnetically only, with no additional measures",
-      "A resistor used to limit current as the complete answer as the only control",
+      "A device that stores energy chemically",
+      "A coil that stores energy magnetically only",
+      "A resistor used to limit current",
     ],
     correctIndex: 0,
     explanation:
@@ -641,9 +522,9 @@ export const principlesElectricalScienceLevel3Questions = [
     question: "Compared with half‑wave rectification, full‑wave rectification?",
     options: [
       "Uses both halves of the AC waveform and gives a higher mean output",
-      "Blocks both halves of the AC waveform as the sole approach",
-      "Always produces pure DC with no ripple as the full solution",
-      "Requires only one diode in single‑phase, with no additional measures",
+      "Blocks both halves of the AC waveform",
+      "Always produces pure DC with no ripple",
+      "Requires only one diode in single‑phase",
     ],
     correctIndex: 0,
     explanation:
