@@ -9,9 +9,6 @@ import {
   doc,
   getDocs,
   getDoc,
-  limit,
-  orderBy,
-  query,
 } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { backfillLeaderboardPointsFromLocalProgress } from "@/lib/leaderboard/backfill";
@@ -102,8 +99,8 @@ function normalizeLeaderboardEntries(
 
 function filterRenderableEntries(entries: LeaderboardEntry[]) {
   return entries.filter((entry) => {
-    const username = entry.username.trim();
-    return username.length > 0 && Number.isFinite(entry.points) && entry.points >= 0;
+    const username = entry.username.trim().toLowerCase();
+    return USERNAME_REGEX.test(username) && Number.isFinite(entry.points) && entry.points > 0;
   });
 }
 
@@ -158,8 +155,7 @@ export default function ElectricalLeaderboardClient() {
     async function loadLeaderboard() {
       try {
         const usersRef = collection(db, "users");
-        const leaderboardQuery = query(usersRef, orderBy("points", "desc"), limit(10));
-        const snapshot = await getDocs(leaderboardQuery);
+        const snapshot = await getDocs(usersRef);
         if (cancelled) return;
 
         console.log("[leaderboard] snapshot.size", snapshot.size);
@@ -181,8 +177,7 @@ export default function ElectricalLeaderboardClient() {
         console.log("[leaderboard] filtered entries", filtered);
 
         const next = filtered
-          .sort((a, b) => normalizePoints(b.points) - normalizePoints(a.points))
-          .slice(0, 10);
+          .sort((a, b) => normalizePoints(b.points) - normalizePoints(a.points));
         setEntries(next);
       } catch (error) {
         const code = (error as { code?: string } | null)?.code;
